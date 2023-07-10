@@ -1,0 +1,163 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Atributo {
+  id        Int     @id @default(autoincrement())
+  idProducto Int
+  descripcion String
+  valor      String?
+  producto   Producto @relation(fields: [idProducto], references: [id])
+}
+
+model Categoria {
+  id          Int     @id @default(autoincrement())
+  descripcion String
+  productos Producto[]
+}
+
+model Direccion {
+  id              Int     @id @default(autoincrement())
+  provincia       String
+  canton          String
+  distrito        String
+  direccionExacta String
+  codigoPostal    String
+  telefono        String
+  idUsuario       Int
+  usuario         Usuario @relation(fields: [idUsuario], references: [id])
+  facturas Factura[]
+}
+
+model Evaluacion {
+  id        Int     @id @default(autoincrement())
+  idUsuario Int
+  idFactura Int
+  calificacion Int
+  mensaje   String
+  usuario   Usuario @relation(fields: [idUsuario], references: [id])
+  factura   Factura @relation(fields: [idFactura], references: [id])
+}
+
+model Factura {
+  id          Int     @id @default(autoincrement())
+  idUsuario   Int
+  idDireccion Int
+  idTarjeta   Int
+  createdAt   DateTime            @default(now())
+  total      Decimal             @db.Decimal(10, 2)
+  estado     Pedido    @default(PENDIENTE)
+  usuario     Usuario   @relation(fields: [idUsuario], references: [id])
+  direccion   Direccion @relation(fields: [idDireccion], references: [id])
+  tarjeta     Tarjeta   @relation(fields: [idTarjeta], references: [id])
+  productos   FacturaProducto[]
+  evaluaciones Evaluacion[]
+}
+
+model FacturaProducto {
+  idFactura  Int
+  idProducto Int
+  estado     Pedido    @default(PENDIENTE)
+  factura    Factura  @relation(fields: [idFactura], references: [id])
+  producto   Producto @relation(fields: [idProducto], references: [id])
+  @@id([idFactura, idProducto])
+}
+
+model Pregunta {
+  id          Int     @id @default(autoincrement())
+  idUsuario   Int
+  idProducto  Int
+  descripcion String
+  fechaExp  DateTime
+  usuario     Usuario   @relation(fields: [idUsuario], references: [id])
+  producto    Producto? @relation(fields: [idProducto], references: [id])
+  respuestas Respuesta[]
+}
+
+model Producto {
+  id          Int         @id @default(autoincrement())
+  idUsuario   Int
+  idCategoria Int
+  nombre      String
+  descripcion String
+  precio      Decimal             @db.Decimal(10, 2)
+  cantidad    Int
+  estado      Estado
+  usuario     Usuario   @relation(fields: [idUsuario], references: [id])
+  categoria   Categoria @relation(fields: [idCategoria], references: [id])
+  preguntas   Pregunta[]
+  atributos Atributo[]
+  facturas FacturaProducto[]
+}
+
+model Respuesta {
+  id          Int     @id @default(autoincrement())
+  idUsuario   Int
+  idPregunta  Int
+  descripcion String
+  fecha  DateTime
+  usuario     Usuario   @relation(fields: [idUsuario], references: [id])
+  pregunta    Pregunta @relation(fields: [idPregunta], references: [id])
+}
+
+model Tarjeta {
+  id        Int     @id @default(autoincrement())
+  idUsuario Int
+  tipo      TipoPago
+  proveedor String
+  nombre    String
+  numero    String
+  fechaExp  DateTime
+  usuario   Usuario @relation(fields: [idUsuario], references: [id])
+  facturas Factura[]
+}
+
+model Usuario {
+  id        Int    @id @default(autoincrement())
+  idTipoUsuario Int
+  nombre    String
+  correo    String
+  telefono  String
+  clave     String
+  tipoUsuario TipoUsuario @default(ADMIN)
+  direcciones Direccion[]
+  facturas   Factura[]
+  evaluaciones Evaluacion[]
+  preguntas  Pregunta[]
+  respuestas Respuesta[]
+  tarjetas Tarjeta[]
+  productos Producto[]
+}
+
+enum TipoUsuario {
+  ADMIN
+  CLIENTE
+  VENDEDOR
+}
+
+enum Pedido {
+  PENDIENTE
+  EN_PROGRESO
+  ENTREGADO
+  FINALIZADO
+}
+
+enum Estado {
+  NUEVO
+  USADO_COMO_NUEVO
+  USADO_BUEN_ESTADO
+  USADO_ACEPTABLE
+}
+
+enum TipoPago {
+  DEBITO
+  CREDIO
+}
