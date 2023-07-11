@@ -93,4 +93,18 @@ export const usuarios = [
         //     connect: [{ id: 4 }]
         // },
     },
+    {
+        idTipoUsuario: 3,
+        nombre:    "MoYu Stores",
+        correo:    "moyu@gmail.com",
+        telefono:  "00001111",
+        clave:    "123456",
+        tipoUsuario: TipoUsuario.VENDEDOR,
+        // direcciones: {
+        //     connect: [{ id: 4 }]
+        // },
+        // productos: {
+        //     connect: [{ id: 1 },{ id: 2 },{ id: 3 }]
+        // },
+    },
   ];

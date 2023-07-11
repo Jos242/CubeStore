@@ -46,12 +46,21 @@ export const direcciones = [
         idUsuario: 3,
     },
     {
-        provincia: "Alaueja",
+        provincia: "Alajueja",
         canton: "Ajalueja",
         distrito: "Alajuela",
         direccionExacta: "100mts sur del Parque Central",
         codigoPostal: "20101",
         telefono: "11111111",
         idUsuario: 4,
+    },
+    {
+        provincia: "Alaueja",
+        canton: "Ajalueja",
+        distrito: "Alajuela",
+        direccionExacta: "City Mall",
+        codigoPostal: "20101",
+        telefono: "10101010",
+        idUsuario: 5,
     },
   ];
