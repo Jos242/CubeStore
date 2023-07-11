@@ -6,7 +6,6 @@ module.exports.get = async (request, response, next) => {
     include: {
         usuario: true,
         direccion: true,
-        tarjeta: true,
         productos: {
           select: {
             producto: true,
@@ -25,7 +24,6 @@ module.exports.getByClienteId = async (request, response, next) => {
     include: {
         usuario: true,
         direccion: true,
-        tarjeta: true,
         productos: {
           select: {
             producto: true,
@@ -44,7 +42,6 @@ module.exports.getById = async (request, response, next) => {
     include: {
         usuario: true,
         direccion: true,
-        tarjeta: true,
         productos: {
           select: {
             producto: true,

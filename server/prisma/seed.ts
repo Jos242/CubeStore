@@ -1,66 +1,53 @@
 import { PrismaClient } from '@prisma/client';
+import { usuarios } from './seeds/usuarios';
+import { categorias } from './seeds/categorias';
+import { atributos } from './seeds/atributos';
+import { direcciones } from './seeds/direcciones';
+import { evaluaciones } from './seeds/evaluaciones';
+import { facturas } from './seeds/facturas';
+import { facturaproductos } from './seeds/facturaproductos';
+import { preguntas } from './seeds/preguntas';
+import { productos } from './seeds/productos';
+import { respuestas } from './seeds/respuestas';
+import { tarjetas } from './seeds/tarjetas';
 
 const prisma = new PrismaClient();
 
 async function main() {
-
-    await prisma.usuario.create({
-        //Instancia de videojuego 1
-        data: {
-            idTipoUsuario: 2,
-            nombre: 'Andrés Hernández',
-            correo: 'ahernandez20910@gmail.com',
-            telefono: '85599103',
-            clave: 'andres20',
-            tipoUsuario: 'ADMIN'
-        }
-    });
-
-    await prisma.direccion.create({
-        //Instancia de videojuego 1
-        data: {
-            provincia: "Alajuela",
-            canton: 'Alajuela',
-            distrito: 'Carrizal',
-            direccionExacta: 'mi dick',
-            codigoPostal: '00000',
-            telefono: '24831292',
-            idUsuario: 1
-        }
-    });
-
-    await prisma.tarjeta.create({
-        //Instancia de videojuego 1
-        data: {
-            idUsuario: 1,
-            tipo: 'DEBITO',
-            proveedor: 'MasterCard',
-            nombre: 'Andrés Hernández',
-            numero: '8988848615305001'
-        }
-    });
-
-    await prisma.factura.create({
-        //Instancia de videojuego 1
-        data: {
-            idUsuario: 1,
-            idDireccion: 1,
-            idTarjeta: 1,
-            total: 12
-        }
-    });
-
-    await prisma.factura.create({
-        //Instancia de videojuego 1
-        data: {
-            idUsuario: 1,
-            idDireccion: 1,
-            idTarjeta: 1,
-            total: 125
-        }
-    });
+    await prisma.usuario.createMany({
+        data: usuarios
+      });   
+      await prisma.tarjeta.createMany({
+        data: tarjetas
+      });  
+      await prisma.direccion.createMany({
+        data: direcciones 
+      });
+      await prisma.categoria.createMany({
+        data: categorias
+      });
+      await prisma.producto.createMany({
+        data: productos
+      });
+      await prisma.pregunta.createMany({
+        data: preguntas
+      });
+      await prisma.respuesta.createMany({
+        data: respuestas
+      });
+      await prisma.atributo.createMany({
+        data: atributos
+      });
+      await prisma.factura.createMany({
+        data: facturas
+      });
+      await prisma.facturaProducto.createMany({
+        data: facturaproductos
+      });
+      await prisma.evaluacion.createMany({
+        data: evaluaciones
+      });      
 }
-
 main()
   .then(async () => {
     await prisma.$disconnect();
@@ -68,4 +55,5 @@ main()
   .catch(async e => {
     console.error(e);
     await prisma.$disconnect();
+    process.exit(1);
   });
