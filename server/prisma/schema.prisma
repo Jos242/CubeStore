@@ -29,7 +29,7 @@ model Direccion {
   provincia       String
   canton          String
   distrito        String
-  direccionExacta String
+  direccionExacta String 
   codigoPostal    String
   telefono        String
   idUsuario       Int
@@ -76,7 +76,7 @@ model Pregunta {
   idUsuario   Int
   idProducto  Int
   descripcion String
-  fecha  DateTime
+  fechaExp  DateTime    @default(now())
   usuario     Usuario   @relation(fields: [idUsuario], references: [id])
   producto    Producto? @relation(fields: [idProducto], references: [id])
   respuestas Respuesta[]
@@ -103,7 +103,7 @@ model Respuesta {
   idUsuario   Int
   idPregunta  Int
   descripcion String
-  fecha  DateTime
+  fecha  DateTime     @default(now())
   usuario     Usuario   @relation(fields: [idUsuario], references: [id])
   pregunta    Pregunta @relation(fields: [idPregunta], references: [id])
 }
@@ -159,5 +159,5 @@ enum Estado {
 
 enum TipoPago {
   DEBITO
-  CREDIO
+  CREDITO
 }
