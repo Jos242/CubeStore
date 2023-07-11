@@ -9,7 +9,7 @@ const prism = new PrismaClient();
 
 //---Archivos de rutas---
 //lineas del ejemplo de la profe
-// const videojuegosRouter = require("./routes/videojuegoRoutes");
+const facturaRouter = require("./routes/facturaRoutes");
 // const ordenRouter = require("./routes/ordenRoutes");
 // const generoRouter = require("./routes/generoRoutes");
 // const rolRouter = require("./routes/rolRoutes");
@@ -34,7 +34,7 @@ app.use(
 
 //---- Definir rutas ---- 
 //lineas de la profe
-// app.use("/videojuego/", videojuegosRouter);
+app.use("/factura/", facturaRouter);
 // app.use("/orden/", ordenRouter);
 // app.use("/genero/", generoRouter);
 // app.use("/rol/", rolRouter); 

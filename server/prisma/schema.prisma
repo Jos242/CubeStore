@@ -76,7 +76,7 @@ model Pregunta {
   idUsuario   Int
   idProducto  Int
   descripcion String
-  fechaExp  DateTime
+  fecha  DateTime
   usuario     Usuario   @relation(fields: [idUsuario], references: [id])
   producto    Producto? @relation(fields: [idProducto], references: [id])
   respuestas Respuesta[]
