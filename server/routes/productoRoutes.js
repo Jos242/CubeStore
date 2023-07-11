@@ -8,6 +8,8 @@ const productoController = require("../controllers/productoController");
 //Definición de rutas para generos
 router.get("/", productoController.get);
 
-//router.get("/:id", generoController.getById);
+router.get('/:id', productoController.getById);
+
+router.get('/all/:id',productoController.getByVendedorId);
 
 module.exports = router;

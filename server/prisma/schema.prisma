@@ -87,7 +87,7 @@ model Producto {
   idUsuario   Int
   idCategoria Int
   nombre      String
-  descripcion String
+  descripcion String              @db.VarChar(500)
   precio      Decimal             @db.Decimal(10, 2)
   cantidad    Int
   estado      Estado

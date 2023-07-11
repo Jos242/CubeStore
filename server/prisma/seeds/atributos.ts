@@ -15,4 +15,14 @@ export const atributos = [
         descripcion: "Tamaño",
         valor: "10cm x 30cm",
       },
+      {
+        idProducto: 4,
+        descripcion: "Categoria",
+        valor: "4x4",
+      },
+      {
+        idProducto: 5,
+        descripcion: "Categoria",
+        valor: "5x5",
+      },
   ];

@@ -12,10 +12,12 @@ import { ToastrModule } from 'ngx-toastr';
 import { FacturaModule } from './factura/factura.module';
 import { HttpClientModule } from '@angular/common/http';
 import { PedidoModule } from './pedido/pedido.module';
+import { ProductoModule } from './producto/producto.module';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -31,9 +33,12 @@ import { PedidoModule } from './pedido/pedido.module';
     UserModule,
     FacturaModule,
     PedidoModule,
+    ProductoModule,
 
-    AppRoutingModule,
-      PedidoModule
+    
+    AppRoutingModule
+      
+
   ],
   providers: [],
   bootstrap: [AppComponent]
