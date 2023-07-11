@@ -64,7 +64,17 @@ module.exports.getById = async (request, response, next) => {
                   idProducto: true,
                   descripcion: true,
                   fechaExp: true,
-                  respuestas: true,
+                  usuario: true,
+                  respuestas: {
+                    select:{
+                        idUsuario: true,
+                        idPregunta: true,
+                        descripcion: true,
+                        fecha: true,
+                        usuario: true
+                    }
+                    
+                }
               }
               
           }

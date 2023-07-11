@@ -20,7 +20,7 @@ export const respuestas = [
     }, 
     {
         idUsuario: 1,
-        idPregunta: 3,
+        idPregunta: 4,
         descripcion: "Es bastante grande, cubre un buen espacio",
         fecha: new Date(2023, 6, 7),
     }, 

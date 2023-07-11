@@ -1,1 +1,25 @@
-<p>producto-detail works!</p>
+<mat-card class="dashboard-card" *ngIf="datos"  >
+    <mat-card-header>
+      <mat-card-title>
+        {{datos.nombre}}
+      </mat-card-title>
+    </mat-card-header>
+    <br />
+    <mat-card-content class="dashboard-card-content">
+        <p><b>Categoria: </b>{{datos.categoria.descripcion}}</p>
+        <p><b>Estado: </b>{{datos.estado}}</p>
+        <p><b>Vendedor: </b>{{datos.usuario.nombre}}</p>
+        <p><b>Precio: </b>{{datos.precio}}</p>
+        <p><b>Descripcion: </b>{{datos.descripcion}}</p>
+      <ul *ngIf="datos.preguntas">
+        <li *ngFor="let item of datos.preguntas"> 
+            <p><b>Pregunta: </b>{{item.descripcion}} Preguntado el: {{item.fechaExp | date: "short"}} Por: {{item.usuario.nombre}}</p>
+            <ul *ngIf="item.respuestas">
+                <li *ngFor="let item2 of item.respuestas"> 
+                    <p><b>Respuesta: </b>{{item2.descripcion}}. Respondido el: {{item2.fecha | date: "short"}} Por: {{item2.usuario.nombre}}</p>
+               </li>
+            </ul>
+        </li>
+      </ul>
+    </mat-card-content>
+  </mat-card>

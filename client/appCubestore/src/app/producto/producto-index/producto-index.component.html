@@ -12,7 +12,12 @@
           <mat-divider inset></mat-divider>
           <mat-card-actions>
             <button
-
+            mat-mini-fab
+            color="accent"
+            matTooltip="Detalle Producto"
+            aria-label="Detalle Producto"
+            color="primary"
+            (click)="detalle(item.id)"
             >
               <mat-icon class="mat-18">info</mat-icon>
             </button>
@@ -22,6 +27,7 @@
               matTooltip="Comprar"
               aria-label="Comprar"
               color="primary"
+
             >
               <mat-icon class="mat-18">add_shopping_cart</mat-icon>
             </button>
