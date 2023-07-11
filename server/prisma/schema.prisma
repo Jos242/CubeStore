@@ -115,7 +115,7 @@ model Tarjeta {
   proveedor String
   nombre    String
   numero    String
-  fechaExp  DateTime
+  fechaExp  DateTime @default(now())
   usuario   Usuario @relation(fields: [idUsuario], references: [id])
   facturas Factura[]
 }

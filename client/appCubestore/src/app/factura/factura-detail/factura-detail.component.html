@@ -1,0 +1,21 @@
+<mat-card class="dashboard-card" *ngIf="datos"  >
+    <mat-card-header>
+      <mat-card-title>
+        {{datos.usuario.nombre}}
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="dashboard-card-content">
+      <p><b>Estado: </b>{{datos.estado}}</p>
+      <p><b>Total: </b>{{datos.total| currency:'USD'}}</p>
+      <p><b>Productos: </b></p>
+      <ul *ngIf="datos.productos">
+         <li *ngFor="let item of datos.productos"> 
+            <p><b>Nombre: </b>{{datos.nombre}}</p>
+            <p><b>Descripcion: </b>{{datos.descipcion}}</p>
+            <p><b>Precio: </b>{{datos.precio}}</p>
+            <p><b>Cantidad: </b>{{datos.cantidad}}</p>
+            <p><b>Estado: </b>{{datos.estado}}</p>
+        </li>
+      </ul>
+    </mat-card-content>
+  </mat-card>

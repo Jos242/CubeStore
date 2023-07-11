@@ -8,6 +8,10 @@ const facturaController = require("../controllers/facturaController");
 //Definición de rutas para generos
 router.get("/", facturaController.get);
 
+router.get('/:id',facturaController.getById);
+
+router.get('/all/:id',facturaController.getByClienteId);
+
 //router.get("/:id", generoController.getById);
 
 module.exports = router;

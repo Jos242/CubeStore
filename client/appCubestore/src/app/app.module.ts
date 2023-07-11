@@ -8,6 +8,9 @@ import { CoreModule } from './core/core.module';
 import { ShareModule } from './share/share.module';
 import { HomeModule } from './home/home.module';
 import { UserModule } from './user/user.module';
+import { ToastrModule } from 'ngx-toastr';
+import { FacturaModule } from './factura/factura.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -15,8 +18,9 @@ import { UserModule } from './user/user.module';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     BrowserAnimationsModule,
-
+    ToastrModule.forRoot(),
     
     CoreModule,
     ShareModule,
@@ -24,6 +28,7 @@ import { UserModule } from './user/user.module';
 
     HomeModule,
     UserModule,
+    FacturaModule,
 
     AppRoutingModule
   ],

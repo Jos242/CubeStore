@@ -8,31 +8,52 @@ module.exports.get = async (request, response, next) => {
         direccion: true,
         tarjeta: true,
         productos: {
-            include: {
-                factura: true,
-                producto: true
-            }
+          select: {
+            producto: true,
+            estado: true
+          }
         }
     }
   });
   response.json(facturas);
 };
+//Obtener por ClienteId
+module.exports.getByClienteId = async (request, response, next) => {
+  let id = parseInt(request.params.id);
+  const factura = await prisma.factura.findMany({
+    where: { idUsuario: id },
+    include: {
+        usuario: true,
+        direccion: true,
+        tarjeta: true,
+        productos: {
+          select: {
+            producto: true,
+            estado: true
+          }
+        }
+    }
+  });
+  response.json(factura);
+};
 //Obtener por Id
 module.exports.getById = async (request, response, next) => {
   let id = parseInt(request.params.id);
-  const orden = await prisma.orden.findUnique({
+  const factura = await prisma.factura.findUnique({
     where: { id: id },
     include: {
-      usuario: true,
-      videojuegos: {
-        select: {
-          videojuego: true,
-          cantidad: true,
-        },
-      },
-    },
+        usuario: true,
+        direccion: true,
+        tarjeta: true,
+        productos: {
+          select: {
+            producto: true,
+            estado: true
+          }
+        }
+    }
   });
-  response.json(orden);
+  response.json(factura);
 };
 //Crear
 module.exports.create = async (request, response, next) => {};
