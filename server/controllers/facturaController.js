@@ -11,7 +11,7 @@ module.exports.get = async (request, response, next) => {
             proveedor: true
           }
         },
-        productos: {
+        productos: {  
           select: {
             producto: true,
             estado: true

@@ -10,6 +10,7 @@ const prism = new PrismaClient();
 //---Archivos de rutas---
 //lineas del ejemplo de la profe
 const facturaRouter = require("./routes/facturaRoutes");
+const pedidoRouter = require("./routes/pedidoRoutes");
 // const ordenRouter = require("./routes/ordenRoutes");
 // const generoRouter = require("./routes/generoRoutes");
 // const rolRouter = require("./routes/rolRoutes");
@@ -35,6 +36,7 @@ app.use(
 //---- Definir rutas ---- 
 //lineas de la profe
 app.use("/factura/", facturaRouter);
+app.use("/pedido/", pedidoRouter);
 // app.use("/orden/", ordenRouter);
 // app.use("/genero/", generoRouter);
 // app.use("/rol/", rolRouter); 

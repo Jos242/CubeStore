@@ -7,15 +7,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GenericService } from 'src/app/share/generic.service';
 
 @Component({
-  selector: 'app-factura-all',
-  templateUrl: './factura-all.component.html',
-  styleUrls: ['./factura-all.component.css']
+  selector: 'app-pedido-index',
+  templateUrl: './pedido-index.component.html',
+  styleUrls: ['./pedido-index.component.css']
 })
-export class FacturaAllComponent implements AfterViewInit {
+export class PedidoIndexComponent implements AfterViewInit {
   datos:any;
   destroy$:Subject<boolean>=new Subject<boolean>();
 
-  idCliente:any;
+  idVendedor:any;
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -23,32 +23,32 @@ export class FacturaAllComponent implements AfterViewInit {
   dataSource= new MatTableDataSource<any>();
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['usuario', 'tarjeta', 'fecha' ,'acciones'];
+  displayedColumns = ['nombre', 'descripcion', 'cantidad' ,'subtotal'];
 
   constructor(private router:Router,
     private route:ActivatedRoute,
     private gService:GenericService) {
-      let idd=this.route.snapshot.paramMap.get('id');
-      if(!isNaN(Number(idd))){
-        this.idCliente = Number(idd);
+      let id=this.route.snapshot.paramMap.get('id');
+      if(!isNaN(Number(id))){
+        this.idVendedor = Number(id);
       } else {
-        this.idCliente = 0;
+        this.idVendedor = 0;
       }
-    
+
   }
 
   ngAfterViewInit(): void {
-    let id = this.idCliente;
+    let id = this.idVendedor;
     if (id != 0){
-      this.listaFacturas(Number(id));
+      this.listaProductos(Number(id));
     } else {
-      this.listaFacturas("");
+      this.listaProductos("");
     }
    
   }
-  listaFacturas(id:any){
+  listaProductos(id:any){
     //localhost:3000/factura
-    this.gService.get('factura/all',id)
+    this.gService.get('pedido',id)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data:any)=>{
         console.log(data);
@@ -58,16 +58,9 @@ export class FacturaAllComponent implements AfterViewInit {
         this.dataSource.paginator = this.paginator;        
       });   
   }
-  detalle(id:number){
-    this.router.navigate(['/factura',id],
-    {
-      relativeTo:this.route
-    })
-  }
 
   ngOnDestroy(){
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
   }
-
 }

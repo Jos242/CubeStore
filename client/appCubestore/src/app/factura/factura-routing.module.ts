@@ -6,10 +6,11 @@ import { FacturaDetailComponent } from './factura-detail/factura-detail.componen
 
 const routes: Routes = [
   {path:'factura', component: FacturaIndexComponent},
+  
+  {path:'factura/:id', component: FacturaDetailComponent},
 
   {path:'factura/all', component: FacturaAllComponent},
 
-  {path:'factura/:id', component: FacturaDetailComponent},
 
   {path:'factura/all/:id', component: FacturaAllComponent}
 ];

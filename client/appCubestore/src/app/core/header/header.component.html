@@ -1,15 +1,30 @@
-<p>
-    <mat-toolbar color="primary">
-      <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <span>My App</span>
-      <span class="example-spacer"></span>
-      <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-        <mat-icon>favorite</mat-icon>
-      </button>
-      <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-        <mat-icon>share</mat-icon>
-      </button>
-    </mat-toolbar>
-  </p>
+<mat-toolbar color="primary">
+  <button [matMenuTriggerFor]="menu1" mat-icon-button class="example-icon"
+    aria-label="Example icon-button with menu icon">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>CubeStore</span>
+  <mat-menu #menu1="matMenu">
+    <!-- 
+      #= forma de llamar un componente
+      
+      https://material.angular.io/components/menu/overview
+      nested menu
+    -->
+    <button mat-menu-item [routerLink]="['/']" routerLinkActive="mat-raised-button">
+      Inicio
+    </button>
+    <button mat-menu-item [routerLink]="'/producto'" [routerLinkActive]="'mat-raised-button'">Productos</button>
+    <button mat-menu-item  [matMenuTriggerFor]="menu2"
+      routerLinkActive="mat-raised-button">
+      Pedidos
+    </button>
+
+    <mat-menu #menu2="matMenu">
+      <button mat-menu-item [routerLink]="'/factura/all'" [routerLinkActive]="'mat-raised-button'">Cliente</button>
+      <button mat-menu-item [routerLink]="'/pedido'" [routerLinkActive]="'mat-raised-button'">Vendedor</button>
+    </mat-menu>
+  </mat-menu>
+  <div class="example-button-container" align="end"></div>
+  <div class="example-spacer"></div>
+</mat-toolbar>
