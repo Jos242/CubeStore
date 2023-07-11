@@ -6,6 +6,11 @@ module.exports.get = async (request, response, next) => {
     include: {
         usuario: true,
         direccion: true,
+        tarjeta: {
+          select: {
+            proveedor: true
+          }
+        },
         productos: {
           select: {
             producto: true,
@@ -21,9 +26,14 @@ module.exports.getByClienteId = async (request, response, next) => {
   let id = parseInt(request.params.id);
   const factura = await prisma.factura.findMany({
     where: { idUsuario: id },
-    include: {
+    include: { 
         usuario: true,
         direccion: true,
+        tarjeta: {
+          select: {
+            proveedor: true
+          }
+        },
         productos: {
           select: {
             producto: true,
@@ -42,6 +52,12 @@ module.exports.getById = async (request, response, next) => {
     include: {
         usuario: true,
         direccion: true,
+        tarjeta: {
+          select: {
+            tipo: true,
+            proveedor: true
+          }
+        },
         productos: {
           select: {
             producto: true,

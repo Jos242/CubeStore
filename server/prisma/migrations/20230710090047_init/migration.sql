@@ -103,7 +103,7 @@ CREATE TABLE `Respuesta` (
 CREATE TABLE `Tarjeta` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `idUsuario` INTEGER NOT NULL,
-    `tipo` ENUM('DEBITO', 'CREDIO') NOT NULL,
+    `tipo` ENUM('DEBITO', 'CREDITO') NOT NULL,
     `proveedor` VARCHAR(191) NOT NULL,
     `nombre` VARCHAR(191) NOT NULL,
     `numero` VARCHAR(191) NOT NULL,

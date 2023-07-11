@@ -10,19 +10,19 @@
           <!-- Columna nombre -->
           <ng-container matColumnDef="usuario">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Usuario</th>
-            <td mat-cell *matCellDef="let row">{{ row.usuario.nombre }}</td>
+            <td mat-cell *matCellDef="let row">{{row.usuario.nombre}}</td>
           </ng-container>
   
           <!-- Columna precio -->
           <ng-container matColumnDef="tarjeta">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Tarjeta</th>
-            <td mat-cell *matCellDef="let row">{{ row.tarjeta.proveedor }}</td>
+            <td mat-cell *matCellDef="let row">{{row.tarjeta.proveedor}}</td>
           </ng-container>
   
           <!-- Columna precio -->
           <ng-container matColumnDef="fecha">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
-            <td mat-cell *matCellDef="let row">{{ row.createdAt }}</td>
+            <td mat-cell *matCellDef="let row">{{row.createdAt | date: "short"}}</td>
           </ng-container>
           <!-- Columna acciones -->
           <ng-container matColumnDef="acciones">
@@ -58,8 +58,8 @@
           #paginator
           [length]="dataSource?.data?.length"
           [pageIndex]="0"
-          [pageSize]="3"
-          [pageSizeOptions]="[3, 5, 10]"
+          [pageSize]="5"
+          [pageSizeOptions]="[5, 10, 20]"
           aria-label="Selecccione una página"
           
         >

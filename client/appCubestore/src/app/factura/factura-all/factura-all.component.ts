@@ -48,7 +48,7 @@ export class FacturaAllComponent implements AfterViewInit {
   }
   listaFacturas(id:any){
     //localhost:3000/factura
-    this.gService.get('factura',id)
+    this.gService.get('factura/all',id)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data:any)=>{
         console.log(data);
