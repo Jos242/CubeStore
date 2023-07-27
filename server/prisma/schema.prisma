@@ -65,6 +65,7 @@ model Factura {
 model FacturaProducto {
   idFactura  Int
   idProducto Int
+  cantidad   Int
   estado     Pedido    @default(PENDIENTE)
   factura    Factura  @relation(fields: [idFactura], references: [id])
   producto   Producto @relation(fields: [idProducto], references: [id])

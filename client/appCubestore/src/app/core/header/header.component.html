@@ -14,15 +14,23 @@
     <button mat-menu-item [routerLink]="['/']" routerLinkActive="mat-raised-button">
       Inicio
     </button>
-    <button mat-menu-item [routerLink]="'/producto'" [routerLinkActive]="'mat-raised-button'">Productos</button>
+    <button mat-menu-item  [matMenuTriggerFor]="menu3"
+      routerLinkActive="mat-raised-button">
+      Productos
+    </button>
+
+    <mat-menu #menu3="matMenu">
+      <button mat-menu-item [routerLink]="'/producto'" [routerLinkActive]="'mat-raised-button'">Cliente</button>
+      <button mat-menu-item [routerLink]="'/producto/all/3'" [routerLinkActive]="'mat-raised-button'">Vendedor</button>
+    </mat-menu>
     <button mat-menu-item  [matMenuTriggerFor]="menu2"
       routerLinkActive="mat-raised-button">
       Pedidos
     </button>
 
     <mat-menu #menu2="matMenu">
-      <button mat-menu-item [routerLink]="'/factura/all'" [routerLinkActive]="'mat-raised-button'">Cliente</button>
-      <button mat-menu-item [routerLink]="'/pedido'" [routerLinkActive]="'mat-raised-button'">Vendedor</button>
+      <button mat-menu-item [routerLink]="'/factura'" [routerLinkActive]="'mat-raised-button'">Cliente</button>
+      <button mat-menu-item [routerLink]="'/pedido/3'" [routerLinkActive]="'mat-raised-button'">Vendedor</button>
     </mat-menu>
   </mat-menu>
   <div class="example-button-container" align="end"></div>

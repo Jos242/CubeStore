@@ -14,6 +14,9 @@ module.exports.getByIdVendedor = async (request, response, next) => {
     let id = parseInt(request.params.id);
     const pedidos = await prisma.facturaProducto.findMany({
       where: { producto: { idUsuario : id} },
+      orderBy: {
+          idFactura: 'asc',
+        },
       include: { 
         producto: true
       }

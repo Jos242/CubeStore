@@ -6,10 +6,11 @@ import { ProductoDetailComponent } from './producto-detail/producto-detail.compo
 
 const routes: Routes = [
   {path:'producto', component: ProductoIndexComponent},
+  
+  {path:'producto/:id', component: ProductoDetailComponent},
 
   {path:'producto/all', component: ProductoAllComponent},
 
-  {path:'producto/:id', component: ProductoDetailComponent},
 
   {path:'producto/all/:id', component: ProductoAllComponent}
 ];

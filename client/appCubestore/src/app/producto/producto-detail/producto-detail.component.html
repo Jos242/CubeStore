@@ -9,7 +9,7 @@
         <p><b>Categoria: </b>{{datos.categoria.descripcion}}</p>
         <p><b>Estado: </b>{{datos.estado}}</p>
         <p><b>Vendedor: </b>{{datos.usuario.nombre}}</p>
-        <p><b>Precio: </b>{{datos.precio}}</p>
+        <p><b>Precio: </b>{{datos.precio | currency: "USD"}}</p>
         <p><b>Descripcion: </b>{{datos.descripcion}}</p>
       <ul *ngIf="datos.preguntas">
         <li *ngFor="let item of datos.preguntas"> 

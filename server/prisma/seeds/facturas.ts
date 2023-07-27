@@ -6,7 +6,7 @@ export const facturas = [
         idUsuario: 1,
         idDireccion: 1,
         idTarjeta: 1,
-        total: 35,
+        total: 55,
         estado: Pedido.FINALIZADO,
     },
     {
@@ -20,7 +20,7 @@ export const facturas = [
         idUsuario: 2,
         idDireccion: 1,
         idTarjeta: 1,
-        total: 10,
+        total: 40,
         estado: Pedido.EN_PROGRESO,
     },
     {
@@ -30,4 +30,26 @@ export const facturas = [
         total: 15,
         estado: Pedido.FINALIZADO,
     },
+
+    {
+        idUsuario: 4,
+        idDireccion: 1,
+        idTarjeta: 1,
+        total: 140,
+        estado: Pedido.FINALIZADO,
+    },
+    {
+        idUsuario: 1,
+        idDireccion: 1,
+        idTarjeta: 2,
+        total: 50,
+        estado: Pedido.FINALIZADO,
+    },
+    {
+        idUsuario: 2,
+        idDireccion: 1,
+        idTarjeta: 1,
+        total: 40,
+        estado: Pedido.FINALIZADO,
+    }
   ];

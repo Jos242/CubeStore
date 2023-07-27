@@ -23,7 +23,7 @@ export class PedidoIndexComponent implements AfterViewInit {
   dataSource= new MatTableDataSource<any>();
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['nombre', 'descripcion', 'cantidad' ,'subtotal'];
+  displayedColumns = ['factura', 'nombre', 'descripcion', 'cantidad' ,'subtotal'];
 
   constructor(private router:Router,
     private route:ActivatedRoute,
