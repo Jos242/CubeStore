@@ -18,8 +18,8 @@ grid-container {
     text-align: center;
 }
 .card-img{
-    max-height: 400px;
-    max-width: 600px;
+    max-height: 280px;
+    max-width: 480px;
 }
 .title{
     margin: 15px;
