@@ -26,3 +26,20 @@
   <div *ngFor="let imageUrl of uploadedImages">
     <img [src]="imageUrl" alt="Uploaded Image">
   </div>
+  
+  <form [formGroup]="preguntaForm" (ngSubmit)="enviarPregunta()"  novalidate >
+    <input type="hidden" formControlName="idUsuario" />
+    <input type="hidden" formControlName="idProducto" />
+    <div class="row">
+      <div class="col">
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Pregunta" formControlName="descripcion">
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-card-actions>
+          <button mat-raised-button color="primary" type="submit">Enviar</button>
+        </mat-card-actions>
+      </div>
+    </div>
+  </form>

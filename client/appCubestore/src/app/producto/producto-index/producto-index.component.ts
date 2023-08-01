@@ -57,5 +57,4 @@ export class ProductoIndexComponent {
       relativeTo:this.route
     })
   }
-  
 }

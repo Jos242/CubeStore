@@ -65,12 +65,26 @@ app.listen(port, () => {
 const storage = multer.diskStorage({
   destination: (req, file, callBack) => {
     const id = req.params.id; 
-    const folderPath = `images/${id}`;
 
-      if (!fs.existsSync(folderPath)) {
-        fs.mkdirSync(folderPath, { recursive: true });
-      }
-      callBack(null, folderPath)
+    console.log(productoRouter.get());
+    const folderPath = `images/${id}`;
+    
+    fs.readdir(folderPath)
+    .then(files => {
+    const unlinkPromises = files.map(file => {
+      const filePath = path.join(folderPath, file)
+      return fs.unlink(filePath)
+    })
+
+    return Promise.all(unlinkPromises)
+    }).catch(err => {
+      console.error(`Something wrong happened removing files of ${folderPath}`)
+    })
+
+    if (!fs.existsSync(folderPath)) {
+      fs.mkdirSync(folderPath, { recursive: true });
+    }
+    callBack(null, folderPath)
   },
   filename: (req, file, callBack) => {
     callBack(null, `${file.originalname}`)

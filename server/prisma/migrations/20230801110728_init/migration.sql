@@ -1,19 +1,11 @@
 -- CreateTable
-CREATE TABLE `NombreAtributo` (
+CREATE TABLE `Atributo` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `idCategoria` INTEGER NOT NULL,
     `descripcion` VARCHAR(191) NOT NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `ValorAtributo` (
-    `idNombreAtributo` INTEGER NOT NULL,
-    `idProducto` INTEGER NOT NULL,
     `valor` VARCHAR(191) NOT NULL,
 
-    PRIMARY KEY (`idNombreAtributo`, `idProducto`)
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -134,14 +126,17 @@ CREATE TABLE `Usuario` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- AddForeignKey
-ALTER TABLE `NombreAtributo` ADD CONSTRAINT `NombreAtributo_idCategoria_fkey` FOREIGN KEY (`idCategoria`) REFERENCES `Categoria`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+-- CreateTable
+CREATE TABLE `_AtributoToProducto` (
+    `A` INTEGER NOT NULL,
+    `B` INTEGER NOT NULL,
+
+    UNIQUE INDEX `_AtributoToProducto_AB_unique`(`A`, `B`),
+    INDEX `_AtributoToProducto_B_index`(`B`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `ValorAtributo` ADD CONSTRAINT `ValorAtributo_idNombreAtributo_fkey` FOREIGN KEY (`idNombreAtributo`) REFERENCES `NombreAtributo`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `ValorAtributo` ADD CONSTRAINT `ValorAtributo_idProducto_fkey` FOREIGN KEY (`idProducto`) REFERENCES `Producto`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Atributo` ADD CONSTRAINT `Atributo_idCategoria_fkey` FOREIGN KEY (`idCategoria`) REFERENCES `Categoria`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Direccion` ADD CONSTRAINT `Direccion_idUsuario_fkey` FOREIGN KEY (`idUsuario`) REFERENCES `Usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -187,3 +182,9 @@ ALTER TABLE `Respuesta` ADD CONSTRAINT `Respuesta_idPregunta_fkey` FOREIGN KEY (
 
 -- AddForeignKey
 ALTER TABLE `Tarjeta` ADD CONSTRAINT `Tarjeta_idUsuario_fkey` FOREIGN KEY (`idUsuario`) REFERENCES `Usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_AtributoToProducto` ADD CONSTRAINT `_AtributoToProducto_A_fkey` FOREIGN KEY (`A`) REFERENCES `Atributo`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_AtributoToProducto` ADD CONSTRAINT `_AtributoToProducto_B_fkey` FOREIGN KEY (`B`) REFERENCES `Producto`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

@@ -4,6 +4,11 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 import { GenericService } from 'src/app/share/generic.service';
+import { HttpClient } from '@angular/common/http';
+
+interface UploadedImage {
+  url: string;
+}
 
 @Component({
   selector: 'app-producto-form',
@@ -29,6 +34,10 @@ export class ProductoFormComponent implements OnInit {
   idProducto: number = 0;
   //Sí es crear
   isCreate: boolean = true;
+  
+  multipleImages = [];
+
+  uploadedImages: UploadedImage[] = [];
 
   estadoEnumValues = Object.values(estadosEnum);
 
@@ -36,10 +45,12 @@ export class ProductoFormComponent implements OnInit {
     private fb: FormBuilder,
     private gService: GenericService,
     private router: Router,
-    private activeRouter: ActivatedRoute
+    private activeRouter: ActivatedRoute,
+    private httpClient:HttpClient
   ) {
     this.formularioReactive();
-    this.listaAtributos();
+
+    this.fetchUploadedImages();
   }
 
   ngOnInit(): void {
@@ -70,6 +81,7 @@ export class ProductoFormComponent implements OnInit {
 
     });
   }
+
   //Crear Formulario
   formularioReactive() {
     //[null, Validators.required]
@@ -88,6 +100,7 @@ export class ProductoFormComponent implements OnInit {
       atributos: [null, Validators.required],
     })
   }
+
   listaAtributos() {
     this.atributosList = null;
     this.gService
@@ -101,6 +114,7 @@ export class ProductoFormComponent implements OnInit {
   public errorHandling = (control: string, error: string) => {
     return this.productoForm.controls[control].hasError(error);
   };
+
   //Crear Videojueogo
   crearProducto(): void {
     //Establecer submit verdadero
@@ -123,9 +137,13 @@ export class ProductoFormComponent implements OnInit {
         queryParams: {create:'true'}
       });
     });
+
+    this.onMultipleSubmit();
   }
+
   //Actualizar Videojuego
   actualizarProducto() {
+    this.onMultipleSubmit();
     //Establecer submit verdadero
     this.submitted=true;
     //Verificar validación
@@ -147,7 +165,10 @@ export class ProductoFormComponent implements OnInit {
         queryParams: {update:'true'}
       });
     });
+    
+    this.onMultipleSubmit();
   }
+
   onReset() {
     this.submitted = false;
     this.productoForm.reset();
@@ -159,6 +180,34 @@ export class ProductoFormComponent implements OnInit {
     this.destroy$.next(true);
     // Desinscribirse
     this.destroy$.unsubscribe();
+  }
+
+
+  uploadMultiple(event: any) {
+    this.multipleImages = event.target.files;
+  }
+  
+  onMultipleSubmit(){
+    const formData = new FormData();
+    for(let img of this.multipleImages){
+      formData.append('files', img);
+    }
+    this.httpClient.post<any>('http://localhost:3000/multiplefiles/2', formData).subscribe(
+      (res) => console.log(res),
+      (err) => console.log(err)
+    );
+  }
+  
+  fetchUploadedImages() {
+    this.httpClient.get<any[]>(`http://localhost:3000/images/2`).subscribe(
+      (res) => {
+        this.uploadedImages = res;
+        console.log( this.uploadedImages)
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 }
 
