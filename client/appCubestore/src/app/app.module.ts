@@ -7,12 +7,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from './core/core.module';
 import { ShareModule } from './share/share.module';
 import { HomeModule } from './home/home.module';
-import { UserModule } from './user/user.module';
 import { ToastrModule } from 'ngx-toastr';
 import { FacturaModule } from './factura/factura.module';
 import { HttpClientModule } from '@angular/common/http';
 import { PedidoModule } from './pedido/pedido.module';
 import { ProductoModule } from './producto/producto.module';
+import { UsuarioModule } from './usuario/usuario.module';
 
 
 @NgModule({
@@ -30,10 +30,10 @@ import { ProductoModule } from './producto/producto.module';
 
 
     HomeModule,
-    UserModule,
     FacturaModule,
     PedidoModule,
     ProductoModule,
+    UsuarioModule,
 
     
     AppRoutingModule

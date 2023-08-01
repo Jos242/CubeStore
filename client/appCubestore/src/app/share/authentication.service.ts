@@ -45,7 +45,7 @@ export class AuthenticationService {
   //Crear usuario
   createUser(user: any): Observable<any> {
     return this.http.post<any>(
-      this.ServerUrl + 'user/registrar',
+      this.ServerUrl + 'usuario/registrar',
       user
     );
   }
@@ -53,7 +53,7 @@ export class AuthenticationService {
   //Login
   loginUser(user: any): Observable<any> {
     return this.http
-      .post<any>(this.ServerUrl + 'user/login', user)
+      .post<any>(this.ServerUrl + 'usuario/login', user)
       .pipe(
         map((user) => {
           // almacene los detalles del usuario y el token jwt

@@ -3,6 +3,11 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Subject, takeUntil } from 'rxjs';
 import { GenericService } from 'src/app/share/generic.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+
+interface UploadedImage {
+  url: string;
+}
 
 @Component({
   selector: 'app-producto-index',
@@ -15,10 +20,15 @@ export class ProductoIndexComponent {
 
   idUsuario:any;
 
+  multipleImages = [];
+
+  uploadedImages: UploadedImage[] = [];
+
   constructor(private gService:GenericService,
     private dialog:MatDialog,
     private router:Router,
-    private route:ActivatedRoute
+    private route:ActivatedRoute,
+    private httpClient:HttpClient
     ){
     this.listaProductos(); 
     let id=this.route.snapshot.paramMap.get('id');
@@ -27,6 +37,8 @@ export class ProductoIndexComponent {
     } else {
       this.idUsuario = 0;
     }
+
+    this.fetchUploadedImages();
   }
   //Listar los videojuegos llamando al API
   listaProductos(){
@@ -45,5 +57,32 @@ export class ProductoIndexComponent {
       relativeTo:this.route
     })
   }
-  
+
+  uploadMultiple(event: any) {
+    this.multipleImages = event.target.files;
+  }
+
+  onMultipleSubmit(event: any){
+    event.preventDefault();
+    const formData = new FormData();
+    for(let img of this.multipleImages){
+      formData.append('files', img);
+    }
+    this.httpClient.post<any>('http://localhost:3000/multiplefiles/2', formData).subscribe(
+      (res) => console.log(res),
+      (err) => console.log(err)
+    );
+  }
+
+  fetchUploadedImages() {
+    this.httpClient.get<any[]>(`http://localhost:3000/images/2`).subscribe(
+      (res) => {
+        this.uploadedImages = res;
+        console.log( this.uploadedImages)
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
 }

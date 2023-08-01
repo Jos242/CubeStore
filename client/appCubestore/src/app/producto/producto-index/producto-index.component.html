@@ -35,4 +35,21 @@
         </mat-card>
       </mat-grid-tile>
     </mat-grid-list>
+
+    <div *ngFor="let imageUrl of uploadedImages">
+      <img [src]="imageUrl" alt="Uploaded Image">
+    </div>
+    
+    <h2 style="text-align: center">Multiple</h2>
+    <div style="text-align: center">
+      <form>      
+        <div>
+          <input type="file" (change)="uploadMultiple($event)" multiple  accept="image/*"/>
+        </div>
+        <br>
+        <div>
+          <button type="submit" (click)="onMultipleSubmit($event)">Multiple Upload</button>
+        </div>
+      </form>
+    </div>
   </div>

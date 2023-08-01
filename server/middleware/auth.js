@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const jwt = require("jsonwebtoken");
+
 module.exports.verifyToken = async (req, res, next) => {
   const bearerHeader = req.headers["authorization"];
   let token;
@@ -12,18 +13,20 @@ module.exports.verifyToken = async (req, res, next) => {
       message: "Acceso denegado",
     });
   }
+
   if (token) {
     const verify = jwt.verify(token, process.env.SECRET_KEY);
     const user = await prisma.Usuario.findUnique({
       where: {
-        email: verify.email,
+        correo: verify.correo,
       },
     });
-    req.user = verify;
+    req.usuario = verify;
     next();
   }
 };
-exports.grantRole = function (roles) {
+
+exports.grantRole = function (tipoUsuarios) {
   return async (req, res, next) => {
     try {
       const bearerHeader = req.headers["authorization"];
@@ -36,10 +39,11 @@ exports.grantRole = function (roles) {
           message: "Acceso denegado",
         });
       }
+
       if (token) {
         const verify = jwt.verify(token, process.env.SECRET_KEY);
        //!==
-        if (roles.length && roles.indexOf(verify.role)===-1) {
+        if (tipoUsuarios.length && tipoUsuarios.indexOf(verify.tipoUsuario)===-1) {
           return res.status(401).json({ message: "No autorizado" });
         }
         next();

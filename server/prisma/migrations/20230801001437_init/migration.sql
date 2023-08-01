@@ -1,11 +1,19 @@
 -- CreateTable
-CREATE TABLE `Atributo` (
+CREATE TABLE `NombreAtributo` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `idProducto` INTEGER NOT NULL,
+    `idCategoria` INTEGER NOT NULL,
     `descripcion` VARCHAR(191) NOT NULL,
-    `valor` VARCHAR(191) NULL,
 
     PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `ValorAtributo` (
+    `idNombreAtributo` INTEGER NOT NULL,
+    `idProducto` INTEGER NOT NULL,
+    `valor` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`idNombreAtributo`, `idProducto`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -58,6 +66,7 @@ CREATE TABLE `Factura` (
 CREATE TABLE `FacturaProducto` (
     `idFactura` INTEGER NOT NULL,
     `idProducto` INTEGER NOT NULL,
+    `cantidad` INTEGER NOT NULL,
     `estado` ENUM('PENDIENTE', 'EN_PROGRESO', 'ENTREGADO', 'FINALIZADO') NOT NULL DEFAULT 'PENDIENTE',
 
     PRIMARY KEY (`idFactura`, `idProducto`)
@@ -69,7 +78,7 @@ CREATE TABLE `Pregunta` (
     `idUsuario` INTEGER NOT NULL,
     `idProducto` INTEGER NOT NULL,
     `descripcion` VARCHAR(191) NOT NULL,
-    `fechaExp` DATETIME(3) NOT NULL,
+    `fechaExp` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -80,7 +89,7 @@ CREATE TABLE `Producto` (
     `idUsuario` INTEGER NOT NULL,
     `idCategoria` INTEGER NOT NULL,
     `nombre` VARCHAR(191) NOT NULL,
-    `descripcion` VARCHAR(191) NOT NULL,
+    `descripcion` VARCHAR(500) NOT NULL,
     `precio` DECIMAL(10, 2) NOT NULL,
     `cantidad` INTEGER NOT NULL,
     `estado` ENUM('NUEVO', 'USADO_COMO_NUEVO', 'USADO_BUEN_ESTADO', 'USADO_ACEPTABLE') NOT NULL,
@@ -94,7 +103,7 @@ CREATE TABLE `Respuesta` (
     `idUsuario` INTEGER NOT NULL,
     `idPregunta` INTEGER NOT NULL,
     `descripcion` VARCHAR(191) NOT NULL,
-    `fecha` DATETIME(3) NOT NULL,
+    `fecha` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -115,18 +124,24 @@ CREATE TABLE `Tarjeta` (
 -- CreateTable
 CREATE TABLE `Usuario` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `idTipoUsuario` INTEGER NOT NULL,
     `nombre` VARCHAR(191) NOT NULL,
     `correo` VARCHAR(191) NOT NULL,
     `telefono` VARCHAR(191) NOT NULL,
     `clave` VARCHAR(191) NOT NULL,
     `tipoUsuario` ENUM('ADMIN', 'CLIENTE', 'VENDEDOR') NOT NULL DEFAULT 'ADMIN',
 
+    UNIQUE INDEX `Usuario_correo_key`(`correo`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `Atributo` ADD CONSTRAINT `Atributo_idProducto_fkey` FOREIGN KEY (`idProducto`) REFERENCES `Producto`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `NombreAtributo` ADD CONSTRAINT `NombreAtributo_idCategoria_fkey` FOREIGN KEY (`idCategoria`) REFERENCES `Categoria`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ValorAtributo` ADD CONSTRAINT `ValorAtributo_idNombreAtributo_fkey` FOREIGN KEY (`idNombreAtributo`) REFERENCES `NombreAtributo`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ValorAtributo` ADD CONSTRAINT `ValorAtributo_idProducto_fkey` FOREIGN KEY (`idProducto`) REFERENCES `Producto`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Direccion` ADD CONSTRAINT `Direccion_idUsuario_fkey` FOREIGN KEY (`idUsuario`) REFERENCES `Usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
