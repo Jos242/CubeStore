@@ -9,7 +9,7 @@
 
   </div>
     
-    <mat-grid-list [cols]="3" rowHeight="40em" gutterSize="10px">
+  <mat-grid-list [cols]="4" rowHeight="30em" gutterSize="10px">
       <mat-grid-tile *ngFor="let item of datos">
         <mat-card class="dashboard-card">
           <img class="card-img" [src]="finales[item.id]" alt="">
@@ -17,12 +17,17 @@
            (mouseover)="imgSrc = 'assets/images/2.jpg'"
            (mouseout)="imgSrc = 'assets/images/1.webp'"> -->
           <mat-card-header>
-            <mat-card-title>{{item.nombre}} </mat-card-title>
+            <mat-card-title class="titleCard">{{item.nombre}} </mat-card-title>
           </mat-card-header>
-          <mat-card-content class="dashboard-card-content">
-            <div> {{item.precio | currency:"USD" }} {{item.estado}}</div>
-          </mat-card-content>
           <mat-divider inset></mat-divider>
+          <mat-card-content class="descp">
+            <div>{{item.precio | currency:"USD" }} 
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              {{item.usuario.nombre}}
+            </div>
+            <div>{{item.estado}} </div>
+          </mat-card-content>
+          
           <mat-card-actions>
             <button
             mat-mini-fab
@@ -44,6 +49,17 @@
 
             >
               <mat-icon class="mat-18">edit</mat-icon>
+            </button>
+            <button
+              mat-mini-fab
+              color="accent"
+              matTooltip="Agregar al carrito"
+              aria-label="Agregar al carrito"
+              color="primary"
+              
+
+            >
+              <mat-icon class="mat-18">add_shopping_cart</mat-icon>
             </button>
           </mat-card-actions>
         </mat-card>
