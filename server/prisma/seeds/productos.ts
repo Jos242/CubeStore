@@ -10,6 +10,9 @@ export const productos = [
         precio: 25,
         cantidad: 100,
         estado: Estado.NUEVO,
+        atributos: {
+            connect: [{ id: 1 }, { id: 4 }]  
+        },
         // preguntas: {
         //     connect: [{ id: 1 }, { id: 2 }, { id: 3 }]
         // },
@@ -28,6 +31,9 @@ export const productos = [
         precio: 10,
         cantidad: 50,
         estado: Estado.NUEVO,
+        atributos: {
+            connect: [{ id: 6 },{ id: 9 }] 
+        },
         // preguntas: {
         //     connect: [{ id: 3 }]
         // },
@@ -46,6 +52,9 @@ export const productos = [
         precio: 15,
         cantidad: 10,
         estado: Estado.NUEVO,
+        atributos: {
+            connect: [{ id: 11}] 
+        },
         // preguntas: {
         //     connect: [{ id: 4 }]
         // },
@@ -64,6 +73,9 @@ export const productos = [
         precio: 40,
         cantidad: 25,
         estado: Estado.NUEVO,
+        atributos: {
+            connect: [{ id: 2 }]  
+        },
     },   
     {
         idUsuario: 5,
@@ -73,5 +85,8 @@ export const productos = [
         precio: 50,
         cantidad: 2,
         estado: Estado.USADO_BUEN_ESTADO,
+        atributos: {
+            connect: [{ id: 3 }]  
+        },
     },    
 ];
