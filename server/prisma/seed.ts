@@ -131,6 +131,67 @@ async function main() {
           },
       },    
       });
+      await prisma.producto.create({
+        //1
+        data: {
+          idUsuario: 5,
+          idCategoria: 1,
+          nombre: "YuXin Little Magic 3x3",
+          descripcion: "El YuXin Little Magic 3x3 es un nuevo cubo de velocidad económico de 3x3x3 de YuXin. Ligero, con un diseño avanzado y un exterior esmerilado, el YuXin Little Magic 3x3 se parece a los cubos de velocidad más caros. A pesar de su precio económico, el Little Magic 3x3 se destaca como un excelente cubo de velocidad tanto para principiantes como para cubos avanzados.",
+          precio: 9,
+          cantidad: 10,
+          estado: Estado.NUEVO,
+          atributos: {
+              connect: [{ id: 1 }]  
+          },
+      },    
+      });
+      await prisma.producto.create({
+        //1
+        data: {
+          idUsuario: 3,
+          idCategoria: 2,
+          nombre: "Cubicle Labs Mystic",
+          descripcion: "¡Suave Y Rápido! Cubicle Labs Mystic es el primer lubricante para cubos a base de plantas del mundo. Utilizando la lubricidad única del aloe, Mystic crea una experiencia viva y rápida que puede ver, sentir y escuchar.",
+          precio: 5,
+          cantidad: 100,
+          estado: Estado.NUEVO,
+          atributos: {
+              connect: [{ id: 6 }, { id: 9 }]  
+          },
+      },    
+      });
+      await prisma.producto.create({
+        //1
+        data: {
+          idUsuario: 3,
+          idCategoria: 1,
+          nombre: "YJ MGC 4x4",
+          descripcion: "El MGC 4x4 es un nuevo cubo magnético de velocidad 4x4 de YJ. Este rompecabezas ofrece un rendimiento emblemático a una fracción del precio de un buque insignia. Presenta un giro suave y una sensación magnética media.",
+          precio: 25,
+          cantidad: 10,
+          estado: Estado.NUEVO,
+          atributos: {
+              connect: [{ id: 1 }, { id: 5 }]  
+          },
+      },    
+      });
+      await prisma.producto.create({
+        //1
+        data: {
+          idUsuario: 5,
+          idCategoria: 3,
+          nombre: "StackMat Pro Timer Gen4",
+          descripcion: "The StackMat Pro Timer Gen4 features a curved design with touch tensors that tilt towards the middle of the timer. It uses AAA batteries (included with the timer, please remove the plastic strip in the battery compartment to begin using the timer).",
+          precio: 30,
+          cantidad: 34,
+          estado: Estado.USADO_ACEPTABLE,
+          atributos: {
+              connect: [{ id: 12 }, { id: 14 }]  
+          },
+      },    
+      });
+
       await prisma.pregunta.createMany({
         data: preguntas
       });

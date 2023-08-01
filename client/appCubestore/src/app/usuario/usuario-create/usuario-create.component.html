@@ -1,7 +1,7 @@
 <form [formGroup]="formCreate"  novalidate>
-    <mat-card class="shipping-card">
+    <mat-card class="shipping-card main-card">
       <mat-card-header>
-        <mat-card-title>Crear Usuario </mat-card-title>
+        <mat-card-title class="title">Registro </mat-card-title>
       </mat-card-header> 
       <mat-card-content>
         <div class="row">
@@ -65,8 +65,10 @@
         </div>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-raised-button color="primary" (click)="submitForm()">Registrar</button>
-        <button mat-raised-button color="accent" type="reset" (click)="onReset()">Cancelar</button>
+        <button mat-raised-button color="primary" (click)="submitForm()">Registrarme</button>
+        <button mat-raised-button color="warn" type="reset" (click)="onReset()">Limpiar</button>
+        <a mat-raised-button color="accent" [routerLink]="['/usuario/login']" routerLinkActive="active-link">Ya tengo cuenta</a>
+      
       </mat-card-actions>
     </mat-card>
     </form>

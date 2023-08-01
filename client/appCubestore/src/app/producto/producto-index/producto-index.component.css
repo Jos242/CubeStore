@@ -37,3 +37,19 @@ grid-container {
 .crear button mat-icon{
     transform: scale(2);
 }
+
+.titleCard{
+    font-size: 26px;
+    color: #110E3E;
+}
+
+.descp{
+    margin-top: 5px;
+    font-size: 22px;
+    color: #FF870D;
+}
+button{
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 0px;
+}

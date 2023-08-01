@@ -64,6 +64,12 @@ export class ProductoAllComponent implements AfterViewInit {
       relativeTo:this.route
     })
   }
+  update(id:number){
+    this.router.navigate(['/producto/update/',id],
+    {
+      relativeTo:this.route
+    })
+  }
 
   ngOnDestroy(){
     this.destroy$.next(true);

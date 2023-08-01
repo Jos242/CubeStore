@@ -3,12 +3,35 @@
   }
 
 .img-logo{
-  width: 70px;
-  height: 70px;
+  width: 90px;
+  height: 90px;
+  margin-right: 6px;
 }
 
 p{
-  margin-top: 12px;
-  font-size:xxx-large;
+  margin-top: 45px;
+  font-size:45px;
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.row-menu{
+  margin-top: 25px;
+}
+
+mat-icon{
+  transform: scale(2);
+}
+
+a{
+  margin-top: 10px;
+  text-decoration: none;
+  font-size: x-large;
+  border-radius: 0px;
+  background-color: #110E3E;
+  border-color: #110E3E;
+  border-style: none;
+}
+
+.menu-center{
+  padding-left: 31%;
 }
