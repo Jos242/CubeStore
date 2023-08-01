@@ -10,18 +10,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Atributo {
+model NombreAtributo {
   id        Int     @id @default(autoincrement())
-  idProducto Int
+  idCategoria Int
   descripcion String
-  valor      String?
+  categoria   Categoria @relation(fields: [idCategoria], references: [id])
+  valorAtributo ValorAtributo[]
+}
+
+model ValorAtributo {
+  idNombreAtributo Int
+  idProducto Int
+  valor      String 
+  nombreAtributo   NombreAtributo @relation(fields: [idNombreAtributo], references: [id])
   producto   Producto @relation(fields: [idProducto], references: [id])
+  @@id([idNombreAtributo,idProducto])
 }
 
 model Categoria {
   id          Int     @id @default(autoincrement())
   descripcion String
   productos Producto[]
+  nombreAtributo NombreAtributo[]
 }
 
 model Direccion {
@@ -95,7 +105,7 @@ model Producto {
   usuario     Usuario   @relation(fields: [idUsuario], references: [id])
   categoria   Categoria @relation(fields: [idCategoria], references: [id])
   preguntas   Pregunta[]
-  atributos Atributo[]
+  atributos ValorAtributo[]
   facturas FacturaProducto[]
 }
 
@@ -123,9 +133,8 @@ model Tarjeta {
 
 model Usuario {
   id        Int    @id @default(autoincrement())
-  idTipoUsuario Int
   nombre    String
-  correo    String
+  correo    String @unique
   telefono  String
   clave     String
   tipoUsuario TipoUsuario @default(ADMIN)

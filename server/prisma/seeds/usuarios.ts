@@ -2,7 +2,6 @@ import {TipoUsuario } from "@prisma/client";
 export const usuarios = [
     //1
     {
-        idTipoUsuario: 1,
         nombre:    "Jose Mora",
         correo:    "jose1andres1ml@gmail.com",
         telefono:  "84242002",
@@ -28,7 +27,6 @@ export const usuarios = [
         // },
     },
     {
-        idTipoUsuario: 2,
         nombre:    "Eduardo Alvarado",
         correo:    "eduardo@gmail.com",
         telefono:  "12345678",
@@ -54,7 +52,6 @@ export const usuarios = [
         // },
     },
     {
-        idTipoUsuario: 3,
         nombre:    "QiYi Stores",
         correo:    "qiyi@gmail.com",
         telefono:  "87654321",
@@ -68,7 +65,6 @@ export const usuarios = [
         // },
     },
     {
-        idTipoUsuario: 2,
         nombre:    "Andres Hernandez",
         correo:    "andres@gmail.com",
         telefono:  "11110000",
@@ -94,7 +90,6 @@ export const usuarios = [
         // },
     },
     {
-        idTipoUsuario: 3,
         nombre:    "MoYu Stores",
         correo:    "moyu@gmail.com",
         telefono:  "00001111",

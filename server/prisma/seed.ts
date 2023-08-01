@@ -1,10 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 import { usuarios } from './seeds/usuarios';
 import { categorias } from './seeds/categorias';
-import { atributos } from './seeds/atributos';
 import { direcciones } from './seeds/direcciones';
 import { evaluaciones } from './seeds/evaluaciones';
 import { facturas } from './seeds/facturas';
+import { nombreatributos } from './seeds/nombreatributo';
+import { valoratributos } from './seeds/valoratributo';
 import { facturaproductos } from './seeds/facturaproductos';
 import { preguntas } from './seeds/preguntas';
 import { productos } from './seeds/productos';
@@ -35,8 +36,11 @@ async function main() {
       await prisma.respuesta.createMany({
         data: respuestas
       });
-      await prisma.atributo.createMany({
-        data: atributos
+      await prisma.nombreAtributo.createMany({
+        data: nombreatributos
+      });
+      await prisma.valorAtributo.createMany({
+        data: valoratributos
       });
       await prisma.factura.createMany({
         data: facturas
