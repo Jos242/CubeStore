@@ -1,8 +1,7 @@
 <form [formGroup]="productoForm" (ngSubmit)="isCreate ? crearProducto(): actualizarProducto()"  novalidate >
     <input type="hidden" formControlName="id" />
     <input type="text" formControlName="idUsuario"/>
-    <input *ngIf="!isCreate" type="hidden" formControlName="idCategoria" />
-
+    
     <mat-card class="shipping-card"> 
       <mat-card-header>
         <mat-card-title>{{titleForm}} Producto</mat-card-title>
@@ -34,6 +33,8 @@
           </div>
         </div>
 
+        
+
         <div class="row">
             <div class="col">
               <mat-form-field class="full-width">
@@ -51,9 +52,13 @@
                 </mat-error>
               </mat-form-field>
             </div>
-            <div class="col">
-                <mat-form-field class="full-width" [hidden]="!isCreate">
-                <input matInput type="text" placeholder="Categoria" formControlName="idCategoria" />
+            <div class="col" *ngIf="isCreate">
+                <mat-form-field class="full-width">
+                  <mat-select placeholder="Categoria" formControlName="idCategoria">
+                    <mat-option *ngFor="let categoria of categoriasList" [value]="categoria.id">
+                      {{ categoria.descripcion }}
+                    </mat-option>
+                  </mat-select>
                   <mat-error *ngIf="errorHandling('idCategoria','required')">
                     Categoria es <strong>requerido</strong>
                   </mat-error>
@@ -72,21 +77,23 @@
                 </mat-form-field>
               </div>
           </div> 
-        
-        <div class="row">
-          <div class="col" *ngIf="atributosList">
-            <mat-form-field class="full-width">
-              <mat-select placeholder="Atributos" formControlName="atributos"  multiple>
-                <mat-option *ngFor="let g of atributosList" [value]="g.id">
-                    {{g.descripcion}}
-                </mat-option>
-              </mat-select>
-              <mat-error >
-                Atributos es <strong>requerido</strong>
-              </mat-error>
-            </mat-form-field>
+
+          <div class="row">
+            <div class="col" *ngIf="atributosList">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Atributos" formControlName="atributos"  multiple>
+                  <mat-option *ngFor="let g of atributosList" [value]="g.id">
+                      {{g.descripcion}}: {{g.valor}}
+                  </mat-option>
+                </mat-select>
+                <mat-error >
+                  Atributos es <strong>requerido</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
           </div>
-        </div>
+        
+        
 
         <div *ngFor="let imageUrl of uploadedImages">
           <img [src]="imageUrl" alt="Uploaded Image">

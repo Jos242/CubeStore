@@ -22,6 +22,7 @@ export class ProductoFormComponent implements OnInit {
   titleForm: string = 'Crear';
   //Lista de atributos
   atributosList: any;
+  categoriasList: any;
   //producto a actualizar
   productoInfo: any;
   //Respuesta del API crear/modificar
@@ -49,7 +50,8 @@ export class ProductoFormComponent implements OnInit {
     private httpClient:HttpClient
   ) {
     this.formularioReactive();
-
+    this.listaAtributos();
+    this.listaCategorias();
     this.fetchUploadedImages();
   }
 
@@ -108,9 +110,22 @@ export class ProductoFormComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
         // console.log(data);
-        this.atributosList = data;
+        this.atributosList = data; 
       });
   }
+
+  listaCategorias() {
+    this.categoriasList = null;
+    this.gService
+      .list('categoria')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: any) => {
+        // console.log(data);
+        this.categoriasList = data; 
+      });
+  }
+
+
   public errorHandling = (control: string, error: string) => {
     return this.productoForm.controls[control].hasError(error);
   };
@@ -155,6 +170,14 @@ export class ProductoFormComponent implements OnInit {
     let gFormat:any=this.productoForm.get('atributos').value.map(x=>({['id']: x }));
     //Asignar valor al formulario 
     this.productoForm.patchValue({ atributos:gFormat});
+
+     // Get the selected category object from the categoriasList based on the selected idCategoria
+    const selectedCategoriaId = this.productoForm.get('idCategoria').value;
+    const selectedCategoria = this.categoriasList.find((categoria: any) => categoria.id === selectedCategoriaId);
+    
+    // Set the 'descripcion' of the selected category to the 'idCategoria' field in the form
+    this.productoForm.patchValue({ idCategoria: selectedCategoria.descripcion });
+
     console.log(this.productoForm.value);
     //Accion API create enviando toda la informacion del formulario
     this.gService.update('producto',this.productoForm.value)
