@@ -154,7 +154,7 @@ export class ProductoFormComponent implements OnInit {
     //Obtener id Generos del Formulario y Crear arreglo con {id: value}
     let gFormat:any=this.productoForm.get('atributos').value.map(x=>({['id']: x }));
     //Asignar valor al formulario 
-    this.productoForm.patchValue({ generos:gFormat});
+    this.productoForm.patchValue({ atributos:gFormat});
     console.log(this.productoForm.value);
     //Accion API create enviando toda la informacion del formulario
     this.gService.update('producto',this.productoForm.value)

@@ -10,11 +10,7 @@ module.exports.get = async (request, response, next) => {
     include: { 
         categoria: true,
         usuario: true,
-        atributos: {
-          include:{
-            nombreAtributo: true,
-          }
-        },
+        atributos: true,
         preguntas: {
             select:{
                 idUsuario: true,
@@ -38,11 +34,7 @@ module.exports.getById = async (request, response, next) => {
     include: { 
         categoria: true,
         usuario: true,
-        atributos: {
-          include:{
-            nombreAtributo: true,
-          }
-        },
+        atributos: true,
         preguntas: {
             select:{
                 idUsuario: true,
@@ -66,11 +58,7 @@ module.exports.getById = async (request, response, next) => {
       include: { 
           categoria: true,
           usuario: true,
-          atributos: {
-                include:{
-                  nombreAtributo: true,
-                }
-          },
+          atributos: true,
           preguntas: {
               select:{
                   idUsuario: true,
@@ -137,19 +125,9 @@ module.exports.create = async (request, response, next) => {
       cantidad: parseInt(producto.cantidad),
       estado: producto.estado, 
       atributos: {
-        create: producto.atributos.map((atributo) => ({
-            valor: atributo.valor,
-            nombreAtributo: {
-              connect: { id: atributo.idNombreAtributo },
-            },
-        })),
-      },
-    },
-    include: {
-      atributos: {
-        include: {
-          nombreAtributo: true,
-        },
+        //Generos tiene que ser {id:valor}
+        // [{ id: 1 },{id: 3}]
+        connect: producto.atributos,
       },
     },
   })
@@ -184,29 +162,9 @@ module.exports.update = async (request, response, next) => {
       cantidad: parseInt(producto.cantidad),
       estado: producto.estado, 
       atributos: {
-        upsert: producto.atributos.map((atributo) => ({
-          where: {
-            id: atributo.id,
-          },
-          update: {
-            valor: atributo.valor,
-          },
-          create: {
-            valor: atributo.valor,
-            nombreAtributo: {
-              connect: {
-                id: atributo.idNombreAtributo,
-              },
-            },
-          },
-        })),
-      },
-    },
-    include: {
-      atributos: {
-        include: {
-          nombreAtributo: true,
-        },
+        //Generos tiene que ser {id:valor}
+        disconnect:productoViejo.atributos,
+        connect: producto.atributos,
       },
     },
   });

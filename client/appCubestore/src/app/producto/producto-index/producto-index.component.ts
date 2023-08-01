@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ProductoIndexComponent {
   datos:any;//Respuesta del API
   destroy$:Subject<boolean>=new Subject<boolean>();
-
+  public imgSrc:string = "assets/images/1.webp";
   idUsuario:any;
 
   constructor(private gService:GenericService,
