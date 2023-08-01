@@ -1,49 +1,56 @@
 <mat-card class="dashboard-card" *ngIf="datos"  >
     <mat-card-header>
-      <mat-card-title>
+      <mat-card-title class="title">
         {{datos.nombre}}
       </mat-card-title>
     </mat-card-header>
     <br />
-    <mat-card-content class="dashboard-card-content">
+    <mat-card-content class="dashboard-card-content contenido">
+        <p>{{datos.descripcion}}</p>
         <p><b>Categoria: </b>{{datos.categoria.descripcion}}</p>
         <p><b>Estado: </b>{{datos.estado}}</p>
         <p><b>Vendedor: </b>{{datos.usuario.nombre}}</p>
         <p><b>Precio: </b>{{datos.precio | currency: "USD"}}</p>
-        <p><b>Descripcion: </b>{{datos.descripcion}}</p>
+        
+      
+    </mat-card-content>
+    <mat-card-content class="contenido2">
+      <p class="titPreg">Preguntas</p>
       <ul *ngIf="datos.preguntas">
         <li *ngFor="let item of datos.preguntas"> 
-            <p><b>Pregunta: </b>{{item.descripcion}} Preguntado el: {{item.fechaExp | date: "short"}} Por: {{item.usuario.nombre}}</p>
+            <p><b></b>{{item.descripcion}} Preguntado el: {{item.fechaExp | date: "short"}} Por: {{item.usuario.nombre}}</p>
+            
             <form [formGroup]="respuestaForm" (ngSubmit)="enviarRespuesta(item.id)"  novalidate >
-              <input matInput placeholder="Respuesta" formControlName="descripcion">
-              <button mat-raised-button color="primary" type="submit">Enviar</button>
+              <input matInput placeholder="Responder..." formControlName="descripcion">
+              <button class="botonR" mat-button color="primary" type="submit"><mat-icon>add_comment</mat-icon></button>
             </form>
+            
             <ul *ngIf="item.respuestas">
                 <li *ngFor="let item2 of item.respuestas"> 
-                    <p><b>Respuesta: </b>{{item2.descripcion}}. Respondido el: {{item2.fecha | date: "short"}} Por: {{item2.usuario.nombre}}</p>
-               </li>
+                    <p><b></b>{{item2.descripcion}}. Respondido el: {{item2.fecha | date: "short"}} Por: {{item2.usuario.nombre}}</p>
+                  
+                  </li>
+                  <mat-divider ></mat-divider>
             </ul>
         </li>
       </ul>
+      
+      <p class="titPreg2">Tienes otra pregunta?</p>
+      <form [formGroup]="preguntaForm" (ngSubmit)="enviarPregunta()"  novalidate >
+        <input type="hidden" formControlName="idUsuario" />
+        <input type="hidden" formControlName="idProducto" />
+        <div class="row">
+            <input matInput placeholder="Preguntar..." formControlName="descripcion">
+            <button class="botonR" mat-button color="primary" type="submit"><mat-icon>live_help</mat-icon></button>
+        </div>
+      </form>
     </mat-card-content>
-  </mat-card>
+</mat-card>
+
+
+
   <div *ngFor="let imageUrl of uploadedImages">
     <img [src]="imageUrl" alt="Uploaded Image">
   </div>
   
-  <form [formGroup]="preguntaForm" (ngSubmit)="enviarPregunta()"  novalidate >
-    <input type="hidden" formControlName="idUsuario" />
-    <input type="hidden" formControlName="idProducto" />
-    <div class="row">
-      <div class="col">
-        <mat-form-field class="full-width">
-          <input matInput placeholder="Pregunta" formControlName="descripcion">
-        </mat-form-field>
-      </div>
-      <div class="col">
-        <mat-card-actions>
-          <button mat-raised-button color="primary" type="submit">Enviar</button>
-        </mat-card-actions>
-      </div>
-    </div>
-  </form>
+ 

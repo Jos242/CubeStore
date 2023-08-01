@@ -58,6 +58,17 @@ export const atributos = [
     {
         idCategoria: 3,
         descripcion: "Material",
-        valor: "Tela",
+        valor: "Polyester",
     },
+    {
+        idCategoria: 3,
+        descripcion: "Material",
+        valor: "Algodon",
+    },
+    {
+        idCategoria: 3,
+        descripcion: "Dimensiones",
+        valor: "20cm x 20cm",
+    },
+    
 ];

@@ -1,9 +1,9 @@
 <form [formGroup]="formulario"  novalidate>
-    <mat-card class="shipping-card">
+    <mat-card class="shipping-card main-card">
       <mat-card-header>
-        <mat-card-title>Login Usuario </mat-card-title>
+        <mat-card-title class="title">Iniciar Sesión </mat-card-title>
       </mat-card-header> 
-      <mat-card-content>
+      <mat-card-content class="mat-card-big">
         <div class="row">
           <div class="col">
             <mat-form-field class="full-width">
@@ -34,9 +34,11 @@
         </div>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-raised-button color="primary" (click)="submitForm()">Login</button>
-        <button mat-raised-button color="accent" type="reset" (click)="onReset()">Cancelar</button>
+        <button mat-raised-button color="primary" (click)="submitForm()">Entrar</button>
+        <button mat-raised-button color="warn" type="reset" (click)="onReset()">Limpiar</button>
+        <a mat-raised-button color="accent" [routerLink]="['/usuario/registrar']" routerLinkActive="active-link">Registrarse</a>
       </mat-card-actions>
+      
     </mat-card>
     </form>
   

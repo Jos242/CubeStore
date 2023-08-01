@@ -28,4 +28,25 @@ mat-form-field.mat-form-field {
   .col:last-child {
     margin-right: 0;
   }
+
+  .main-card{
+    width: 600px;
+
+  }
+
+  
+
+  a{
+    text-decoration: none;
+    margin-left: 303px;
+  }
+
+  mat-card-actions button{
+    margin-left: 8px;
+    font-weight: bold;
+  }
+
+  .title{
+    font-size: 30px;
+  }
   
