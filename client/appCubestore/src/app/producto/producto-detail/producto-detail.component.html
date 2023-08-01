@@ -23,9 +23,6 @@
       </ul>
     </mat-card-content>
   </mat-card>
-
-  
-
-  <div *ngFor="let image of uploadedImages">
-    <img [src]="image.url" alt="Uploaded Image">
+  <div *ngFor="let imageUrl of uploadedImages">
+    <img [src]="imageUrl" alt="Uploaded Image">
   </div>
