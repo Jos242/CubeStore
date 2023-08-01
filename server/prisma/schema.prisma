@@ -12,12 +12,11 @@ datasource db {
 
 model Atributo {
   id        Int     @id @default(autoincrement())
-  idProducto Int
   idCategoria Int
   descripcion String
   valor      String 
-  producto   Producto @relation(fields: [idProducto], references: [id])
   categoria   Categoria @relation(fields: [idCategoria], references: [id])
+  productos Producto[]
 }
 
 model Categoria {
