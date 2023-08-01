@@ -5,6 +5,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { GenericService } from 'src/app/share/generic.service';
 import { HttpClient } from '@angular/common/http';
+import { AuthenticationService } from 'src/app/share/authentication.service';
 
 interface UploadedImage {
   url: string;
@@ -42,12 +43,15 @@ export class ProductoFormComponent implements OnInit {
 
   estadoEnumValues = Object.values(estadosEnum);
 
+  currentUser: any;
+
   constructor(
     private fb: FormBuilder,
     private gService: GenericService,
     private router: Router,
     private activeRouter: ActivatedRoute,
-    private httpClient:HttpClient
+    private httpClient:HttpClient,
+    private auth:AuthenticationService
   ) {
     this.formularioReactive();
     this.listaAtributos();
@@ -65,10 +69,11 @@ export class ProductoFormComponent implements OnInit {
          this.gService.get('producto',this.idProducto).pipe(takeUntil(this.destroy$))
          .subscribe((data:any)=>{
           this.productoInfo=data;
+          this.auth.currentUser.subscribe((x)=>(this.currentUser=x));
           //Establecer los valores en cada una de las entradas del formulario
           this.productoForm.setValue({
             id:this.productoInfo.id,
-            idUsuario:this.productoInfo.idUsuario,
+            idUsuario:this.currentUser.user.id,
             idCategoria:this.productoInfo.idCategoria,
             nombre:this.productoInfo.nombre,
             descripcion:this.productoInfo.descripcion,
@@ -142,7 +147,6 @@ export class ProductoFormComponent implements OnInit {
     let gFormat:any=this.productoForm.get('atributos').value.map(x=>({['id']: x}))
     //Asignar valor al formulario
     this.productoForm.patchValue({atributos: gFormat});
-    console.log(this.productoForm.value);
     //Accion API create enviando toda la informacion del formulario
     this.gService.create('producto',this.productoForm.value)
     .pipe(takeUntil(this.destroy$)) .subscribe((data: any) => {
@@ -183,7 +187,6 @@ export class ProductoFormComponent implements OnInit {
     // Set the 'descripcion' of the selected category to the 'idCategoria' field in the form
     this.productoForm.patchValue({ idCategoria: selectedCategoria.descripcion });
 
-    console.log(this.productoForm.value);
     //Accion API create enviando toda la informacion del formulario
     this.gService.update('producto',this.productoForm.value)
     .pipe(takeUntil(this.destroy$)) .subscribe((data: any) => {
@@ -216,7 +219,6 @@ export class ProductoFormComponent implements OnInit {
   }
   
   onMultipleSubmit(id:any){
-    console.log(this.multipleImages);
     if(this.multipleImages.length > 0){
       const formData = new FormData();
       for(let img of this.multipleImages){
