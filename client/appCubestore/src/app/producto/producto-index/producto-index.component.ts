@@ -45,5 +45,17 @@ export class ProductoIndexComponent {
       relativeTo:this.route
     })
   }
+  update(id:number){
+    this.router.navigate(['/producto/update/',id],
+    {
+      relativeTo:this.route
+    })
+  }
+  create(){
+    this.router.navigate(['/producto/create'],
+    {
+      relativeTo:this.route
+    })
+  }
   
 }

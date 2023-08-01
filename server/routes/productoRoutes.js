@@ -12,4 +12,9 @@ router.get('/:id', productoController.getById);
 
 router.get('/all/:id',productoController.getByVendedorId);
 
+router.post('/',productoController.create);
+
+router.put('/:id',productoController.update);
+
+
 module.exports = router;

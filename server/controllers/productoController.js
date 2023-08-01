@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
+const { profileEnd } = require('console');
 const prisma = new PrismaClient();
 //Obtener listado
 module.exports.get = async (request, response, next) => {
@@ -108,6 +109,61 @@ module.exports.getById = async (request, response, next) => {
 
 
 //Crear
-module.exports.create = async (request, response, next) => {};
+module.exports.create = async (request, response, next) => {
+  let producto = request.body;
+  const newProducto = await prisma.producto.create({
+    data: {
+      usuario: {
+        connect: { id: parseInt(producto.idUsuario) },
+      },
+      categoria: {
+        connect: { id: parseInt(producto.idCategoria) },
+      },
+      nombre: producto.nombre,
+      descripcion: producto.descripcion,
+      precio: producto.precio,
+      cantidad: parseInt(producto.cantidad),
+      estado: producto.estado, 
+      atributos: {
+        connect: producto.atributos,
+      }
+    }
+  })
+  response.json(newProducto);
+};
 //Actualizar
-module.exports.update = async (request, response, next) => {};
+module.exports.update = async (request, response, next) => {
+  let producto = request.body;
+  let idProducto = parseInt(request.params.id);
+  //Obtener videojuego viejo
+  const productoViejo = await prisma.producto.findUnique({
+    where: { id: idProducto },
+    include: {
+      atributos: {
+        select:{
+          id:true
+        }
+      }
+    }
+  });
+
+  const newProducto = await prisma.producto.update({
+    where: {
+      id: idProducto,
+    },
+    data: {
+      // idUsuario: producto.idUsuario,
+      // idCategoria: producto.idCategoria,
+      nombre: producto.nombre,
+      descripcion: producto.descripcion,
+      precio: producto.precio,
+      cantidad: parseInt(producto.cantidad),
+      estado: producto.estado, 
+      // atributos: {
+      //   disconnect: productoViejo.atributos,
+      //   connect: producto.atributos,
+      // },
+    },
+  });
+  response.json(newProducto);
+};

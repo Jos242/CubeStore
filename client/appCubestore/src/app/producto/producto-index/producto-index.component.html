@@ -1,5 +1,10 @@
 <div class="grid-container">
     <h1 class="mat-h1">Productos</h1>
+    <button mat-raised-button
+    matTooltip="Crear Nuevo Producto"
+    aria-label="Crear Nuevo Producto" 
+    color="primary"
+    (click)="create()">Crear nuevo producto</button>
     <mat-grid-list [cols]="3" rowHeight="12em" gutterSize="10px">
       <mat-grid-tile *ngFor="let item of datos">
         <mat-card class="dashboard-card">
@@ -24,12 +29,13 @@
             <button
               mat-mini-fab
               color="accent"
-              matTooltip="Comprar"
-              aria-label="Comprar"
+              matTooltip="Editar Producto"
+              aria-label="Editar Producto"
               color="primary"
+              (click)="update(item.id)"
 
             >
-              <mat-icon class="mat-18">add_shopping_cart</mat-icon>
+              <mat-icon class="mat-18">edit</mat-icon>
             </button>
           </mat-card-actions>
         </mat-card>
