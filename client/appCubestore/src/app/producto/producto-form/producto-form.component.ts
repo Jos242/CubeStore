@@ -202,7 +202,6 @@ export class ProductoFormComponent implements OnInit {
     this.httpClient.get<any[]>(`http://localhost:3000/images/2`).subscribe(
       (res) => {
         this.uploadedImages = res;
-        console.log( this.uploadedImages)
       },
       (err) => {
         console.log(err);

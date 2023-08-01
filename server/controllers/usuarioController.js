@@ -61,18 +61,17 @@ module.exports.login = async (request, response, next) => {
             correo: user.correo,
             tipoUsuario: user.tipoUsuario
         }
-
         //Crear el token
-        const token = jwt.sign(payload, process.env.SECRET_KEY, {
-            expiresIn: process.env.JWT_EXPIRE
+        const token= jwt.sign(payload,process.env.SECRET_KEY,{
+          expiresIn: process.env.JWT_EXPIRE
         });
         response.json({
-            success: true,
-            message: "Usuario registrado",
-            data: (
-                user,
-                token
-            )
+          success: true,
+          message: "Usuario registrado",
+          data: {
+            user,
+            token,
+          }
         })
     }
 };

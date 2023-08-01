@@ -14,6 +14,10 @@
       <ul *ngIf="datos.preguntas">
         <li *ngFor="let item of datos.preguntas"> 
             <p><b>Pregunta: </b>{{item.descripcion}} Preguntado el: {{item.fechaExp | date: "short"}} Por: {{item.usuario.nombre}}</p>
+            <form [formGroup]="respuestaForm" (ngSubmit)="enviarRespuesta(item.id)"  novalidate >
+              <input matInput placeholder="Respuesta" formControlName="descripcion">
+              <button mat-raised-button color="primary" type="submit">Enviar</button>
+            </form>
             <ul *ngIf="item.respuestas">
                 <li *ngFor="let item2 of item.respuestas"> 
                     <p><b>Respuesta: </b>{{item2.descripcion}}. Respondido el: {{item2.fecha | date: "short"}} Por: {{item2.usuario.nombre}}</p>

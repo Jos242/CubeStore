@@ -13,7 +13,7 @@ module.exports.create = async (request, response, next) => {
         },
         pregunta: {
             connect: {
-                id: parseInt(respuesta.idPregunta),
+                id: parseInt(respuesta.idPregunta), 
             },
         },
         descripcion: respuesta.descripcion

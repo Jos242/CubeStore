@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthenticationService } from 'src/app/share/authentication.service';
@@ -24,6 +24,7 @@ export class ProductoDetailComponent {
   currentUser: any;
 
   preguntaForm: FormGroup;
+  respuestaForm: FormGroup;
   resp: any;
   
   uploadedImages: UploadedImage[] = [];
@@ -52,10 +53,15 @@ export class ProductoDetailComponent {
         this.auth.currentUser.subscribe((x)=>(this.currentUser=x));
           //Establecer los valores en cada una de las entradas del formulario
           this.preguntaForm.setValue({
-            idUsuario:1,
+            idUsuario:this.currentUser.user.id,
             idProducto:this.idProducto,
             descripcion:""
-          })
+          });
+          this.respuestaForm.setValue({
+            idUsuario:this.currentUser.user.id,
+            idPregunta:0,
+            descripcion:""
+          });
         }
     });
   }
@@ -83,21 +89,36 @@ formularioReactive() {
     idProducto: [null, null],
     descripcion: [null, Validators.required]
   })
+  this.respuestaForm = this.fb.group({
+    idUsuario: [null, null],
+    idPregunta: [null, null],
+    descripcion: [null, Validators.required]
+  })
 }
-  enviarPregunta(): void {
-    //Accion API create enviando toda la informacion del formulario
-    this.gService.create('pregunta',this.preguntaForm.value)
-    .pipe(takeUntil(this.destroy$)) .subscribe((data: any) => {
-      //Obtener respuesta
-      this.resp=data;
-    });
-  }
+enviarPregunta(): void {
+  //Accion API create enviando toda la informacion del formulario
+  console.log(this.preguntaForm.value);
+  this.gService.create('pregunta',this.preguntaForm.value)
+  .pipe(takeUntil(this.destroy$)) .subscribe((data: any) => {
+    //Obtener respuesta
+    this.resp=data;
+  });
+}
+enviarRespuesta(idPregunta:Number): void {
+  //Accion API create enviando toda la informacion del formulario
+  this.respuestaForm.value.idPregunta = idPregunta;
+  console.log(this.respuestaForm.value);
+  this.gService.create('respuesta',this.respuestaForm.value)
+  .pipe(takeUntil(this.destroy$)) .subscribe((data: any) => {
+    //Obtener respuesta
+    this.resp=data;
+  });
+}
 
   fetchUploadedImages(id:any) {
     this.httpClient.get<any[]>(`http://localhost:3000/images/${id}`).subscribe(
       (res) => {
         this.uploadedImages = res;
-        console.log( this.uploadedImages)
       },
       (err) => {
         console.log(err);

@@ -13,6 +13,7 @@ module.exports.get = async (request, response, next) => {
         atributos: true,
         preguntas: {
             select:{
+                id: true,
                 idUsuario: true,
                 idProducto: true,
                 descripcion: true,
@@ -37,6 +38,7 @@ module.exports.getById = async (request, response, next) => {
         atributos: true,
         preguntas: {
             select:{
+              id: true,
                 idUsuario: true,
                 idProducto: true,
                 descripcion: true,
@@ -61,6 +63,7 @@ module.exports.getById = async (request, response, next) => {
           atributos: true,
           preguntas: {
               select:{
+                id: true,
                   idUsuario: true,
                   idProducto: true,
                   descripcion: true,

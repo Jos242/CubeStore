@@ -4,8 +4,7 @@ const router = express.Router();
 
 
 const preguntaController = require("../controllers/preguntaController");
-const auth=require("../middleware/auth");   
 
-router.post("/", auth.grantRole(["ADMIN","CLIENTE"]), preguntaController.create);
+router.post("/", preguntaController.create);
 
 module.exports = router;
