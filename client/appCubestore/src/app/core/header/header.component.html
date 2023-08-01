@@ -1,38 +1,20 @@
 <mat-toolbar color="primary">
-  <button [matMenuTriggerFor]="menu1" mat-icon-button class="example-icon"
-    aria-label="Example icon-button with menu icon">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span>CubeStore</span>
-  <mat-menu #menu1="matMenu">
-    <!-- 
-      #= forma de llamar un componente
-      
-      https://material.angular.io/components/menu/overview
-      nested menu
-    -->
-    <button mat-menu-item [routerLink]="['/']" routerLinkActive="mat-raised-button">
-      Inicio
+  <mat-toolbar-row>
+    <img class="img-logo" src="assets/images/logonb.png" alt="">
+    <span>CubeStore</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+      <mat-icon>person</mat-icon>
     </button>
-    <button mat-menu-item  [matMenuTriggerFor]="menu3"
-      routerLinkActive="mat-raised-button">
-      Productos
-    </button>
+  </mat-toolbar-row>
 
-    <mat-menu #menu3="matMenu">
-      <button mat-menu-item [routerLink]="'/producto'" [routerLinkActive]="'mat-raised-button'">Cliente</button>
-      <button mat-menu-item [routerLink]="'/producto/all/3'" [routerLinkActive]="'mat-raised-button'">Vendedor</button>
-    </mat-menu>
-    <button mat-menu-item  [matMenuTriggerFor]="menu2"
-      routerLinkActive="mat-raised-button">
-      Pedidos
+  <mat-toolbar-row>
+    <span><button routerLink="/">Inicio</button></span> 
+    <button routerLink="/about">Productos Destacados</button>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      <mat-icon>shopping_cart</mat-icon>
     </button>
-
-    <mat-menu #menu2="matMenu">
-      <button mat-menu-item [routerLink]="'/factura'" [routerLinkActive]="'mat-raised-button'">Cliente</button>
-      <button mat-menu-item [routerLink]="'/pedido/3'" [routerLinkActive]="'mat-raised-button'">Vendedor</button>
-    </mat-menu>
-  </mat-menu>
-  <div class="example-button-container" align="end"></div>
-  <div class="example-spacer"></div>
+  </mat-toolbar-row>
 </mat-toolbar>
+

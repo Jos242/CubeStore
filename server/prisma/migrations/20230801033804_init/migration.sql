@@ -1,11 +1,19 @@
 -- CreateTable
-CREATE TABLE `Atributo` (
+CREATE TABLE `NombreAtributo` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `idProducto` INTEGER NOT NULL,
+    `idCategoria` INTEGER NOT NULL,
     `descripcion` VARCHAR(191) NOT NULL,
-    `valor` VARCHAR(191) NULL,
 
     PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `ValorAtributo` (
+    `idNombreAtributo` INTEGER NOT NULL,
+    `idProducto` INTEGER NOT NULL,
+    `valor` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`idNombreAtributo`, `idProducto`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -116,18 +124,24 @@ CREATE TABLE `Tarjeta` (
 -- CreateTable
 CREATE TABLE `Usuario` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `idTipoUsuario` INTEGER NOT NULL,
     `nombre` VARCHAR(191) NOT NULL,
     `correo` VARCHAR(191) NOT NULL,
     `telefono` VARCHAR(191) NOT NULL,
     `clave` VARCHAR(191) NOT NULL,
     `tipoUsuario` ENUM('ADMIN', 'CLIENTE', 'VENDEDOR') NOT NULL DEFAULT 'ADMIN',
 
+    UNIQUE INDEX `Usuario_correo_key`(`correo`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `Atributo` ADD CONSTRAINT `Atributo_idProducto_fkey` FOREIGN KEY (`idProducto`) REFERENCES `Producto`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `NombreAtributo` ADD CONSTRAINT `NombreAtributo_idCategoria_fkey` FOREIGN KEY (`idCategoria`) REFERENCES `Categoria`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ValorAtributo` ADD CONSTRAINT `ValorAtributo_idNombreAtributo_fkey` FOREIGN KEY (`idNombreAtributo`) REFERENCES `NombreAtributo`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ValorAtributo` ADD CONSTRAINT `ValorAtributo_idProducto_fkey` FOREIGN KEY (`idProducto`) REFERENCES `Producto`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Direccion` ADD CONSTRAINT `Direccion_idUsuario_fkey` FOREIGN KEY (`idUsuario`) REFERENCES `Usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -1,3 +1,12 @@
 .example-spacer {
     flex: 1 1 auto;
   }
+
+.img-logo{
+  width: 70px;
+  height: 70px;
+}
+
+.toolbarM{
+  background-color: #110E3E;
+}
