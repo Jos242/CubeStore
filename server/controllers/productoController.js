@@ -158,7 +158,7 @@ module.exports.update = async (request, response, next) => {
     },
     data: {
       // idUsuario: producto.idUsuario,
-      // idCategoria: producto.idCategoria,
+      //idCategoria: producto.idCategoria,
       nombre: producto.nombre,
       descripcion: producto.descripcion,
       precio: producto.precio,

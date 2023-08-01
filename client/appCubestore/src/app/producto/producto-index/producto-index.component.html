@@ -12,10 +12,10 @@
     <mat-grid-list [cols]="3" rowHeight="40em" gutterSize="10px">
       <mat-grid-tile *ngFor="let item of datos">
         <mat-card class="dashboard-card">
-          <!-- <img class="card-img" src="assets/images/1.webp" alt=""> -->
-          <img [src]="imgSrc"
+          <img class="card-img" src="assets/images/1.webp" alt="">
+          <!-- <img [src]="imgSrc"
            (mouseover)="imgSrc = 'assets/images/2.jpg'"
-           (mouseout)="imgSrc = 'assets/images/1.webp'">
+           (mouseout)="imgSrc = 'assets/images/1.webp'"> -->
           <mat-card-header>
             <mat-card-title>{{item.nombre}} </mat-card-title>
           </mat-card-header>
