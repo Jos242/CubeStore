@@ -6,7 +6,7 @@ const cors = require('cors');
 const logger = require('morgan');
 const bodyParser = require("body-parser");
 const multer = require("multer");
-const fs = require('fs');
+const fs = require('fs-extra');
 
 const app = express();
 const prism = new PrismaClient();
@@ -66,27 +66,33 @@ app.listen(port, () => {
   console.log('Presione CTRL-C para deternerlo\n');
 });
 
+cont = 0;
+
 const storage = multer.diskStorage({
   destination: (req, file, callBack) => {
     const id = req.params.id; 
-
-    console.log(productoRouter.get());
-    const folderPath = `images/${id}`;
+    const folderPath = `./images/${id}`;
     
-    fs.readdir(folderPath)
-    .then(files => {
-    const unlinkPromises = files.map(file => {
-      const filePath = path.join(folderPath, file)
-      return fs.unlink(filePath)
-    })
-
-    return Promise.all(unlinkPromises)
-    }).catch(err => {
-      console.error(`Something wrong happened removing files of ${folderPath}`)
-    })
-
-    if (!fs.existsSync(folderPath)) {
-      fs.mkdirSync(folderPath, { recursive: true });
+    if (fs.existsSync(folderPath)) {
+      if(cont==0){
+        fs.emptyDir(folderPath)
+        .then(() => {
+          console.log('Folder and all its contents removed successfully.');
+        })
+        .catch((err) => {
+          console.error('Error removing the folder:');
+        });
+      }
+      cont++;
+    } else {
+        fs.mkdir(folderPath, (err) => {
+          if (err) {
+            console.error('Error creating the folder:');
+          } else {
+            console.log('Folder created successfully.');
+          }
+        });
+      cont++;
     }
     callBack(null, folderPath)
   },
@@ -105,14 +111,15 @@ app.post("/multiplefiles/:id", upload.array("files"), function (req, res, next) 
     res.status(400);
     throw new Error("No file");
   }
+  cont = 0;
 });
 
 app.get('/images/:id', (req, res) => {
   const { id } = req.params;
-
-  // Assuming each ID corresponds to a subfolder in the 'images' folder
-  const folderPath = `images/${id}`;
-
+  folderPath = `images/${id}`;
+  if (fs.existsSync(folderPath)) {} else {
+    folderPath = `images/0`
+  }
   fs.readdir(folderPath, (err, files) => {
     if (err) {
       console.error('Error reading images folder:', err);

@@ -52,7 +52,6 @@ export class ProductoFormComponent implements OnInit {
     this.formularioReactive();
     this.listaAtributos();
     this.listaCategorias();
-    this.fetchUploadedImages();
   }
 
   ngOnInit(): void {
@@ -78,6 +77,7 @@ export class ProductoFormComponent implements OnInit {
             estado:this.productoInfo.estado,
             atributos:this.productoInfo.atributos.map(({id}) => id)
           })
+          this.fetchUploadedImages(this.productoInfo.id);
          });
       }
 
@@ -153,12 +153,17 @@ export class ProductoFormComponent implements OnInit {
       });
     });
 
-    this.onMultipleSubmit();
+    this.gService.list('producto/') 
+    .pipe(takeUntil(this.destroy$))
+    .subscribe((data:any)=>{
+      if (data && Array.isArray(data)) {
+        this.onMultipleSubmit(data[data.length-1].id+1);
+      }
+    });
   }
 
   //Actualizar Videojuego
   actualizarProducto() {
-    this.onMultipleSubmit();
     //Establecer submit verdadero
     this.submitted=true;
     //Verificar validación
@@ -189,7 +194,7 @@ export class ProductoFormComponent implements OnInit {
       });
     });
     
-    this.onMultipleSubmit();
+    this.onMultipleSubmit(this.productoForm.value.id);
   }
 
   onReset() {
@@ -210,19 +215,22 @@ export class ProductoFormComponent implements OnInit {
     this.multipleImages = event.target.files;
   }
   
-  onMultipleSubmit(){
-    const formData = new FormData();
-    for(let img of this.multipleImages){
-      formData.append('files', img);
+  onMultipleSubmit(id:any){
+    console.log(this.multipleImages);
+    if(this.multipleImages.length > 0){
+      const formData = new FormData();
+      for(let img of this.multipleImages){
+        formData.append('files', img);
+      }
+      this.httpClient.post<any>(`http://localhost:3000/multiplefiles/${id}`, formData).subscribe(
+        (res) => console.log(res),
+        (err) => console.log(err)
+      );
     }
-    this.httpClient.post<any>('http://localhost:3000/multiplefiles/2', formData).subscribe(
-      (res) => console.log(res),
-      (err) => console.log(err)
-    );
   }
   
-  fetchUploadedImages() {
-    this.httpClient.get<any[]>(`http://localhost:3000/images/2`).subscribe(
+  fetchUploadedImages(id:any) {
+    this.httpClient.get<any[]>(`http://localhost:3000/images/${id}`).subscribe(
       (res) => {
         this.uploadedImages = res;
       },

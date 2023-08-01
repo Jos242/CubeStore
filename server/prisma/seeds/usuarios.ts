@@ -5,7 +5,7 @@ export const usuarios = [
         nombre:    "Jose Mora",
         correo:    "jose1andres1ml@gmail.com",
         telefono:  "84242002",
-        clave:    "123456",
+        clave:    "$2b$10$taYLi3ig0THGFf8KUR7AduUtB1f9SkhxMmGsLzv93gv7PW48ofj6u",
         tipoUsuario: TipoUsuario.ADMIN,
         // direcciones: {
         //     connect: [{ id: 1 }, { id: 2 }]
@@ -30,7 +30,7 @@ export const usuarios = [
         nombre:    "Eduardo Alvarado",
         correo:    "eduardo@gmail.com",
         telefono:  "12345678",
-        clave:    "123456",
+        clave:    "$2b$10$taYLi3ig0THGFf8KUR7AduUtB1f9SkhxMmGsLzv93gv7PW48ofj6u",
         tipoUsuario: TipoUsuario.CLIENTE,
         // direcciones: {
         //     connect: [{ id: 3 }]
@@ -55,7 +55,7 @@ export const usuarios = [
         nombre:    "QiYi Stores",
         correo:    "qiyi@gmail.com",
         telefono:  "87654321",
-        clave:    "123456",
+        clave:    "$2b$10$taYLi3ig0THGFf8KUR7AduUtB1f9SkhxMmGsLzv93gv7PW48ofj6u",
         tipoUsuario: TipoUsuario.VENDEDOR,
         // direcciones: {
         //     connect: [{ id: 4 }]
@@ -68,7 +68,7 @@ export const usuarios = [
         nombre:    "Andres Hernandez",
         correo:    "andres@gmail.com",
         telefono:  "11110000",
-        clave:    "123456",
+        clave:    "$2b$10$taYLi3ig0THGFf8KUR7AduUtB1f9SkhxMmGsLzv93gv7PW48ofj6u",
         tipoUsuario: TipoUsuario.CLIENTE,
         // direcciones: {
         //     connect: [{ id: 5 }]
@@ -93,7 +93,7 @@ export const usuarios = [
         nombre:    "MoYu Stores",
         correo:    "moyu@gmail.com",
         telefono:  "00001111",
-        clave:    "123456",
+        clave:    "$2b$10$taYLi3ig0THGFf8KUR7AduUtB1f9SkhxMmGsLzv93gv7PW48ofj6u",
         tipoUsuario: TipoUsuario.VENDEDOR,
         // direcciones: {
         //     connect: [{ id: 4 }]

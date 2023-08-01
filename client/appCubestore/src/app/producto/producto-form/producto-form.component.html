@@ -10,7 +10,7 @@
         <div class="row">
           <div class="col">
             <mat-form-field class="full-width">
-              <input matInput formControlName="nombre" maxlength="20" placeholder="Nombre" >
+              <input matInput formControlName="nombre" maxlength="50" placeholder="Nombre" >
               <mat-hint align="end"> / 20</mat-hint>
               <mat-error *ngIf="errorHandling('nombre','required')">
                 Nombre es <strong>requerido</strong>
