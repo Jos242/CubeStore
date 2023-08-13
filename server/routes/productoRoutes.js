@@ -11,11 +11,11 @@ router.get("/", productoController.get);
 
 router.get('/:id', productoController.getById);
 
-router.get('/all/:id',auth.grantRole(["VENDEDOR"]),productoController.getByVendedorId);
+router.get('/all/:id',productoController.getByVendedorId);
 
-router.post('/',auth.grantRole(["ADMIN","VENDEDOR"]),productoController.create);
+router.post('/',productoController.create);
 
-router.put('/:id',auth.grantRole(["ADMIN","VENDEDOR"]),productoController.update);
+router.put('/:id',productoController.update);
 
 
 module.exports = router;

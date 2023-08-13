@@ -29,6 +29,9 @@ export class ProductoDetailComponent {
   
   uploadedImages: UploadedImage[] = [];
 
+  isCliente: boolean;
+  isVendedor: boolean;
+
   constructor( 
     private fb: FormBuilder,
     private gService: GenericService,
@@ -51,6 +54,8 @@ export class ProductoDetailComponent {
       this.idProducto=params['id'];
       if(this.idProducto!=undefined){
         this.auth.currentUser.subscribe((x)=>(this.currentUser=x));
+        this.isCliente = this.currentUser.user.tipoUsuario == 'CLIENTE';
+        console.log(this.currentUser.user.id);
           //Establecer los valores en cada una de las entradas del formulario
           this.preguntaForm.setValue({
             idUsuario:this.currentUser.user.id,
@@ -73,6 +78,7 @@ export class ProductoDetailComponent {
     .subscribe((data:any)=>{
       console.log(data);
         this.datos=data; 
+        this.isVendedor = (data.idUsuario == this.currentUser.user.id);
     });
    
   }
@@ -102,6 +108,7 @@ enviarPregunta(): void {
   .pipe(takeUntil(this.destroy$)) .subscribe((data: any) => {
     //Obtener respuesta
     this.resp=data;
+    window.location.reload();
   });
 }
 enviarRespuesta(idPregunta:Number): void {
@@ -112,6 +119,7 @@ enviarRespuesta(idPregunta:Number): void {
   .pipe(takeUntil(this.destroy$)) .subscribe((data: any) => {
     //Obtener respuesta
     this.resp=data;
+    window.location.reload();
   });
 }
 

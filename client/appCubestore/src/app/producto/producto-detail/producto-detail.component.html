@@ -18,16 +18,18 @@
       <p class="titPreg">Preguntas</p>
       <ul *ngIf="datos.preguntas">
         <li *ngFor="let item of datos.preguntas"> 
-            <p><b></b>{{item.descripcion}} Preguntado el: {{item.fechaExp | date: "short"}} Por: {{item.usuario.nombre}}</p>
+            <p><b></b>{{item.descripcion}} | Preguntado el: {{item.fechaExp | date: "short"}} Por: {{item.usuario.nombre}}</p>
             
-            <form [formGroup]="respuestaForm" (ngSubmit)="enviarRespuesta(item.id)"  novalidate >
-              <input matInput placeholder="Responder..." formControlName="descripcion">
-              <button class="botonR" mat-button color="primary" type="submit"><mat-icon>add_comment</mat-icon></button>
-            </form>
-            
+      <div *ngIf="isVendedor">
+        <form [formGroup]="respuestaForm" (ngSubmit)="enviarRespuesta(item.id)"  novalidate >
+          <input matInput placeholder="Responder..." formControlName="descripcion">
+          <button class="botonR" mat-button color="primary" type="submit"><mat-icon>add_comment</mat-icon></button>
+        </form>
+      </div>
+
             <ul *ngIf="item.respuestas">
                 <li *ngFor="let item2 of item.respuestas"> 
-                    <p><b></b>{{item2.descripcion}}. Respondido el: {{item2.fecha | date: "short"}} Por: {{item2.usuario.nombre}}</p>
+                    <p><b></b>{{item2.descripcion}} | Respondido el: {{item2.fecha | date: "short"}} Por: {{item2.usuario.nombre}}</p>
                   
                   </li>
                   <mat-divider ></mat-divider>
@@ -35,15 +37,17 @@
         </li>
       </ul>
       
-      <p class="titPreg2">Tienes otra pregunta?</p>
-      <form [formGroup]="preguntaForm" (ngSubmit)="enviarPregunta()"  novalidate >
-        <input type="hidden" formControlName="idUsuario" />
-        <input type="hidden" formControlName="idProducto" />
-        <div class="row">
-            <input matInput placeholder="Preguntar..." formControlName="descripcion">
-            <button class="botonR" mat-button color="primary" type="submit"><mat-icon>live_help</mat-icon></button>
-        </div>
-      </form>
+      <div *ngIf="isCliente">
+        <p class="titPreg2">Tienes otra pregunta?</p>
+        <form [formGroup]="preguntaForm" (ngSubmit)="enviarPregunta()"  novalidate >
+          <input type="hidden" formControlName="idUsuario" />
+          <input type="hidden" formControlName="idProducto" />
+          <div class="row">
+              <input matInput placeholder="Preguntar..." formControlName="descripcion">
+              <button class="botonR" mat-button color="primary" type="submit"><mat-icon>live_help</mat-icon></button>
+          </div>
+        </form>
+      </div>
     </mat-card-content>
 </mat-card>
 

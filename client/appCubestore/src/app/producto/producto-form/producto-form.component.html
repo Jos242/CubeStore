@@ -1,5 +1,6 @@
 <form [formGroup]="productoForm" (ngSubmit)="isCreate ? crearProducto(): actualizarProducto()"  novalidate >
-    <input type="hidden" formControlName="id" />
+  <input type="hidden" formControlName="id" />
+  <input type="hidden" formControlName="idUsuario" value="3" />
     
     <mat-card class="shipping-card"> 
       <mat-card-header>

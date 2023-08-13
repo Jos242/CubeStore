@@ -59,6 +59,7 @@ export class ProductoFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.auth.currentUser.subscribe((x)=>(this.currentUser=x));
     //Verificar si se envio un id por parametro para crear formulario para actualizar
     this.activeRouter.params.subscribe((params:Params)=>{
       this.idProducto=params['id'];
@@ -69,11 +70,10 @@ export class ProductoFormComponent implements OnInit {
          this.gService.get('producto',this.idProducto).pipe(takeUntil(this.destroy$))
          .subscribe((data:any)=>{
           this.productoInfo=data;
-          this.auth.currentUser.subscribe((x)=>(this.currentUser=x));
           //Establecer los valores en cada una de las entradas del formulario
           this.productoForm.setValue({
             id:this.productoInfo.id,
-            idUsuario:this.currentUser.user.id,
+            idUsuario:parseInt(this.currentUser.user.id),
             idCategoria:this.productoInfo.idCategoria,
             nombre:this.productoInfo.nombre,
             descripcion:this.productoInfo.descripcion,
@@ -94,7 +94,7 @@ export class ProductoFormComponent implements OnInit {
     //[null, Validators.required]
     this.productoForm=this.fb.group({
       id:[null,null],
-      idUsuario: [null, Validators.required],
+      idUsuario: [null, null],
       idCategoria: [null, Validators.required],
       nombre:[null, Validators.compose([
         Validators.required,
@@ -148,6 +148,7 @@ export class ProductoFormComponent implements OnInit {
     //Asignar valor al formulario
     this.productoForm.patchValue({atributos: gFormat});
     //Accion API create enviando toda la informacion del formulario
+    this.productoForm.value.idUsuario = this.currentUser.user.id; 
     this.gService.create('producto',this.productoForm.value)
     .pipe(takeUntil(this.destroy$)) .subscribe((data: any) => {
       //Obtener respuesta
@@ -156,7 +157,7 @@ export class ProductoFormComponent implements OnInit {
         queryParams: {create:'true'}
       });
     });
-
+    console.log(this.productoForm.value.idUsuario);
     this.gService.list('producto/') 
     .pipe(takeUntil(this.destroy$))
     .subscribe((data:any)=>{
@@ -175,6 +176,7 @@ export class ProductoFormComponent implements OnInit {
       return;
     }
     
+    this.productoForm.value.idUsuario = this.currentUser.user.id; 
     //Obtener id Generos del Formulario y Crear arreglo con {id: value}
     let gFormat:any=this.productoForm.get('atributos').value.map(x=>({['id']: x }));
     //Asignar valor al formulario 

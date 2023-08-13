@@ -34,7 +34,7 @@ export class AuthGuard implements CanActivate {
       const userTipoUsuarios = this.currentUser.user.tipoUsuario;
       //roles.length && roles.indexOf(verify.role)===-1
       if(route.data['tipoUsuarios'].length && !route.data['tipoUsuarios'].includes(userTipoUsuarios)){ 
-        this.router.navigate(['/usuario/login'], {
+        this.router.navigate(['/producto/'], {
           //Parametro para mostrar mensaje en login
           queryParams: { auth: 'no' }
         });
@@ -43,7 +43,7 @@ export class AuthGuard implements CanActivate {
       return true;
     } 
 
-    this.router.navigate(['/usuario/login'], {
+    this.router.navigate(['/producto'], {
       queryParams: { auth: 'no'}
     });
     return false;

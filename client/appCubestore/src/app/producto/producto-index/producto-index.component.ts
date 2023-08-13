@@ -4,6 +4,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { GenericService } from 'src/app/share/generic.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { AuthenticationService } from 'src/app/share/authentication.service';
+import { NotificacionService, TipoMessage } from 'src/app/share/notification.service';
 
 interface Images {
   url: string;
@@ -23,12 +25,16 @@ export class ProductoIndexComponent {
   images: Images[] = [];
   finales: Images[] = [];
   past:any;
+  isntCliente:boolean;
+  currentUser:any;
 
   constructor(private gService:GenericService,
     private dialog:MatDialog,
     private router:Router,
     private route:ActivatedRoute,
-    private httpClient:HttpClient
+    private httpClient:HttpClient,
+    private notificacion: NotificacionService,
+    private auth:AuthenticationService
     ){
     this.listaProductos(); 
     let id=this.route.snapshot.paramMap.get('id');
@@ -37,6 +43,8 @@ export class ProductoIndexComponent {
     } else {
       this.idUsuario = 0;
     }
+    this.auth.currentUser.subscribe((x)=>(this.currentUser=x));
+    this.isntCliente = this.currentUser.user.tipoUsuario != 'CLIENTE';
 
     //localhost:3000/videojuego
     this.gService.list('producto/')
@@ -44,11 +52,30 @@ export class ProductoIndexComponent {
       .subscribe((data:any)=>{
       for(let i = 0;i<=data.length; i++){
         this.getImages(i)
-        console.log(i);
       }
     });
   }
-  
+
+  ngOnInit(): void {
+    this.mensajes();
+  }
+
+  mensajes() {
+   let register=false;
+   let auth='';
+   //Obtener parámetros de la URL
+   this.route.queryParams.subscribe((params)=>{
+    auth=params['auth'] || '';
+    if(auth){
+      this.notificacion.mensaje(
+        'Usuario',
+        'Acceso denegado',
+        TipoMessage.warning
+      )
+    }
+   })
+   
+  }
   
   //Listar los videojuegos llamando al API
   listaProductos(){
@@ -67,8 +94,8 @@ export class ProductoIndexComponent {
       relativeTo:this.route
     })
   }
-  update(id:number){
-    this.router.navigate(['/producto/update/',id],
+  update(){
+    this.router.navigate(['/producto/all/', this.currentUser.user.id],
     {
       relativeTo:this.route
     })

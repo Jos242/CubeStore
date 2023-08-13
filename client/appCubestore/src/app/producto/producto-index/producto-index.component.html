@@ -1,12 +1,18 @@
 <div class="grid-container">
   <div><p class="title">Todos los Productos</p></div>
-  <div class="crear">
+  <div class="crear" *ngIf="isntCliente">
     <button  mat-fab
     matTooltip="Crear Nuevo Producto"
     aria-label="Crear Nuevo Producto" 
     color="primary"
     (click)="create()"><mat-icon>add_cricle</mat-icon></button>
-
+  </div>
+  <div class="crear" *ngIf="isntCliente">
+    <button  mat-fab
+    matTooltip="Editar Productos"
+    aria-label="Editar Productos" 
+    color="primary"
+    (click)="update()"><mat-icon>edit</mat-icon></button>
   </div>
     
   <mat-grid-list [cols]="4" rowHeight="30em" gutterSize="10px">
@@ -38,17 +44,6 @@
             (click)="detalle(item.id)"
             >
               <mat-icon class="mat-18">info</mat-icon>
-            </button>
-            <button
-              mat-mini-fab
-              color="accent"
-              matTooltip="Editar Producto"
-              aria-label="Editar Producto"
-              color="primary"
-              (click)="update(item.id)"
-
-            >
-              <mat-icon class="mat-18">edit</mat-icon>
             </button>
             <button
               mat-mini-fab

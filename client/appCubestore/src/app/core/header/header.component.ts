@@ -20,7 +20,6 @@ export class HeaderComponent {
   ngOnInit(): void {
      //Subscripción a la información del usuario actual
     this.authService.currentUser.subscribe((x)=>(this.currentUser=x));
-    console.log(this.currentUser);
      //Subscripción al boolean que indica si esta autenticado
      this.authService.isAuthenticated.subscribe((valor)=>(this.isAutenticated=valor));
     
