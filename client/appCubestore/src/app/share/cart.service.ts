@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 // Definir clase con las propiedades que es necesario que gestione el carrito
 export class ItemCart {
   idItem: number;
-  product: any;
+  producto: any;
   cantidad: number;
   precio: number;
   subtotal: number;
@@ -35,7 +35,7 @@ export class CartService {
     newItem.precio = producto.precio;
     newItem.cantidad = 1;
     newItem.subtotal = this.calculoSubtotal(newItem);
-    newItem.product = producto;
+    newItem.producto = producto;
     //Obtenemos el valor actual
     let listCart = this.cart.getValue();
     //Si no es el primer item del carrito
@@ -51,7 +51,6 @@ export class CartService {
             this.removeFromCart(newItem);
             return;
           } else {
-            //Actualizar cantidad
             listCart[objIndex].cantidad = producto.cantidad;
           }
         } else {
@@ -134,7 +133,7 @@ export class CartService {
         total += item.subtotal;
       });
     }
-
+    total+= total*0.13;
     return total;
   }
   

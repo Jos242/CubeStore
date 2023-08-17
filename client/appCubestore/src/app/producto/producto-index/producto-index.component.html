@@ -1,5 +1,5 @@
 <div class="grid-container">
-  <div><p class="title">Todos los Productos</p></div>
+  <div><p class="title">Productos</p></div>
   <div class="crear" *ngIf="isntCliente">
     <button  mat-fab
     matTooltip="Crear Nuevo Producto"
@@ -14,11 +14,50 @@
     color="primary"
     (click)="update()"><mat-icon>edit</mat-icon></button>
   </div>
+  <mat-card>
+    
+    <mat-card-header><h1 class="mat-h1">Buscar</h1></mat-card-header>
+    <mat-card-content>
+      <div class="row">
+        <div class="col">    
+            <mat-form-field class="full-width">
+              <mat-label>Nombre: </mat-label>
+              <input matInput #filter (change)="filterProductos(filter.value)">
+
+            </mat-form-field> 
+        </div>
+        <div class="col">
+            <mat-form-field class="full-width">
+                  <mat-select placeholder="Categoria" formControlName="idCategoria" #categoria (selectionChange)="filterCategorias(categoria.value)">
+                    <mat-option *ngFor="let categoria of categoriasList" [value]="categoria.id">
+                      {{ categoria.descripcion }}
+                    </mat-option>
+                    <mat-option [value]="0"> Todos </mat-option>
+                  </mat-select>
+
+            </mat-form-field> 
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-label>Precio</mat-label>
+            <mat-select #precio [value]="1" (selectionChange)="filterPrecios(precio.value)">
+              <mat-option [value]="1"> No filtrar </mat-option>
+              <mat-option [value]="2"> Mas baratos </mat-option>
+              <mat-option [value]="3"> Mas caros </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      
+    </mat-card-content>
+  </mat-card>
+  
     
   <mat-grid-list [cols]="4" rowHeight="30em" gutterSize="10px">
-      <mat-grid-tile *ngFor="let item of datos">
+      <mat-grid-tile *ngFor="let item of filterDatos">
         <mat-card class="dashboard-card">
-          <img class="card-img" [src]="finales[item.id]" alt="">
+          <img class="card-img" [src]="images[item.id][0]" alt="">
           <!-- <img [src]="imgSrc"
            (mouseover)="imgSrc = 'assets/images/2.jpg'"
            (mouseout)="imgSrc = 'assets/images/1.webp'"> -->
@@ -51,6 +90,7 @@
               matTooltip="Agregar al carrito"
               aria-label="Agregar al carrito"
               color="primary"
+              (click)="comprar(item.id)"
               
 
             >

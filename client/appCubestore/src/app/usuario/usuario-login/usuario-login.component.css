@@ -41,6 +41,10 @@ mat-form-field.mat-form-field {
     margin-left: 303px;
   }
 
+  .reg-btn{
+    text-decoration:underline;
+  }
+
   mat-card-actions button{
     margin-left: 8px;
     font-weight: bold;

@@ -69,6 +69,32 @@ module.exports.getById = async (request, response, next) => {
   response.json(factura);
 };
 //Crear
-module.exports.create = async (request, response, next) => {};
+module.exports.create = async (request, response, next) => {
+  let infoFact=request.body;
+  const newFactura =await prisma.factura.create({
+    data:{
+      usuario: {
+        connect: { id: parseInt(infoFact.usuario) },
+      },
+      direccion: {
+        connect: { id: parseInt(infoFact.direccion) },
+      },
+      tarjeta: {
+        connect: { id: parseInt(infoFact.tarjeta) },
+      },
+      createdAt: infoFact.createdAt,
+      total: infoFact.total,
+      estado: infoFact.estado,
+      productos:{
+        createMany:{
+          //[{videojuegoId, cantidad}]
+          data: infoFact.productos
+        }
+      }
+    }   
+  })
+  response.json(newFactura)
+
+};
 //Actualizar
 module.exports.update = async (request, response, next) => {};

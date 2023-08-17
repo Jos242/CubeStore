@@ -1,25 +1,31 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="accent">
   <mat-toolbar-row class="row-menu">
     <img class="img-logo" src="assets/images/logocf.png" alt="">
     <p>CubeStore</p> 
+    <div class="menu-center">
+      <a class="links-menu" mat-stroked-button color="white" routerLink="/"><h2>Inicio</h2></a>
+      <a class="links-menu" mat-stroked-button color="white" routerLink="/"><h2>Descuentos</h2></a>
+      <a class="links-menu" mat-stroked-button color="white" routerLink="/"><h2>Best Sellers</h2></a>
+      <a class="links-menu" mat-stroked-button color="white" routerLink="/"><h2>Nuevos Ingresos</h2></a>
+      <a class="links-menu" mat-stroked-button color="white" routerLink="/"><h2>Contactenos</h2></a>
+    </div>
     <span class="example-spacer"></span>
     <a mat-menu-item *ngIf="!(isAutenticated)" (click)="login()">
       <mat-icon>person_add</mat-icon>
     </a>
-  </mat-toolbar-row>
-
-  <mat-toolbar-row>
-    <div class="menu-center">
-      <a mat-stroked-button color="accent" routerLink="/"><h2>Inicio</h2></a>
-      <a mat-stroked-button color="accent" routerLink="/"><h2>Descuentos</h2></a>
-      <a mat-stroked-button color="accent" routerLink="/"><h2>Best Sellers</h2></a>
-      <a mat-stroked-button color="accent" routerLink="/"><h2>Nuevos Ingresos</h2></a>
-      <a mat-stroked-button color="accent" routerLink="/"><h2>Contactenos</h2></a>
-    </div>
-    <span class="example-spacer"></span>
     <a mat-menu-item *ngIf="isAutenticated" (click)="logout()">
       <mat-icon>person_remove</mat-icon>
     </a>
+  </mat-toolbar-row>
+
+  <mat-toolbar-row>
+    
+    <span class="example-spacer"></span>
+    <button class="mat-badge-cont" mat-icon-button matBadgeColor="warn" [matBadge]="qtyItems.toString()" 
+       [routerLink]="'/orden'" [routerLinkActive]="'mat-raised-button'"  aria-label="Cantidad">
+     <mat-icon>shopping_cart</mat-icon>
+   </button>    
+    
   </mat-toolbar-row>
 </mat-toolbar>
 

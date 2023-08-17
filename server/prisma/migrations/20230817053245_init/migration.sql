@@ -42,6 +42,25 @@ CREATE TABLE `Evaluacion` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `Orden` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `idUsuario` INTEGER NOT NULL,
+    `subtotal` DECIMAL(10, 2) NOT NULL,
+    `estado` ENUM('CARRITO', 'PENDIENTE', 'EN_PROGRESO', 'ENTREGADO', 'FINALIZADO') NOT NULL DEFAULT 'CARRITO',
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `OrdenProducto` (
+    `idOrden` INTEGER NOT NULL,
+    `idProducto` INTEGER NOT NULL,
+    `cantidad` INTEGER NOT NULL,
+
+    PRIMARY KEY (`idOrden`, `idProducto`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Factura` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `idUsuario` INTEGER NOT NULL,
@@ -49,7 +68,7 @@ CREATE TABLE `Factura` (
     `idTarjeta` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `total` DECIMAL(10, 2) NOT NULL,
-    `estado` ENUM('PENDIENTE', 'EN_PROGRESO', 'ENTREGADO', 'FINALIZADO') NOT NULL DEFAULT 'PENDIENTE',
+    `estado` ENUM('CARRITO', 'PENDIENTE', 'EN_PROGRESO', 'ENTREGADO', 'FINALIZADO') NOT NULL DEFAULT 'CARRITO',
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -59,7 +78,7 @@ CREATE TABLE `FacturaProducto` (
     `idFactura` INTEGER NOT NULL,
     `idProducto` INTEGER NOT NULL,
     `cantidad` INTEGER NOT NULL,
-    `estado` ENUM('PENDIENTE', 'EN_PROGRESO', 'ENTREGADO', 'FINALIZADO') NOT NULL DEFAULT 'PENDIENTE',
+    `estado` ENUM('CARRITO', 'PENDIENTE', 'EN_PROGRESO', 'ENTREGADO', 'FINALIZADO') NOT NULL DEFAULT 'CARRITO',
 
     PRIMARY KEY (`idFactura`, `idProducto`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -146,6 +165,15 @@ ALTER TABLE `Evaluacion` ADD CONSTRAINT `Evaluacion_idUsuario_fkey` FOREIGN KEY 
 
 -- AddForeignKey
 ALTER TABLE `Evaluacion` ADD CONSTRAINT `Evaluacion_idFactura_fkey` FOREIGN KEY (`idFactura`) REFERENCES `Factura`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Orden` ADD CONSTRAINT `Orden_idUsuario_fkey` FOREIGN KEY (`idUsuario`) REFERENCES `Usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `OrdenProducto` ADD CONSTRAINT `OrdenProducto_idOrden_fkey` FOREIGN KEY (`idOrden`) REFERENCES `Orden`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `OrdenProducto` ADD CONSTRAINT `OrdenProducto_idProducto_fkey` FOREIGN KEY (`idProducto`) REFERENCES `Producto`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Factura` ADD CONSTRAINT `Factura_idUsuario_fkey` FOREIGN KEY (`idUsuario`) REFERENCES `Usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

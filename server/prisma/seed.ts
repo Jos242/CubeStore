@@ -9,6 +9,8 @@ import { facturaproductos } from './seeds/facturaproductos';
 import { preguntas } from './seeds/preguntas';
 import { respuestas } from './seeds/respuestas';
 import { tarjetas } from './seeds/tarjetas';
+import { ordenes } from './seeds/ordenes';
+import { ordenproductos } from './seeds/ordenproductos';
 
 const prisma = new PrismaClient();
 
@@ -191,7 +193,12 @@ async function main() {
           },
       },    
       });
-
+      await prisma.orden.createMany({
+        data: ordenes 
+      });
+      await prisma.ordenProducto.createMany({
+        data: ordenproductos 
+      });
       await prisma.pregunta.createMany({
         data: preguntas
       });

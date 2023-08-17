@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   declarations: [HeaderComponent, FooterComponent, PageNotFoundComponent],
@@ -20,6 +21,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatToolbarModule,
     MatGridListModule,
     MatMenuModule,
+    MatBadgeModule,
   ],
   exports: [HeaderComponent, FooterComponent],
 })

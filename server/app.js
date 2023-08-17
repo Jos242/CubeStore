@@ -22,9 +22,13 @@ const respuestaRouter = require("./routes/respuestaRoutes");
 const tipoUsuarioRouter = require("./routes/tipoUsuarioRoutes");
 const atributoRouter = require("./routes/atributoRoutes");
 const categoriaRouter = require("./routes/categoriaRoutes");
+
 const direccionRouter = require("./routes/direccionRoutes");
 const tarjetaRouter = require("./routes/tarjetaRoutes");
-// const ordenRouter = require("./routes/ordenRoutes");
+const ordenRouter = require("./routes/ordenRoutes");
+
+
+
 // const generoRouter = require("./routes/generoRoutes");
 // const rolRouter = require("./routes/rolRoutes");
 // const userRouter = require("./routes/userRoutes");
@@ -59,7 +63,8 @@ app.use("/categoria/", categoriaRouter);
 app.use("/tipoUsuario/", tipoUsuarioRouter);
 app.use("/direccion/", direccionRouter);
 app.use("/tarjeta/", tarjetaRouter);
-// app.use("/orden/", ordenRouter);
+app.use("/orden/", ordenRouter);
+
 // app.use("/genero/", generoRouter);
 // app.use("/rol/", rolRouter); 
 // app.use("/user/", userRouter);
