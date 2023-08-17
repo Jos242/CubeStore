@@ -22,6 +22,8 @@ const respuestaRouter = require("./routes/respuestaRoutes");
 const tipoUsuarioRouter = require("./routes/tipoUsuarioRoutes");
 const atributoRouter = require("./routes/atributoRoutes");
 const categoriaRouter = require("./routes/categoriaRoutes");
+const direccionRouter = require("./routes/direccionRoutes");
+const tarjetaRouter = require("./routes/tarjetaRoutes");
 // const ordenRouter = require("./routes/ordenRoutes");
 // const generoRouter = require("./routes/generoRoutes");
 // const rolRouter = require("./routes/rolRoutes");
@@ -55,16 +57,12 @@ app.use("/respuesta/", respuestaRouter);
 app.use("/atributo/", atributoRouter);
 app.use("/categoria/", categoriaRouter);
 app.use("/tipoUsuario/", tipoUsuarioRouter);
+app.use("/direccion/", direccionRouter);
+app.use("/tarjeta/", tarjetaRouter);
 // app.use("/orden/", ordenRouter);
 // app.use("/genero/", generoRouter);
 // app.use("/rol/", rolRouter); 
 // app.use("/user/", userRouter);
-
-// Servidor
-app.listen(port, () => {
-  console.log(`http://localhost:${port}`);
-  console.log('Presione CTRL-C para deternerlo\n');
-});
 
 cont = 0;
 
@@ -114,19 +112,30 @@ app.post("/multiplefiles/:id", upload.array("files"), function (req, res, next) 
   cont = 0;
 });
 
-app.get('/images/:id', (req, res) => {
-  const { id } = req.params;
+app.get('/images/all', async (req, res) => {
+  images = await getImages([], 0);
+  res.json(images);
+});
+
+async function getImages(imageUrlsList, id) {
   folderPath = `images/${id}`;
-  if (fs.existsSync(folderPath)) {} else {
-    folderPath = `images/0`
+  if(fs.existsSync(folderPath)){
+    const files = await fs.promises.readdir(folderPath);
+    
+    const imageUrls = await Promise.all(files.map(async (file) => {
+      const data = await fs.promises.readFile(`./images/${id}/${file}`, 'base64');
+      return "data:image/gif;base64," + data;
+    }));
+
+    imageUrlsList.push(imageUrls);
+    return getImages(imageUrlsList, ++id);
+  } else {
+    return imageUrlsList;
   }
-  fs.readdir(folderPath, (err, files) => {
-    if (err) {
-      console.error('Error reading images folder:', err);
-      res.status(500).json({ error: 'Internal Server Error' });
-    } else {
-      const imageUrls = files.map((file) => "data:image/gif;base64,"+fs.readFileSync(`./images/${id}/${file}`, 'base64'));
-      res.json(imageUrls);
-    }
-  });
+}
+
+// Servidor
+app.listen(port, () => {
+  console.log(`http://localhost:${port}`);
+  console.log('Presione CTRL-C para deternerlo\n');
 });
