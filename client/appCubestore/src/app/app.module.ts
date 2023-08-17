@@ -14,6 +14,8 @@ import { PedidoModule } from './pedido/pedido.module';
 import { ProductoModule } from './producto/producto.module';
 import { UsuarioModule } from './usuario/usuario.module';
 import { OrdenModule } from './orden/orden.module';
+import { DireccionModule } from './direccion/direccion.module';
+import { TarjetaModule } from './tarjeta/tarjeta.module';
 
 
 @NgModule({
@@ -33,6 +35,8 @@ import { OrdenModule } from './orden/orden.module';
 
     HomeModule,
     FacturaModule,
+    DireccionModule,
+    TarjetaModule,
     PedidoModule,
     ProductoModule,
     UsuarioModule,

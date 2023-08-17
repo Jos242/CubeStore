@@ -25,4 +25,12 @@ export const tiposusuarios = [
         idUsuario: 5,
         tipoUsuario: TipoUsuario.VENDEDOR
     },
+    {
+        idUsuario: 6,
+        tipoUsuario: TipoUsuario.CLIENTE
+    },
+    {
+        idUsuario: 7,
+        tipoUsuario: TipoUsuario.VENDEDOR
+    },
   ];

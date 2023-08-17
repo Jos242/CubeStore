@@ -64,6 +64,7 @@ export class TarjetaFormComponent {
           const day = inputDate.getDate().toString().padStart(2, '0');
           const formattedDateString = `${year}-${month}-${day}`;
           //Establecer los valores en cada una de las entradas del formulario
+          console.log(this.tarjetaInfo.id)
           this.tarjetaForm.setValue({
             id:this.tarjetaInfo.id,
             idUsuario:parseInt(this.currentUser.user.id),

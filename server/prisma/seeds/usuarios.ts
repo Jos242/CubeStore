@@ -101,4 +101,30 @@ export const usuarios = [
         //     connect: [{ id: 1 },{ id: 2 },{ id: 3 }]
         // },
     },
+    {
+        nombre:    "Cliente",
+        correo:    "cliente@gmail.com",
+        telefono:  "12345678",
+        clave:    "$2b$10$taYLi3ig0THGFf8KUR7AduUtB1f9SkhxMmGsLzv93gv7PW48ofj6u",
+        estado: 1,
+        // direcciones: {
+        //     connect: [{ id: 4 }]
+        // },
+        // productos: {
+        //     connect: [{ id: 1 },{ id: 2 },{ id: 3 }]
+        // },
+    },
+    {
+        nombre:    "Vendedor",
+        correo:    "vendedor@gmail.com",
+        telefono:  "12345678",
+        clave:    "$2b$10$taYLi3ig0THGFf8KUR7AduUtB1f9SkhxMmGsLzv93gv7PW48ofj6u",
+        estado: 1,
+        // direcciones: {
+        //     connect: [{ id: 4 }]
+        // },
+        // productos: {
+        //     connect: [{ id: 1 },{ id: 2 },{ id: 3 }]
+        // },
+    },
   ];

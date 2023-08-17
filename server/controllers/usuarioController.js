@@ -84,7 +84,8 @@ module.exports.login = async (request, response, next) => {
     }
 
     const checkClave = await bcrypt.compare(userReq.clave, user.clave);
-    if(checkClave === false || userReq.estado==0){
+    console.log(userReq)
+    if(checkClave === false || user.estado==0){
         response.status(401).send({
             success: false,
             message: "Credenciales no validas"
