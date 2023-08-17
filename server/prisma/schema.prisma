@@ -49,14 +49,32 @@ model Evaluacion {
   factura   Factura @relation(fields: [idFactura], references: [id])
 }
 
+model Orden{
+  id          Int     @id @default(autoincrement())
+  idUsuario   Int
+  subtotal      Decimal             @db.Decimal(10, 2)
+  estado      Pedido    @default(CARRITO)
+  usuario     Usuario   @relation(fields: [idUsuario], references: [id])
+  productos OrdenProducto[]
+}
+
+model OrdenProducto{
+  idOrden    Int 
+  orden Orden @relation(fields: [idOrden],references: [id])
+  idProducto Int
+  producto Producto @relation(fields: [idProducto],references: [id])
+  cantidad     Int
+  @@id([idOrden,idProducto])
+}
+
 model Factura {
   id          Int     @id @default(autoincrement())
   idUsuario   Int
   idDireccion Int
   idTarjeta   Int
-  createdAt   DateTime            @default(now())
-  total      Decimal             @db.Decimal(10, 2)
-  estado     Pedido    @default(PENDIENTE)
+  createdAt   DateTime          @default(now())
+  total       Decimal             @db.Decimal(10, 2)
+  estado      Pedido    @default(PENDIENTE)
   usuario     Usuario   @relation(fields: [idUsuario], references: [id])
   direccion   Direccion @relation(fields: [idDireccion], references: [id])
   tarjeta     Tarjeta   @relation(fields: [idTarjeta], references: [id])
@@ -99,6 +117,7 @@ model Producto {
   preguntas   Pregunta[]
   atributos Atributo[]
   facturas FacturaProducto[]
+  ordenes OrdenProducto[]
 }
 
 model Respuesta {
@@ -129,7 +148,7 @@ model Usuario {
   correo    String @unique
   telefono  String
   clave     String
-  estado    Int
+  tipoUsuario TipoUsuario @default(ADMIN)
   direcciones Direccion[]
   facturas   Factura[]
   evaluaciones Evaluacion[]
@@ -137,14 +156,7 @@ model Usuario {
   respuestas Respuesta[]
   tarjetas Tarjeta[]
   productos Producto[]
-  tiposUsuario TiposUsuario[]
-}
-
-model TiposUsuario{
-  id Int @id @default(autoincrement())
-  idUsuario Int
-  tipoUsuario TipoUsuario @default(ADMIN)
-  usuario   Usuario @relation(fields: [idUsuario], references: [id])
+  ordenes Orden[]
 }
 
 enum TipoUsuario {
@@ -154,6 +166,7 @@ enum TipoUsuario {
 }
 
 enum Pedido {
+  CARRITO
   PENDIENTE
   EN_PROGRESO
   ENTREGADO

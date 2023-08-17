@@ -13,8 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { PedidoModule } from './pedido/pedido.module';
 import { ProductoModule } from './producto/producto.module';
 import { UsuarioModule } from './usuario/usuario.module';
-import { DireccionModule } from './direccion/direccion.module';
-import { TarjetaModule } from './tarjeta/tarjeta.module';
+import { OrdenModule } from './orden/orden.module';
 
 
 @NgModule({
@@ -26,6 +25,7 @@ import { TarjetaModule } from './tarjeta/tarjeta.module';
     HttpClientModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+
     
     CoreModule,
     ShareModule,
@@ -36,11 +36,11 @@ import { TarjetaModule } from './tarjeta/tarjeta.module';
     PedidoModule,
     ProductoModule,
     UsuarioModule,
-    DireccionModule,
-    TarjetaModule,
+    OrdenModule,
 
     
-    AppRoutingModule
+    AppRoutingModule,
+            
       
 
   ],

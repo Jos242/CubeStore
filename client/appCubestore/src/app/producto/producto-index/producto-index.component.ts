@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Subject, takeUntil } from 'rxjs';
 import { GenericService } from 'src/app/share/generic.service';
-import { ApiProvinciasService } from 'src/app/share/api-provincias.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { CartService } from 'src/app/share/cart.service';
 import { AuthenticationService } from 'src/app/share/authentication.service';
 import { NotificacionService, TipoMessage } from 'src/app/share/notification.service';
 
@@ -20,26 +20,50 @@ interface Images {
 export class ProductoIndexComponent {
   datos:any;//Respuesta del API
   destroy$:Subject<boolean>=new Subject<boolean>();
+  public imgSrc:string = "assets/images/1.webp";
+  idUsuario:any;
+  n:any;
   images: Images[] = [];
+  finales: Images[] = [];
+  past:any;
+  isntCliente:boolean;
   currentUser:any;
-  isVendedor:boolean;
+  categoriasList: any;
+
+  filterDatos:any;
 
   constructor(private gService:GenericService,
-    private api:ApiProvinciasService,
+    private dialog:MatDialog,
     private router:Router,
     private route:ActivatedRoute,
+    private httpClient:HttpClient,
+    private cartService:CartService,
     private notificacion: NotificacionService,
     private auth:AuthenticationService
     ){
+    this.listaProductos(); 
+    this.listaCategorias();
+    let id=this.route.snapshot.paramMap.get('id');
+    if(!isNaN(Number(id))){
+      this.idUsuario = Number(id);
+    } else {
+      this.idUsuario = 0;
+    }
     this.auth.currentUser.subscribe((x)=>(this.currentUser=x));
     if (this.currentUser != null){
-      this.isVendedor = this.currentUser.user.tiposUsuario.some(element => element.tipoUsuario === 'VENDEDOR');
+      if(this.currentUser.user.tipoUsuario != 'CLIENTE'){
+        this.isntCliente = true;
+      } else {
+        this.isntCliente = false;
+      }
     } else {
-      this.isVendedor = false;
+      this.isntCliente = false;
     }
-    this.listaProductos(); 
-    this.getImages();
-    this.getPlaces();
+    //localhost:3000/videojuego
+
+        this.getImages()
+      
+
   }
 
   ngOnInit(): void {
@@ -49,6 +73,7 @@ export class ProductoIndexComponent {
   mensajes() {
    let register=false;
    let auth='';
+   //Obtener parámetros de la URL
    this.route.queryParams.subscribe((params)=>{
     auth=params['auth'] || '';
     if(auth){
@@ -62,15 +87,63 @@ export class ProductoIndexComponent {
    
   }
   
+  //Listar los videojuegos llamando al API
   listaProductos(){
+    //localhost:3000/videojuego
     this.gService.list('producto/')
       .pipe(takeUntil(this.destroy$))
       .subscribe((data:any)=>{
         console.log(data);
         this.datos=data;
+        this.filterDatos=this.datos;
       });
     
   }
+
+  listaCategorias() {
+    this.categoriasList = null;
+    this.gService
+      .list('categoria')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: any) => {
+        // console.log(data);
+        this.categoriasList = data; 
+      });
+  }
+
+  filterProductos(text:string){
+    if(!text){
+      this.filterDatos=this.datos
+    }else{
+      this.filterDatos=this.datos.filter(
+        producto=> 
+          producto?.nombre.toLowerCase().includes(text.toLowerCase())
+      )
+    }
+
+  }
+
+  filterCategorias(categoria) {
+    if (categoria < 1) {
+      this.filterDatos = this.datos;
+    } else {
+      this.filterDatos = this.datos.filter(
+        (producto) => producto?.idCategoria == categoria
+      );
+    }
+  }
+
+  filterPrecios(precio){
+    if (precio == 1) {
+      this.filterDatos = this.filterDatos.sort((a, b) => a.id - b.id);
+    } else if (precio == 2) {
+      this.filterDatos = this.filterDatos.sort((a, b) => a.precio -b.precio);
+    } else {
+      this.filterDatos = this.filterDatos.sort((a, b) => b.precio - a.precio);
+    }
+  }
+
+
   detalle(id:number){
     this.router.navigate(['/producto',id],
     {
@@ -94,15 +167,28 @@ export class ProductoIndexComponent {
     this.gService.list('images/all')
       .pipe(takeUntil(this.destroy$))
       .subscribe((data:any)=>{
-        this.images=data;    
+        this.images=data;
       });
   }
 
-  getPlaces() {
-    this.api.getProvincias()
+  comprar(id:number){
+    this.gService
+    .get('producto',id)
     .pipe(takeUntil(this.destroy$))
     .subscribe((data:any)=>{
-      console.log(data);
+      //Agregar videojuego obtenido del API al carrito
+      this.cartService.addToCart(data);
+      //Notificar al usuario
+      this.notificacion.mensaje(
+        'Orden',
+        'Producto: '+data.nombre+ ' agregado a la orden',
+        TipoMessage.success
+      )
     });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(true); 
+    this.destroy$.unsubscribe();
   }
 }

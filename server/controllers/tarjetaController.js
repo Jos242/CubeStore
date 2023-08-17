@@ -13,7 +13,7 @@ module.exports.get = async (request, response, next) => {
 
 module.exports.getById = async (request, response, next) => {
   let id = parseInt(request.params.id);
-  const tarjeta = await prisma.tarjeta.findUnique({
+  const tarjeta = await prisma.tarjeta.findMany({
     where: { id: id },
   });
   response.json(tarjeta);

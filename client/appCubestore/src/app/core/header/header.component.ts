@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/share/authentication.service';
 import { CartService } from 'src/app/share/cart.service';
 
+
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -12,9 +14,11 @@ export class HeaderComponent {
 
   isAutenticated: boolean;
   currentUser: any;
-  constructor(
+  qtyItems:Number = 0;
+  constructor(private cartService: CartService,
     private router: Router,
-    private authService: AuthenticationService) {      
+    private authService: AuthenticationService) {  
+      this.qtyItems=this.cartService.quantityItems()    
   }
 
   ngOnInit(): void {
@@ -23,6 +27,10 @@ export class HeaderComponent {
      //Subscripción al boolean que indica si esta autenticado
      this.authService.isAuthenticated.subscribe((valor)=>(this.isAutenticated=valor));
     
+     this.cartService.countItems.subscribe((value)=>{
+      this.qtyItems=value
+     })
+
   }
   login(){
     this.router.navigate(['usuario/login']);
