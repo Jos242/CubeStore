@@ -1,13 +1,13 @@
 <div class="grid-container">
   <div><p class="title">Todos los Productos</p></div>
-  <div class="crear" *ngIf="isntCliente">
+  <div class="crear" *ngIf="isVendedor">
     <button  mat-fab
     matTooltip="Crear Nuevo Producto"
     aria-label="Crear Nuevo Producto" 
     color="primary"
     (click)="create()"><mat-icon>add_cricle</mat-icon></button>
   </div>
-  <div class="crear" *ngIf="isntCliente">
+  <div class="crear" *ngIf="isVendedor">
     <button  mat-fab
     matTooltip="Editar Productos"
     aria-label="Editar Productos" 
@@ -18,10 +18,7 @@
   <mat-grid-list [cols]="4" rowHeight="30em" gutterSize="10px">
       <mat-grid-tile *ngFor="let item of datos">
         <mat-card class="dashboard-card">
-          <img class="card-img" [src]="finales[item.id]" alt="">
-          <!-- <img [src]="imgSrc"
-           (mouseover)="imgSrc = 'assets/images/2.jpg'"
-           (mouseout)="imgSrc = 'assets/images/1.webp'"> -->
+          <img class="card-img" [src]="images[item.id][0]" alt="">
           <mat-card-header>
             <mat-card-title class="titleCard">{{item.nombre}} </mat-card-title>
           </mat-card-header>

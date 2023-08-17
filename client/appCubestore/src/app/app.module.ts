@@ -13,6 +13,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { PedidoModule } from './pedido/pedido.module';
 import { ProductoModule } from './producto/producto.module';
 import { UsuarioModule } from './usuario/usuario.module';
+import { DireccionModule } from './direccion/direccion.module';
+import { TarjetaModule } from './tarjeta/tarjeta.module';
 
 
 @NgModule({
@@ -34,6 +36,8 @@ import { UsuarioModule } from './usuario/usuario.module';
     PedidoModule,
     ProductoModule,
     UsuarioModule,
+    DireccionModule,
+    TarjetaModule,
 
     
     AppRoutingModule

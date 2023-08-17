@@ -120,9 +120,18 @@ CREATE TABLE `Usuario` (
     `correo` VARCHAR(191) NOT NULL,
     `telefono` VARCHAR(191) NOT NULL,
     `clave` VARCHAR(191) NOT NULL,
-    `tipoUsuario` ENUM('ADMIN', 'CLIENTE', 'VENDEDOR') NOT NULL DEFAULT 'ADMIN',
+    `estado` INTEGER NOT NULL,
 
     UNIQUE INDEX `Usuario_correo_key`(`correo`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `TiposUsuario` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `idUsuario` INTEGER NOT NULL,
+    `tipoUsuario` ENUM('ADMIN', 'CLIENTE', 'VENDEDOR') NOT NULL DEFAULT 'ADMIN',
+
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -182,6 +191,9 @@ ALTER TABLE `Respuesta` ADD CONSTRAINT `Respuesta_idPregunta_fkey` FOREIGN KEY (
 
 -- AddForeignKey
 ALTER TABLE `Tarjeta` ADD CONSTRAINT `Tarjeta_idUsuario_fkey` FOREIGN KEY (`idUsuario`) REFERENCES `Usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `TiposUsuario` ADD CONSTRAINT `TiposUsuario_idUsuario_fkey` FOREIGN KEY (`idUsuario`) REFERENCES `Usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `_AtributoToProducto` ADD CONSTRAINT `_AtributoToProducto_A_fkey` FOREIGN KEY (`A`) REFERENCES `Atributo`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

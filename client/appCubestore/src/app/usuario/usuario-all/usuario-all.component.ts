@@ -7,15 +7,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GenericService } from 'src/app/share/generic.service';
 
 @Component({
-  selector: 'app-producto-all',
-  templateUrl: './producto-all.component.html',
-  styleUrls: ['./producto-all.component.css']
+  selector: 'app-usuario-all',
+  templateUrl: './usuario-all.component.html',
+  styleUrls: ['./usuario-all.component.css']
 })
-export class ProductoAllComponent implements AfterViewInit {
+export class UsuarioAllComponent  implements AfterViewInit {
   datos:any;
   destroy$:Subject<boolean>=new Subject<boolean>();
 
-  idUsuario:any;
+  respUsuario:any;
+  
+  estadoEnumValues = Object.values(estadosEnum);
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -23,32 +25,19 @@ export class ProductoAllComponent implements AfterViewInit {
   dataSource= new MatTableDataSource<any>();
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['nombre', 'vendedorD', 'precio' ,'acciones'];
+  displayedColumns = ['nombre', 'correo', 'telefono' ,'estado', 'acciones'];
 
   constructor(private router:Router,
     private route:ActivatedRoute,
     private gService:GenericService) {
-      let id=this.route.snapshot.paramMap.get('id');
-      if(!isNaN(Number(id))){
-        this.idUsuario = Number(id);
-      } else {
-        this.idUsuario = 0;
-      }
-    
+  }
+  ngAfterViewInit(): void {
+    this.listaUsuarios();
   }
 
-  ngAfterViewInit(): void {
-    let id = this.idUsuario;
-    if (id != 0){
-      this.listaProductos(Number(id));
-    } else {
-      this.listaProductos("");
-    }
-   
-  }
-  listaProductos(id:any){
+  listaUsuarios(){
     //localhost:3000/factura
-    this.gService.get('producto/all',id)
+    this.gService.list('usuario/all')
       .pipe(takeUntil(this.destroy$))
       .subscribe((data:any)=>{
         console.log(data);
@@ -58,22 +47,25 @@ export class ProductoAllComponent implements AfterViewInit {
         this.dataSource.paginator = this.paginator;        
       });   
   }
-  detalle(id:number){
-    this.router.navigate(['/producto',id],
-    {
-      relativeTo:this.route
-    })
-  }
-  update(id:number){
-    this.router.navigate(['/producto/update/',id],
-    {
-      relativeTo:this.route
-    })
+
+  deshabilitar(user:any){
+    user.estado = 0;
+    this.gService.update('usuario',user)
+    .pipe(takeUntil(this.destroy$)) .subscribe((data: any) => {
+      //Obtener respuesta
+      this.respUsuario=data;
+      this.router.navigate(['/usuario/all'],{
+        queryParams: {update:'true'}
+      });
+    });
   }
 
   ngOnDestroy(){
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
   }
-
+}
+enum estadosEnum {
+  DESHABILITADO='Desabilitado',
+  HABILITADO= 'Habilitado',
 }

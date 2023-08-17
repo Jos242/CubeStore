@@ -9,14 +9,18 @@ import { facturaproductos } from './seeds/facturaproductos';
 import { preguntas } from './seeds/preguntas';
 import { respuestas } from './seeds/respuestas';
 import { tarjetas } from './seeds/tarjetas';
+import { tiposusuarios } from './seeds/tiposusuario';
 
 const prisma = new PrismaClient();
 
 async function main() {
   
-    await prisma.usuario.createMany({
-        data: usuarios
-      });   
+  await prisma.usuario.createMany({
+    data: usuarios
+  });  
+  await prisma.tiposUsuario.createMany({
+    data: tiposusuarios
+  });   
       await prisma.categoria.createMany({
         data: categorias
       });

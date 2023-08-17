@@ -129,7 +129,7 @@ model Usuario {
   correo    String @unique
   telefono  String
   clave     String
-  tipoUsuario TipoUsuario @default(ADMIN)
+  estado    Int
   direcciones Direccion[]
   facturas   Factura[]
   evaluaciones Evaluacion[]
@@ -137,6 +137,14 @@ model Usuario {
   respuestas Respuesta[]
   tarjetas Tarjeta[]
   productos Producto[]
+  tiposUsuario TiposUsuario[]
+}
+
+model TiposUsuario{
+  id Int @id @default(autoincrement())
+  idUsuario Int
+  tipoUsuario TipoUsuario @default(ADMIN)
+  usuario   Usuario @relation(fields: [idUsuario], references: [id])
 }
 
 enum TipoUsuario {

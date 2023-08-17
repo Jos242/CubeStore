@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, elementAt } from 'rxjs';
 import { AuthenticationService } from '../authentication.service';
 
 @Injectable({
@@ -31,18 +31,22 @@ export class AuthGuard implements CanActivate {
   //con alguno de los indicados
   checkUserLogin(route: ActivatedRouteSnapshot, url: any): boolean {
     if (this.isAuthenticated) {
-      const userTipoUsuarios = this.currentUser.user.tipoUsuario;
-      //roles.length && roles.indexOf(verify.role)===-1
-      if(route.data['tipoUsuarios'].length && !route.data['tipoUsuarios'].includes(userTipoUsuarios)){ 
+      const tipos = [];
+      const userTiposUsuario = this.currentUser.user.tiposUsuario;
+      userTiposUsuario.forEach(element => {
+        tipos.push(element.tipoUsuario);
+      });
+      
+      if(!route.data['tipoUsuarios'].some(element => tipos.includes(element))){
         this.router.navigate(['/producto/'], {
           //Parametro para mostrar mensaje en login
           queryParams: { auth: 'no' }
         });
         return false;
+      } else {
+        return true;
       }
-      return true;
     } 
-
     this.router.navigate(['/producto'], {
       queryParams: { auth: 'no'}
     });

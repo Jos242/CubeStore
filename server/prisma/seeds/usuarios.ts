@@ -1,4 +1,3 @@
-import {TipoUsuario } from "@prisma/client";
 export const usuarios = [
     //1
     {
@@ -6,7 +5,7 @@ export const usuarios = [
         correo:    "jose1andres1ml@gmail.com",
         telefono:  "84242002",
         clave:    "$2b$10$taYLi3ig0THGFf8KUR7AduUtB1f9SkhxMmGsLzv93gv7PW48ofj6u",
-        tipoUsuario: TipoUsuario.ADMIN,
+        estado: 1,
         // direcciones: {
         //     connect: [{ id: 1 }, { id: 2 }]
         // },
@@ -31,7 +30,7 @@ export const usuarios = [
         correo:    "eduardo@gmail.com",
         telefono:  "12345678",
         clave:    "$2b$10$taYLi3ig0THGFf8KUR7AduUtB1f9SkhxMmGsLzv93gv7PW48ofj6u",
-        tipoUsuario: TipoUsuario.CLIENTE,
+        estado: 1,
         // direcciones: {
         //     connect: [{ id: 3 }]
         // },
@@ -56,7 +55,7 @@ export const usuarios = [
         correo:    "qiyi@gmail.com",
         telefono:  "87654321",
         clave:    "$2b$10$taYLi3ig0THGFf8KUR7AduUtB1f9SkhxMmGsLzv93gv7PW48ofj6u",
-        tipoUsuario: TipoUsuario.VENDEDOR,
+        estado: 1,
         // direcciones: {
         //     connect: [{ id: 4 }]
         // },
@@ -69,7 +68,7 @@ export const usuarios = [
         correo:    "andres@gmail.com",
         telefono:  "11110000",
         clave:    "$2b$10$taYLi3ig0THGFf8KUR7AduUtB1f9SkhxMmGsLzv93gv7PW48ofj6u",
-        tipoUsuario: TipoUsuario.CLIENTE,
+        estado: 1,
         // direcciones: {
         //     connect: [{ id: 5 }]
         // },
@@ -94,7 +93,7 @@ export const usuarios = [
         correo:    "moyu@gmail.com",
         telefono:  "00001111",
         clave:    "$2b$10$taYLi3ig0THGFf8KUR7AduUtB1f9SkhxMmGsLzv93gv7PW48ofj6u",
-        tipoUsuario: TipoUsuario.VENDEDOR,
+        estado: 1,
         // direcciones: {
         //     connect: [{ id: 4 }]
         // },

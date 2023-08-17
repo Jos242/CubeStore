@@ -16,13 +16,20 @@ import {MatDialogModule} from "@angular/material/dialog";
 import { MatIconModule } from '@angular/material/icon';
 import { LayoutModule } from '@angular/cdk/layout';
 import {MatCardModule} from '@angular/material/card';
+import { UsuarioAllComponent } from './usuario-all/usuario-all.component';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';  
+import { MatMenuModule } from '@angular/material/menu';
 
 
 @NgModule({
   declarations: [
     UsuarioLoginComponent,
     UsuarioCreateComponent,
-    UsuarioIndexComponent
+    UsuarioIndexComponent,
+    UsuarioAllComponent
   ],
   imports: [CommonModule,
     MatCardModule,
@@ -34,6 +41,19 @@ import {MatCardModule} from '@angular/material/card';
     MatInputModule,
     MatSelectModule,
     MatRadioModule,
-    ReactiveFormsModule, UsuarioRoutingModule]
+    MatButtonModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatDividerModule,
+    MatDialogModule,
+    MatInputModule,
+    MatSelectModule,
+    MatRadioModule, 
+    ReactiveFormsModule, 
+    ReactiveFormsModule, UsuarioRoutingModule],
+  exports: [
+    UsuarioAllComponent
+  ]
 })
 export class UsuarioModule { }

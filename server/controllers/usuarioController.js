@@ -1,9 +1,36 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const { TipoUsuario } = require("@prisma/client");
 const jwt = require("jsonwebtoken");
 
 const bcrypt = require("bcrypt");
+
+module.exports.get = async (request, response, next) => {
+    const usuarios = await prisma.usuario.findMany({
+        orderBy: {
+            id: 'asc',
+          },
+    });
+    response.json(usuarios);
+};
+
+module.exports.update = async (request, response, next) => {
+    const usuario = request.body;
+    let idUsuario = parseInt(request.params.id);
+    
+    const newUsuario = await prisma.usuario.update({
+      where: {
+        id: idUsuario,
+      },
+      data: {
+        nombre: usuario.nombre,
+        correo: usuario.correo,
+        telefono: usuario.telefono,
+        clave: usuario.clave,
+        estado: usuario.estado,
+      },
+    });
+    response.json(newUsuario);
+};
 
 module.exports.register = async (request, response, next) => {
     const userData = request.body;
@@ -20,7 +47,12 @@ module.exports.register = async (request, response, next) => {
             correo: userData.correo,
             telefono: userData.telefono,
             clave: hash,
-            tipoUsuario: TipoUsuario[userData.tipoUsuario]
+            estado: userData.estado,
+            tiposUsuario: {
+                createMany: {
+                  tipoUsuario: userData.tiposUsuario,
+                },
+              },
         }
     });
     response.status(200).json({
@@ -38,6 +70,9 @@ module.exports.login = async (request, response, next) => {
         where: {
             correo: userReq.correo,
         },
+        include: {
+            tiposUsuario: true,
+        },
     });
     
     //Sino lo encuentra según su email
@@ -49,7 +84,7 @@ module.exports.login = async (request, response, next) => {
     }
 
     const checkClave = await bcrypt.compare(userReq.clave, user.clave);
-    if(checkClave === false){
+    if(checkClave === false || userReq.estado==0){
         response.status(401).send({
             success: false,
             message: "Credenciales no validas"
@@ -59,7 +94,7 @@ module.exports.login = async (request, response, next) => {
         //Crear el payload
         const payload = {
             correo: user.correo,
-            tipoUsuario: user.tipoUsuario
+            tipoUsuario: user.tiposUsuario
         }
         //Crear el token
         const token= jwt.sign(payload,process.env.SECRET_KEY,{

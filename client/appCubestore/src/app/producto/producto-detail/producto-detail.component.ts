@@ -124,14 +124,11 @@ enviarRespuesta(idPregunta:Number): void {
 }
 
   fetchUploadedImages(id:any) {
-    this.httpClient.get<any[]>(`http://localhost:3000/images/${id}`).subscribe(
-      (res) => {
-        this.uploadedImages = res;
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+    this.gService.list('images/all')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data:any)=>{
+        this.uploadedImages = data[id];
+      });
   }
 }
 
