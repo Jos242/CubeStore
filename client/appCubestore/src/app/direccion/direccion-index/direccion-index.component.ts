@@ -26,11 +26,12 @@ export class DireccionIndexComponent {
     private auth:AuthenticationService
     ){
     this.auth.currentUser.subscribe((x)=>(this.currentUser=x));
-    if (this.currentUser != null){
-      this.isVendedor = !this.currentUser.user.tiposUsuario.some(element => element === 'VENDEDOR');
-    } else {
-      this.isVendedor = false;
-    }
+    
+    this.auth.currentUser.subscribe((x)=>{
+      if(this.currentUser!=null){
+        this.isVendedor = x.user.tiposUsuario.some(element => element.tipoUsuario === 'VENDEDOR')
+      }
+    });
 
     this.listaDirecciones();
   }
@@ -59,9 +60,7 @@ export class DireccionIndexComponent {
     this.gService.list('direccion/usuario/'+this.currentUser.user.id)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data:any)=>{
-        console.log(data);
         this.datos=data;
-        console.log(data);
       });
   }
 

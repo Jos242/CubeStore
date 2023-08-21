@@ -129,8 +129,7 @@ export class ProductoFormComponent implements OnInit {
         this.categoriasList = data; 
       });
   }
-
-
+  
   public errorHandling = (control: string, error: string) => {
     return this.productoForm.controls[control].hasError(error);
   };

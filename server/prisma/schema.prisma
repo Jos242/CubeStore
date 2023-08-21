@@ -149,7 +149,6 @@ model Usuario {
   telefono  String
   clave     String
   estado Int
-  tipoUsuario TipoUsuario @default(ADMIN)
   direcciones Direccion[]
   facturas   Factura[]
   evaluaciones Evaluacion[]

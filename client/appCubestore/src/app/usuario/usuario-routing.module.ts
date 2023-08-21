@@ -4,6 +4,7 @@ import { UsuarioIndexComponent } from './usuario-index/usuario-index.component';
 import { UsuarioCreateComponent } from './usuario-create/usuario-create.component';
 import { UsuarioLoginComponent } from './usuario-login/usuario-login.component';
 import { UsuarioAllComponent } from './usuario-all/usuario-all.component';
+import { AuthGuard } from '../share/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -14,7 +15,14 @@ const routes: Routes = [
       { path: 'login', component: UsuarioLoginComponent },
     ],
   },
-  {path:'usuario/all', component: UsuarioAllComponent},
+  {
+    path:'usuario/all',
+    component: UsuarioAllComponent,
+    canActivate:[AuthGuard],
+    data:{
+      tipoUsuarios: (["ADMIN"])
+    }
+  },
 ];
 
 @NgModule({

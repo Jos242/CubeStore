@@ -1,13 +1,13 @@
 <div class="grid-container">
   <div><p class="title">Productos</p></div>
-  <div class="crear" *ngIf="isntCliente">
+  <div class="crear" *ngIf="isVendedor">
     <button  mat-fab
     matTooltip="Crear Nuevo Producto"
     aria-label="Crear Nuevo Producto" 
     color="primary"
     (click)="create()"><mat-icon>add_cricle</mat-icon></button>
   </div>
-  <div class="crear" *ngIf="isntCliente">
+  <div class="crear" *ngIf="isVendedor">
     <button  mat-fab
     matTooltip="Editar Productos"
     aria-label="Editar Productos" 
@@ -22,13 +22,13 @@
         <div class="col">    
             <mat-form-field class="full-width">
               <mat-label>Nombre: </mat-label>
-              <input matInput #filter (change)="filterProductos(filter.value)">
+              <input matInput #filter (change)="applyFilters(filter.value,-1,-1)">
 
             </mat-form-field> 
         </div>
         <div class="col">
             <mat-form-field class="full-width">
-                  <mat-select placeholder="Categoria" formControlName="idCategoria" #categoria (selectionChange)="filterCategorias(categoria.value)">
+                  <mat-select placeholder="Categoria" formControlName="idCategoria" #categoria (selectionChange)="applyFilters(-1,categoria.value,-1)">
                     <mat-option *ngFor="let categoria of categoriasList" [value]="categoria.id">
                       {{ categoria.descripcion }}
                     </mat-option>
@@ -40,7 +40,7 @@
         <div class="col">
           <mat-form-field class="full-width">
             <mat-label>Precio</mat-label>
-            <mat-select #precio [value]="1" (selectionChange)="filterPrecios(precio.value)">
+            <mat-select #precio [value]="1" (selectionChange)="applyFilters(-1,-1,precio.value)">
               <mat-option [value]="1"> No filtrar </mat-option>
               <mat-option [value]="2"> Mas baratos </mat-option>
               <mat-option [value]="3"> Mas caros </mat-option>
@@ -91,8 +91,7 @@
               aria-label="Agregar al carrito"
               color="primary"
               (click)="comprar(item.id)"
-              
-
+              *ngIf="isCliente"
             >
               <mat-icon class="mat-18">add_shopping_cart</mat-icon>
             </button>

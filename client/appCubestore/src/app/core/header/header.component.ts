@@ -13,6 +13,7 @@ import { CartService } from 'src/app/share/cart.service';
 export class HeaderComponent {
 
   isAutenticated: boolean;
+  isCliente:boolean;
   currentUser: any;
   qtyItems:Number = 0;
   constructor(private cartService: CartService,
@@ -26,12 +27,21 @@ export class HeaderComponent {
     this.authService.currentUser.subscribe((x)=>(this.currentUser=x));
      //Subscripción al boolean que indica si esta autenticado
      this.authService.isAuthenticated.subscribe((valor)=>(this.isAutenticated=valor));
-    
+     
+    this.authService.currentUser.subscribe((x)=>{
+      if(this.currentUser!=null){
+        this.isCliente = x.user.tiposUsuario.some(element => element.tipoUsuario === 'CLIENTE')
+      }
+    });
      this.cartService.countItems.subscribe((value)=>{
       this.qtyItems=value
      })
-
   }
+  historial(){
+    this.router.navigate(['factura/all/'+this.currentUser.user.id]);
+  }
+
+
   login(){
     this.router.navigate(['usuario/login']);
   }

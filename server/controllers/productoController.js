@@ -17,7 +17,6 @@ module.exports.get = async (request, response, next) => {
                 fechaExp: true,
                 respuestas: true,
             }
-            
         }
     }
   });

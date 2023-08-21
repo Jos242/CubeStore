@@ -35,7 +35,7 @@ export class UsuarioCreateComponent implements OnInit {
       correo: ['', [Validators.required]],
       telefono: ['', [Validators.required]],
       clave: ['', [Validators.required]],
-      tipo: ['', [Validators.required]],
+      tiposUsuario: ['', [Validators.required]],
     });
     this.getTipos();
   }
@@ -46,6 +46,7 @@ export class UsuarioCreateComponent implements OnInit {
     if(this.formCreate.invalid){
      return;
     }
+    console.log("jiji")
     this.authService.createUser(this.formCreate.value)
     .subscribe((respuesta:any)=>{
       this.usuario=respuesta;

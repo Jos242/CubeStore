@@ -47,12 +47,16 @@ module.exports.register = async (request, response, next) => {
             correo: userData.correo,
             telefono: userData.telefono,
             clave: hash,
-            estado: userData.estado,
+            estado: 1,
             tiposUsuario: {
-                createMany: {
-                  tipoUsuario: userData.tiposUsuario,
-                },
+              createMany: {
+                data: userData.tiposUsuario.map(tipo => {
+                  return {
+                    tipoUsuario: tipo,
+                  };
+                }),
               },
+            }
         }
     });
     response.status(200).json({
@@ -71,43 +75,50 @@ module.exports.login = async (request, response, next) => {
             correo: userReq.correo,
         },
         include: {
-            tiposUsuario: true,
-        },
+          tiposUsuario: true
+        }
     });
-    
     //Sino lo encuentra según su email
     if (!user) {
-        response.status(401).send({
-            success: false,
-            message: "Usuario no registrado",
-        });
-    }
-
-    const checkClave = await bcrypt.compare(userReq.clave, user.clave);
-    console.log(userReq)
-    if(checkClave === false || user.estado==0){
-        response.status(401).send({
-            success: false,
-            message: "Credenciales no validas"
-        })
+      response.status(401).send({
+        success: false,
+        message: "Usuario no registrado",
+      });
     } else {
-        //Usuario correcto
-        //Crear el payload
-        const payload = {
-            correo: user.correo,
-            tipoUsuario: user.tiposUsuario
-        }
-        //Crear el token
-        const token= jwt.sign(payload,process.env.SECRET_KEY,{
-          expiresIn: process.env.JWT_EXPIRE
+
+      if (user.estado == 0) {
+        response.status(401).send({
+          success: false,
+          message: "Usuario denegado",
         });
-        response.json({
-          success: true,
-          message: "Usuario registrado",
-          data: {
-            user,
-            token,
-          }
-        })
+      } else {
+        const checkClave = await bcrypt.compare(userReq.clave, user.clave);
+        console.log(userReq)
+        if(checkClave === false){
+            response.status(401).send({
+                success: false,
+                message: "Credenciales no validas"
+            })
+        } else {
+            //Usuario correcto
+            //Crear el payload
+            const payload = {
+                correo: user.correo,
+                tipoUsuario: user.tiposUsuario
+            }
+            //Crear el token
+            const token= jwt.sign(payload,process.env.SECRET_KEY,{
+              expiresIn: process.env.JWT_EXPIRE
+            });
+            response.json({
+              success: true,
+              message: "Usuario registrado",
+              data: {
+                user,
+                token,
+              }
+            })
+        }
+      }
     }
 };

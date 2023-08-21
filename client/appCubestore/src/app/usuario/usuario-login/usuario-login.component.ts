@@ -9,7 +9,7 @@ import { NotificacionService, TipoMessage } from 'src/app/share/notification.ser
   templateUrl: './usuario-login.component.html',
   styleUrls: ['./usuario-login.component.css']
 })
-export class UsuarioLoginComponent {
+export class UsuarioLoginComponent implements OnInit {
   hide=true;
   formulario: FormGroup;
   makeSubmit: boolean = false;
@@ -42,6 +42,7 @@ export class UsuarioLoginComponent {
    this.route.queryParams.subscribe((params)=>{
     register=params['register']==='true' || false;
     auth=params['auth'] || '';
+    console.log(auth)
     if(register){
       this.notificacion.mensaje(
         'Usuario',
@@ -68,7 +69,7 @@ export class UsuarioLoginComponent {
     if(this.formulario.invalid){
      return;
     }
-    this.authService.loginUser(this.formulario.value)
+    const hola = this.authService.loginUser(this.formulario.value)
     .subscribe((respuesta:any)=>{
      this.router.navigate(['/']);
     })

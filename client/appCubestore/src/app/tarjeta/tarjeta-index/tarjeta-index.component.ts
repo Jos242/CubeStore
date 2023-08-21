@@ -29,6 +29,7 @@ export class TarjetaIndexComponent {
     ){
     this.auth.currentUser.subscribe((x)=>(this.currentUser=x));
     if (this.currentUser != null){
+      console.log(this.currentUser)
       this.isVendedor = !this.currentUser.user.tiposUsuario.some(element => element === 'VENDEDOR');
     } else {
       this.isVendedor = false;

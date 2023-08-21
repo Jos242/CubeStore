@@ -55,7 +55,7 @@
           <div class="col">
             <mat-form-field  class="full-width">
               <mat-label>TipoUsuario</mat-label>
-                <mat-select placeholder="Tipo" formControlName="tipo">
+                <mat-select placeholder="Tipo" formControlName="tiposUsuario" multiple>
                   <mat-option *ngFor="let r of tipos" [value]="r.id">
                     {{ r.nombre }}
                   </mat-option>

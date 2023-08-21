@@ -6,6 +6,28 @@ module.exports.get = async (request, response, next) => {
   let listTipos = [];
   for (let element in TipoUsuario) {
     switch (element) {
+        case TipoUsuario.CLIENTE:
+            listTipos.unshift({
+            ["id"]: element,
+            ["nombre"]: "Cliente",
+          });
+          break;
+        case TipoUsuario.VENDEDOR:
+            listTipos.unshift({
+                ["id"]: element,
+                ["nombre"]: "Vendedor",
+            });
+            break;
+    }
+  }
+
+  response.json(listTipos);
+};
+
+module.exports.getAll = async (request, response, next) => {
+  let listTipos = [];
+  for (let element in TipoUsuario) {
+    switch (element) {
       case TipoUsuario.ADMIN:
         listTipos.unshift({
           ["id"]: element,

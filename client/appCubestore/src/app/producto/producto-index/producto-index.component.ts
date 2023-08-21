@@ -26,11 +26,16 @@ export class ProductoIndexComponent {
   images: Images[] = [];
   finales: Images[] = [];
   past:any;
-  isntCliente:boolean;
+  isCliente:boolean;
+  isVendedor:boolean;
   currentUser:any;
   categoriasList: any;
 
   filterDatos:any;
+
+  text:any = -1;
+  categoria:any = -1;
+  precio:any = -1;
 
   constructor(private gService:GenericService,
     private dialog:MatDialog,
@@ -50,15 +55,13 @@ export class ProductoIndexComponent {
       this.idUsuario = 0;
     }
     this.auth.currentUser.subscribe((x)=>(this.currentUser=x));
-    if (this.currentUser != null){
-      if(this.currentUser.user.tipoUsuario != 'CLIENTE'){
-        this.isntCliente = true;
-      } else {
-        this.isntCliente = false;
+    
+    this.auth.currentUser.subscribe((x)=>{
+      if(this.currentUser!=null){
+        this.isCliente = x.user.tiposUsuario.some(element => element.tipoUsuario === 'CLIENTE')
+        this.isVendedor = x.user.tiposUsuario.some(element => element.tipoUsuario === 'VENDEDOR')
       }
-    } else {
-      this.isntCliente = false;
-    }
+    });
     //localhost:3000/videojuego
 
         this.getImages()
@@ -87,13 +90,10 @@ export class ProductoIndexComponent {
    
   }
   
-  //Listar los videojuegos llamando al API
   listaProductos(){
-    //localhost:3000/videojuego
     this.gService.list('producto/')
       .pipe(takeUntil(this.destroy$))
       .subscribe((data:any)=>{
-        console.log(data);
         this.datos=data;
         this.filterDatos=this.datos;
       });
@@ -106,43 +106,40 @@ export class ProductoIndexComponent {
       .list('categoria')
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
-        // console.log(data);
         this.categoriasList = data; 
       });
   }
 
-  filterProductos(text:string){
-    if(!text){
-      this.filterDatos=this.datos
-    }else{
-      this.filterDatos=this.datos.filter(
+  applyFilters(text:any, categoria:any, precio:any){
+    if(text!=-1){
+      this.text=text;
+    }
+    if(categoria!=-1){
+      this.categoria=categoria;
+    }
+    if(precio!=-1){
+      this.precio=precio;
+    }
+    this.filterDatos=this.datos
+    if(this.text){
+      this.filterDatos=this.filterDatos.filter(
         producto=> 
-          producto?.nombre.toLowerCase().includes(text.toLowerCase())
+          producto?.nombre.toLowerCase().includes(this.text.toLowerCase())
       )
     }
-
-  }
-
-  filterCategorias(categoria) {
-    if (categoria < 1) {
-      this.filterDatos = this.datos;
-    } else {
-      this.filterDatos = this.datos.filter(
-        (producto) => producto?.idCategoria == categoria
+    if (this.categoria > 0) {
+      this.filterDatos = this.filterDatos.filter(
+        (producto) => producto?.idCategoria == this.categoria
       );
     }
-  }
-
-  filterPrecios(precio){
-    if (precio == 1) {
+    if (this.precio == 1) {
       this.filterDatos = this.filterDatos.sort((a, b) => a.id - b.id);
-    } else if (precio == 2) {
+    } else if (this.precio == 2) {
       this.filterDatos = this.filterDatos.sort((a, b) => a.precio -b.precio);
     } else {
       this.filterDatos = this.filterDatos.sort((a, b) => b.precio - a.precio);
     }
   }
-
 
   detalle(id:number){
     this.router.navigate(['/producto',id],

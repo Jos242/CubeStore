@@ -54,7 +54,12 @@ export class ProductoDetailComponent {
       this.idProducto=params['id'];
       if(this.idProducto!=undefined){
         this.auth.currentUser.subscribe((x)=>(this.currentUser=x));
-        this.isCliente = this.currentUser.user.tipoUsuario == 'CLIENTE';
+        let id=this.route.snapshot.paramMap.get('id');
+        this.auth.currentUser.subscribe((x)=>{
+          if(this.currentUser!=null){
+            this.isCliente = x.user.tiposUsuario.some(element => element.tipoUsuario === 'CLIENTE')
+          }
+        });
         console.log(this.currentUser.user.id);
           //Establecer los valores en cada una de las entradas del formulario
           this.preguntaForm.setValue({
@@ -77,11 +82,11 @@ export class ProductoDetailComponent {
     .pipe(takeUntil(this.destroy$))
     .subscribe((data:any)=>{
       console.log(data);
-        this.datos=data; 
-        this.isVendedor = (data.idUsuario == this.currentUser.user.id);
+        this.datos=data;
+        this.isVendedor = this.currentUser.user.tiposUsuario.some(element => element.tipoUsuario === 'VENDEDOR') && this.currentUser.user.id == this.datos.idUsuario
     });
-   
   }
+
   ngOnDestroy() {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
@@ -101,26 +106,41 @@ formularioReactive() {
     descripcion: [null, Validators.required]
   })
 }
+
+public errorHandlingPregunta = (control: string, error: string) => {
+  return this.preguntaForm.controls[control].hasError(error);
+};
+public errorHandlingRespuesta = (control: string, error: string) => {
+  return this.respuestaForm.controls[control].hasError(error);
+};
+
 enviarPregunta(): void {
   //Accion API create enviando toda la informacion del formulario
-  console.log(this.preguntaForm.value);
+  if(this.preguntaForm.invalid){
+    return;
+  }
   this.gService.create('pregunta',this.preguntaForm.value)
   .pipe(takeUntil(this.destroy$)) .subscribe((data: any) => {
     //Obtener respuesta
     this.resp=data;
-    window.location.reload();
   });
+  this.preguntaForm.reset();
+  this.respuestaForm.reset();
 }
 enviarRespuesta(idPregunta:Number): void {
   //Accion API create enviando toda la informacion del formulario
+  if(this.respuestaForm.invalid){
+    return;
+  }
   this.respuestaForm.value.idPregunta = idPregunta;
   console.log(this.respuestaForm.value);
   this.gService.create('respuesta',this.respuestaForm.value)
   .pipe(takeUntil(this.destroy$)) .subscribe((data: any) => {
     //Obtener respuesta
     this.resp=data;
-    window.location.reload();
   });
+  this.preguntaForm.reset();
+  this.respuestaForm.reset();
 }
 
   fetchUploadedImages(id:any) {
