@@ -10,6 +10,7 @@ import { UsuarioCreateComponent } from 'src/app/usuario/usuario-create/usuario-c
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-orden-checkout',
@@ -17,6 +18,8 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrls: ['./orden-checkout.component.css']
 })
 export class OrdenCheckoutComponent implements OnInit {
+  datos:any;
+  subtotal = 0;
   total = 0;
   fecha = Date.now();
   qtyItems = 0;
@@ -25,9 +28,12 @@ export class OrdenCheckoutComponent implements OnInit {
   direccionesList: any;
   destroy$: Subject<boolean> = new Subject<boolean>();
 
+  facturaForm: FormGroup;
+
   displayedColumns: string[] = ['producto', 'precio', 'cantidad', 'subtotal'];
   dataSource = new MatTableDataSource<any>();
   constructor(
+    private fb: FormBuilder,
     private cartService: CartService,
     private noti: NotificacionService,
     private gService: GenericService,
@@ -35,27 +41,40 @@ export class OrdenCheckoutComponent implements OnInit {
     private route:ActivatedRoute,
     private auth:AuthenticationService
   ) {
-
     this.auth.currentUser.subscribe((x)=>(this.currentUser=x));
     this.listaTarjetas();
     this.listaDirecciones();
+    this.formularioReactive();
   }
 
   ngOnInit(): void {
     this.cartService.currentDataCart$.subscribe(data=>{
-     this.dataSource=new MatTableDataSource(data)
+      this.datos = data;
+      this.dataSource=new MatTableDataSource(data)
     })
+    this.subtotal=this.cartService.getSubTotal()
     this.total=this.cartService.getTotal()
-   }
+    
+    this.facturaForm.setValue({
+      direccion: this.currentUser.user.direcciones[0].id,
+      tarjeta: this.currentUser.user.tarjetas[0].id,
+    })
+   } 
+   
+   formularioReactive() {
+    //[null, Validators.required]
+    this.facturaForm=this.fb.group({
+      direccion: [null, Validators.required],
+      tarjeta: [null, Validators.required],
+    })
+  }
   
    listaTarjetas() {
     this.listaTarjetas = null;
     this.gService.list('tarjeta/usuario/'+this.currentUser.user.id)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data:any)=>{
-        console.log(data);
         this.tarjetasList=data;
-        console.log(data);
       });
   }
 
@@ -64,9 +83,7 @@ export class OrdenCheckoutComponent implements OnInit {
     this.gService.list('direccion/usuario/'+this.currentUser.user.id)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data:any)=>{
-        console.log(data);
         this.direccionesList=data;
-        console.log(data);
       });
   }
 
@@ -95,40 +112,45 @@ export class OrdenCheckoutComponent implements OnInit {
 
   registrarOrden(tarjeta, direccion) {
     if(this.cartService.getItems!=null){
-       //Obtener los items del carrito de compras
-       let itemsCarrito=this.cartService.getItems;
-       //Armar la estructura de la tabla intermedia
-       //[{'videojuegoId':valor, 'cantidad':valor}]
-       let detalles=itemsCarrito.map(
-         x=>({
-           ['idProducto']:x.idItem,
-           ['cantidad']: x.cantidad
-         })
-       )
-       //Datos para el API
-       let infoFact={
-         'usuario': this.currentUser.user.id,
-         'direccion': direccion,
-         'tarjeta': tarjeta,
-         'createdAt': new Date(this.fecha),
-         'productos':detalles,
-         'total': this.total,
-
-       }
-       this.gService.create('factura',infoFact)
-       .subscribe((respuesta:any)=>{
-         this.noti.mensaje('Factura',
-         'Factura registrada #'+respuesta.id,
-         TipoMessage.success)
-         this.cartService.deleteCart();
-         this.total=this.cartService.getTotal();
-         console.log(respuesta)
-       })
+      //Obtener los items del carrito de compras
+      let itemsCarrito=this.cartService.getItems;
+      //Armar la estructura de la tabla intermedia
+      //[{'videojuegoId':valor, 'cantidad':valor}]
+      let detalles=itemsCarrito.map(
+        x=>({
+          ['idProducto']:x.idItem,
+          ['cantidad']: x.cantidad
+        })
+      )
+      detalles.forEach((element) => {
+        console.log(element)
+        this.gService.updateProductoCantidad('producto/cantidad',element)
+        .subscribe((respuesta:any)=>{
+        })
+      });
+      //Datos para el API
+      let infoFact={
+        'usuario': this.currentUser.user.id,
+        'direccion': direccion,
+        'tarjeta': tarjeta,
+        'createdAt': new Date(this.fecha),
+        'productos':detalles,
+        'total': this.total,
+      }
+      this.gService.create('factura',infoFact)
+      .subscribe((respuesta:any)=>{
+        this.noti.mensaje('Factura',
+        'Factura registrada #'+respuesta.id,
+        TipoMessage.success)
+        this.cartService.deleteCart();
+        this.total=this.cartService.getTotal();
+        this.router.navigate(['/'])
+      })
     }else{
      this.noti.mensaje('Factura',
      'Agregue productos a la orden',
      TipoMessage.warning)
     }
-   }
+  }
 }
 

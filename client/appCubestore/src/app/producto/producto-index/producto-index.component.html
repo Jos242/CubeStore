@@ -22,13 +22,13 @@
         <div class="col">    
             <mat-form-field class="full-width">
               <mat-label>Nombre: </mat-label>
-              <input matInput #filter (change)="applyFilters(filter.value,-1,-1)">
+              <input matInput #filter (change)="applyFilters(filter.value,categoria.value,precio.value)">
 
             </mat-form-field> 
         </div>
         <div class="col">
             <mat-form-field class="full-width">
-                  <mat-select placeholder="Categoria" formControlName="idCategoria" #categoria (selectionChange)="applyFilters(-1,categoria.value,-1)">
+                  <mat-select placeholder="Categoria" formControlName="idCategoria" #categoria (selectionChange)="applyFilters(filter.value,categoria.value,precio.value)">
                     <mat-option *ngFor="let categoria of categoriasList" [value]="categoria.id">
                       {{ categoria.descripcion }}
                     </mat-option>
@@ -40,7 +40,7 @@
         <div class="col">
           <mat-form-field class="full-width">
             <mat-label>Precio</mat-label>
-            <mat-select #precio [value]="1" (selectionChange)="applyFilters(-1,-1,precio.value)">
+            <mat-select #precio [value]="1" (selectionChange)="applyFilters(filter.value,categoria.value,precio.value)">
               <mat-option [value]="1"> No filtrar </mat-option>
               <mat-option [value]="2"> Mas baratos </mat-option>
               <mat-option [value]="3"> Mas caros </mat-option>
@@ -91,7 +91,7 @@
               aria-label="Agregar al carrito"
               color="primary"
               (click)="comprar(item.id)"
-              *ngIf="isCliente"
+              *ngIf="isCliente && item.cantidad > 0"
             >
               <mat-icon class="mat-18">add_shopping_cart</mat-icon>
             </button>

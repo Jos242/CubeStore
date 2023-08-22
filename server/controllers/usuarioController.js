@@ -75,7 +75,9 @@ module.exports.login = async (request, response, next) => {
             correo: userReq.correo,
         },
         include: {
-          tiposUsuario: true
+          tiposUsuario: true,
+          direcciones: true,
+          tarjetas: true
         }
     });
     //Sino lo encuentra según su email

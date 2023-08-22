@@ -111,15 +111,6 @@ export class ProductoIndexComponent {
   }
 
   applyFilters(text:any, categoria:any, precio:any){
-    if(text!=-1){
-      this.text=text;
-    }
-    if(categoria!=-1){
-      this.categoria=categoria;
-    }
-    if(precio!=-1){
-      this.precio=precio;
-    }
     this.filterDatos=this.datos
     if(this.text){
       this.filterDatos=this.filterDatos.filter(

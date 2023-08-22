@@ -1,4 +1,4 @@
-<mat-card class="box">
+  <mat-card class="box">
     <mat-card-title><h3>Mi Carrito de Compras</h3></mat-card-title>
     <mat-card-content *ngIf="currentUser as currentUser">
       Fecha: {{fecha | date: 'dd/MM/yyyy'}}
@@ -9,26 +9,28 @@
 
   <mat-card class="box">
     <mat-card-title><h3>Direccion de Envio y Metodo de Pago</h3></mat-card-title>
-    <div class="row">
+    <form [formGroup]="facturaForm" novalidate >
+      <div class="row">
         <div class="col">
-            <mat-form-field class="full-width">
-              <mat-select placeholder="Direccion" formControlName="idDireccion" #direccion>
-                <mat-option *ngFor="let direccion of direccionesList" [value]="direccion.id">
-                  {{ direccion.direccionExacta }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Direccion" formControlName="direccion" #direccion>
+              <mat-option *ngFor="let direccion of direccionesList" [value]="direccion.id">
+                {{ direccion.direccionExacta }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
         <div class="col">
-            <mat-form-field class="full-width">
-                <mat-select placeholder="Tarjeta" formControlName="idTarjeta" #tarjeta>
-                  <mat-option *ngFor="let tarjeta of tarjetasList" [value]="tarjeta.id">
-                    {{ tarjeta.numero }} | {{ tarjeta.proveedor }} | {{ tarjeta.nombre }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Tarjeta" formControlName="tarjeta" #tarjeta>
+              <mat-option *ngFor="let tarjeta of tarjetasList" [value]="tarjeta.id">
+                {{ tarjeta.numero }} | {{ tarjeta.proveedor }} | {{ tarjeta.nombre }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
-    </div>
+      </div>
+    </form>
     
 
   </mat-card>
@@ -55,13 +57,21 @@
             <mat-header-cell *matHeaderCellDef> Cantidad </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{ element.cantidad}} </mat-cell>
 
-          <mat-footer-cell *matFooterCellDef class="footer-total">Total </mat-footer-cell>
+            <mat-footer-cell *matFooterCellDef class="footer-total">
+              Subtotal 
+              <br>
+              Total
+            </mat-footer-cell>
           </ng-container>
   
           <ng-container matColumnDef="subtotal">
             <mat-header-cell *matHeaderCellDef> Subtotal </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{ element.subtotal | currency }} </mat-cell>
-            <mat-footer-cell *matFooterCellDef class="footer-total">{{total | currency}} (Incluye 13% de IVA)</mat-footer-cell>
+            <mat-footer-cell *matFooterCellDef class="footer-total">
+              {{subtotal | currency}}
+              <br>
+              {{total | currency}} (Incluye 13% de IVA)
+            </mat-footer-cell>
           </ng-container>
   
         

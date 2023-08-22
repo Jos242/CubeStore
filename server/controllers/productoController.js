@@ -169,3 +169,28 @@ module.exports.update = async (request, response, next) => {
   });
   response.json(newProducto);
 };
+module.exports.updateCantidad = async (request, response, next) => {
+  let producto = request.body;
+  let idProducto = parseInt(request.params.id);
+  //Obtener videojuego viejo
+  const productoViejo = await prisma.producto.findUnique({
+    where: { id: idProducto },
+    include: {
+      atributos: {
+        select:{
+          id:true
+        }
+      }
+    }
+  });
+
+  const newProducto = await prisma.producto.update({
+    where: {
+      id: idProducto,
+    },
+    data: {
+      cantidad: parseInt(productoViejo.cantidad - producto.cantidad)
+    },
+  });
+  response.json(newProducto);
+};

@@ -50,8 +50,10 @@ export class CartService {
           if (producto.cantidad <= 0) {
             this.removeFromCart(newItem);
             return;
-          } else {
-            listCart[objIndex].cantidad = producto.cantidad;
+          } else if(listCart[objIndex].cantidad != producto.cantidad){
+            listCart[objIndex].cantidad += 1;
+          } else if(listCart[objIndex].cantidad > producto.producto.cantidad){
+            listCart[objIndex].cantidad -= 1;
           }
         } else {
           //Actualizar la cantidad de un producto existente
@@ -122,19 +124,22 @@ export class CartService {
     }
     return sum;
   }
-  //Calcula y retorna el total de los items del carrito
-  public getTotal(): number {//Total antes de impuestos
-    let total = 0;
+  public getSubTotal(): number {//Total antes de impuestos
+    let subtotal = 0;
     let listCart = this.cart.getValue();
     if (listCart != null) {
        //Sumando los subtotales de cada uno de los items del carrito
-     
       listCart.forEach((item: ItemCart, index) => {
-        total += item.subtotal;
+        subtotal += item.subtotal;
       });
     }
-    total+= total*0.13;
-    return total;
+    return subtotal;
+  }
+
+  //Calcula y retorna el total de los items del carrito
+  public getTotal(): number {
+    let subtotal = this.getSubTotal()
+    return subtotal + subtotal*0.13;
   }
   
   //Borra toda los items del carrito

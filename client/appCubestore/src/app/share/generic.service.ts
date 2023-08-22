@@ -38,4 +38,11 @@ export class GenericService {
     );
   }
 
+  updateProductoCantidad(endopoint: string, objUpdate: any | any): Observable<any | any[]> {
+    return this.http.put<any | any[]>(
+      this.urlAPI + endopoint + `/${objUpdate.idProducto}`,
+      objUpdate
+    );
+  }
+
 }

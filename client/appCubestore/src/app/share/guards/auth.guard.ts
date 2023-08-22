@@ -41,8 +41,6 @@ export class AuthGuard implements CanActivate {
         tipos.push(element.tipoUsuario);
       });
 
-      console.log(route)
-
       if(route.data['direccion']){
         const data = await this.gService.list('direccion/usuario/' + this.currentUser.user.id)
         .pipe(takeUntil(this.destroy$))
@@ -51,7 +49,6 @@ export class AuthGuard implements CanActivate {
         this.datos = data;
           
         if(this.datos.length > 0){
-          console.log(tipos)
           if(tipos.length == 1 && tipos.includes('VENDEDOR')){
             this.router.navigate(['/direccion/'], {
               //Parametro para mostrar mensaje en login

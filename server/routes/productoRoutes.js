@@ -17,5 +17,7 @@ router.post('/',productoController.create);
 
 router.put('/:id',productoController.update);
 
+router.put('/cantidad/:id',productoController.updateCantidad);
+
 
 module.exports = router;

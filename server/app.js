@@ -131,7 +131,7 @@ async function getImages(imageUrlsList, id) {
       const data = await fs.promises.readFile(`./images/${id}/${file}`, 'base64');
       return "data:image/gif;base64," + data;
     }));
-
+    imageUrls.push(0)
     imageUrlsList.push(imageUrls);
     return getImages(imageUrlsList, ++id);
   } else {
