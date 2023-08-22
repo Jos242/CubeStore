@@ -1,4 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient, Pedido  } = require('@prisma/client');
 const prisma = new PrismaClient();
 //Obtener listado
 module.exports.get = async (request, response, next) => {
@@ -26,20 +26,26 @@ module.exports.getByClienteId = async (request, response, next) => {
   let id = parseInt(request.params.id);
   const factura = await prisma.factura.findMany({
     where: { idUsuario: id },
-    include: { 
-        usuario: true,
-        direccion: true,
-        tarjeta: {
-          select: {
-            proveedor: true
-          }
-        },
-        productos: {
-          select: {
-            producto: true,
-            estado: true
-          }
+    include: {
+      usuario: true,
+      direccion: true,
+      tarjeta: true,
+      productos: {
+        select: {
+          producto: {
+            select: {
+              nombre: true,
+              descripcion: true,
+              precio: true,
+              cantidad: true,
+              estado: true,
+              usuario: true
+            }
+          },
+          cantidad: true,
+          estado: true
         }
+      }
     }
   });
   response.json(factura);
@@ -50,20 +56,25 @@ module.exports.getById = async (request, response, next) => {
   const factura = await prisma.factura.findUnique({
     where: { id: id },
     include: {
-        usuario: true,
-        direccion: true,
-        tarjeta: {
-          select: {
-            tipo: true,
-            proveedor: true
-          }
-        },
-        productos: {
-          select: {
-            producto: true,
-            estado: true
-          }
+      usuario: true,
+      direccion: true,
+      tarjeta: true,
+      productos: {
+        select: {
+          producto: {
+            select: {
+              nombre: true,
+              descripcion: true,
+              precio: true,
+              cantidad: true,
+              estado: true,
+              usuario: true
+            }
+          },
+          cantidad: true,
+          estado: true
         }
+      }
     }
   });
   response.json(factura);
@@ -97,4 +108,17 @@ module.exports.create = async (request, response, next) => {
 
 };
 //Actualizar
-module.exports.update = async (request, response, next) => {};
+module.exports.update = async (request, response, next) => {
+  let item = request.body;
+  let idItem = parseInt(request.params.id);
+
+  const newItem = await prisma.factura.update({
+    where: {
+      id: idItem,
+    },
+    data: {
+      estado: Pedido[item.estado]
+    },
+  });
+  response.json(newItem);
+};

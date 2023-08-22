@@ -23,7 +23,7 @@ export class FacturaAllComponent implements AfterViewInit {
   dataSource= new MatTableDataSource<any>();
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['usuario', 'tarjeta', 'fecha' ,'acciones'];
+  displayedColumns = ['direccion', 'fecha', 'total', 'estado' ,'acciones'];
 
   constructor(private router:Router,
     private route:ActivatedRoute,

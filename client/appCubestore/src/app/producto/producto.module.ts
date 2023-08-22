@@ -20,6 +20,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { ProductoFormComponent } from './producto-form/producto-form.component';
 
 
@@ -46,6 +47,7 @@ import { ProductoFormComponent } from './producto-form/producto-form.component';
     MatInputModule,
     MatSelectModule,
     MatRadioModule,
+    FormsModule,
     ReactiveFormsModule, 
   ]
 })

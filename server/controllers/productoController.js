@@ -5,79 +5,78 @@ const prisma = new PrismaClient();
 module.exports.get = async (request, response, next) => {
   const productos = await prisma.producto.findMany({
     include: { 
-        categoria: true,
-        usuario: true,
-        atributos: true,
-        preguntas: {
+      categoria: true,
+      usuario: true,
+      atributos: true,
+      preguntas: {
+        select:{
+          id: true,
+          idUsuario: true,
+          idProducto: true,
+          descripcion: true,
+          fechaExp: true,
+          usuario: true,
+          respuestas: {
             select:{
-                id: true,
-                idUsuario: true,
-                idProducto: true,
-                descripcion: true,
-                fechaExp: true,
-                respuestas: true,
+              idUsuario: true,
+              idPregunta: true,
+              descripcion: true,
+              fecha: true,
+              usuario: true
             }
+          }
         }
+      },
+      facturas: true
     }
   });
   response.json(productos);
 };
 
-// Obtener por Id
-module.exports.getById = async (request, response, next) => {
-  let id = parseInt(request.params.id);
-  const producto = await prisma.producto.findUnique({
-    where: { id: id },
-    include: { 
-        categoria: true,
-        usuario: true,
-        atributos: true,
-        preguntas: {
-            select:{
-              id: true,
-                idUsuario: true,
-                idProducto: true,
-                descripcion: true,
-                fechaExp: true,
-                respuestas: true,
-            }
-            
-        }
-    }
-  });
-  response.json(producto);
-};
-
-// Obtener por Vendedor
 module.exports.getById = async (request, response, next) => {
     let id = parseInt(request.params.id);
     const producto = await prisma.producto.findUnique({
       where: { id: id },
       include: { 
-          categoria: true,
-          usuario: true,
-          atributos: true,
-          preguntas: {
+        categoria: true,
+        usuario: true,
+        atributos: true,
+        preguntas: {
+          select:{
+            id: true,
+            idUsuario: true,
+            idProducto: true,
+            descripcion: true,
+            fechaExp: true,
+            usuario: true,
+            respuestas: {
               select:{
-                id: true,
                   idUsuario: true,
-                  idProducto: true,
+                  idPregunta: true,
                   descripcion: true,
-                  fechaExp: true,
-                  usuario: true,
-                  respuestas: {
-                    select:{
-                        idUsuario: true,
-                        idPregunta: true,
-                        descripcion: true,
-                        fecha: true,
-                        usuario: true
-                    }
-                    
-                }
+                  fecha: true,
+                  usuario: true
               }
-              
+            }
           }
+        },
+        facturas: {
+          select: {
+            idFactura: true,
+            idProducto: true,
+            cantidad: true,
+            estado: true,
+            factura: {
+              select: {
+                idUsuario: true,
+                createdAt: true,
+                total: true,
+                estado: true,
+                usuario: true,
+              }
+            },
+          }
+        }
       }
     });
     response.json(producto);
@@ -91,17 +90,43 @@ module.exports.getById = async (request, response, next) => {
         categoria: true,
         usuario: true,
         atributos: true,
-        // preguntas: {
-        //     select:{
-        //         idUsuario: true,
-        //         idProducto: true,
-        //         descripcion: true,
-        //         fechaExp: true,
-        //         respuestas: true,
-        //     }
-            
-        // }
-    }
+        preguntas: {
+          select:{
+            id: true,
+            idUsuario: true,
+            idProducto: true,
+            descripcion: true,
+            fechaExp: true,
+            usuario: true,
+            respuestas: {
+              select:{
+                  idUsuario: true,
+                  idPregunta: true,
+                  descripcion: true,
+                  fecha: true,
+                  usuario: true
+              }
+            }
+          }
+        },
+        facturas: {
+          select: {
+            idFactura: true,
+            idProducto: true,
+            cantidad: true,
+            estado: true,
+            factura: {
+              select: {
+                idUsuario: true,
+                createdAt: true,
+                total: true,
+                estado: true,
+                usuario: true,
+              }
+            },
+          }
+        }
+      }
     });
     response.json(producto);
   };
@@ -169,6 +194,7 @@ module.exports.update = async (request, response, next) => {
   });
   response.json(newProducto);
 };
+
 module.exports.updateCantidad = async (request, response, next) => {
   let producto = request.body;
   let idProducto = parseInt(request.params.id);

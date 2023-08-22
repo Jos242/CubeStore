@@ -28,7 +28,7 @@
         </div>
         <div class="col">
             <mat-form-field class="full-width">
-                  <mat-select placeholder="Categoria" formControlName="idCategoria" #categoria (selectionChange)="applyFilters(filter.value,categoria.value,precio.value)">
+                  <mat-select placeholder="Categoria" #categoria (selectionChange)="applyFilters(filter.value,categoria.value,precio.value)">
                     <mat-option *ngFor="let categoria of categoriasList" [value]="categoria.id">
                       {{ categoria.descripcion }}
                     </mat-option>
@@ -70,7 +70,8 @@
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               {{item.usuario.nombre}}
             </div>
-            <div>{{item.estado}} </div>
+            <div>{{item.estado}}</div>
+            <div *ngIf="item.cantidad == 0">Agotado</div>
           </mat-card-content>
           
           <mat-card-actions>

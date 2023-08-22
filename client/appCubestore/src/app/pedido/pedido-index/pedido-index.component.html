@@ -19,21 +19,36 @@
             <td mat-cell *matCellDef="let row">{{row.producto.nombre}}</td>
           </ng-container>
   
-          <!-- Columna descripcion -->
-          <ng-container matColumnDef="descripcion">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripcion</th>
-            <td mat-cell *matCellDef="let row">{{row.producto.descripcion}}</td>
-          </ng-container>
-  
           <!-- Columna cantidad -->
           <ng-container matColumnDef="cantidad">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad</th>
             <td mat-cell *matCellDef="let row">{{row.cantidad}}</td>
           </ng-container>
+  
+          <!-- Columna estado -->
+          <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+            <td mat-cell *matCellDef="let row">{{enums[row.estado]}}</td>
+          </ng-container>
+
           <!-- Columna subtotal -->
           <ng-container matColumnDef="subtotal">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Subtotal</th>
             <td mat-cell *matCellDef="let row">{{row.producto.precio*row.cantidad | currency: "USD"}}</td>
+          </ng-container>
+          
+          <!-- Columna acciones -->
+          <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+            <td mat-cell *matCellDef="let row">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Cantón" [value]="enums[row.estado]" (selectionChange)="actualizarEstado(row, $event.value)">
+                  <mat-option *ngFor="let esta of estadoEnumValues" [value]="esta" >
+                    {{ esta }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
           </ng-container>
           
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

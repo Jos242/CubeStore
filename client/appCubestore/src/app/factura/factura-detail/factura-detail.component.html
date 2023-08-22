@@ -15,11 +15,12 @@
       <p><b>Productos: </b></p>
       <ul *ngIf="datos.productos">
          <li *ngFor="let item of datos.productos"> 
+            <p><b>Vendedor: </b>{{item.producto.usuario.nombre}}</p>
             <p><b>Nombre: </b>{{item.producto.nombre}}</p>
             <p><b>Descripcion: </b>{{item.producto.descripcion}}</p>
-            <p><b>Precio: </b>{{item.producto.precio | currency:'USD'}}</p>
-            <p><b>Cantidad: </b>{{item.producto.cantidad}}</p>
-            <p><b>Estado: </b>{{item.producto.estado}}</p>
+            <p><b>Subtotal: </b>{{item.producto.precio*item.cantidad | currency:'USD'}}</p>
+            <p><b>Cantidad: </b>{{item.cantidad}}</p>
+            <p><b>Estado: </b>{{item.estado}}</p>
         </li>
       </ul>
     </mat-card-content>

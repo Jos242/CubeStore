@@ -83,13 +83,13 @@ model Factura {
 }
 
 model FacturaProducto {
+  id          Int     @id @default(autoincrement())
   idFactura  Int
   idProducto Int
   cantidad   Int
   estado     Pedido    @default(PENDIENTE)
   factura    Factura  @relation(fields: [idFactura], references: [id])
   producto   Producto @relation(fields: [idProducto], references: [id])
-  @@id([idFactura, idProducto])
 }
 
 model Pregunta {

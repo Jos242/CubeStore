@@ -14,6 +14,8 @@ router.get('/all/:id',facturaController.getByClienteId);
 
 router.post("/", facturaController.create);
 
+router.put("/:id", facturaController.update);
+
 //router.get("/:id", generoController.getById);
 
 module.exports = router;
