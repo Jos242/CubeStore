@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { GenericService } from 'src/app/share/generic.service';
+import { NotificacionService, TipoMessage } from 'src/app/share/notification.service';
 
 @Component({
   selector: 'app-evaluacion',
@@ -20,6 +21,7 @@ export class EvaluacionComponent {
 
   constructor(private router:Router,
     private fb: FormBuilder,
+    private noti: NotificacionService,
     private route:ActivatedRoute,
     private gService:GenericService,
     public dialogRef: MatDialogRef<EvaluacionComponent>,
@@ -56,6 +58,10 @@ export class EvaluacionComponent {
 
     this.gService.create('evaluacion',evaluacion)
     .pipe(takeUntil(this.destroy$)) .subscribe((data: any) => {
+
+      this.noti.mensaje('Evaluación',
+      'Usuario evaluado',
+      TipoMessage.success)
       //Obtener respuesta
       this.dialogRef.close();
       this.router.navigate(['/factura/all/'+this.datos.idUsuarioEvaluador]);

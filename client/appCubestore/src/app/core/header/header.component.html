@@ -21,6 +21,14 @@
         <span>Login</span>
       </a>
       <div *ngIf="(isAutenticated)">
+        <a mat-menu-item *ngIf="(isAdmin)" [routerLink]="'/usuario/all'">
+          <mat-icon>group</mat-icon>
+          <span>Usuarios</span>
+        </a>
+        <a mat-menu-item *ngIf="(isVendedor)" (click)="pedido()">
+          <mat-icon>all_inbox</mat-icon>
+          <span>Pedidos</span>
+        </a>
         <a mat-menu-item (click)="historial()">
           <mat-icon>shopping_bag</mat-icon>
           <span>Historial</span>

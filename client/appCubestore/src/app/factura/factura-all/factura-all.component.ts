@@ -76,6 +76,21 @@ export class FacturaAllComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.iniciarTabla();
+/*
+    this.gService.list('evaluacion/evaluado/'+3)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data:any)=>{
+        console.log("Evaluado Como Cliente")
+        const comoCliente = data.filter(item => item.evaluador === 2)
+        console.log(comoCliente)
+        console.log(comoCliente.reduce((sum, item) => sum + item.calificacion, 0)/comoCliente.length)
+        console.log(data)
+        console.log("Evaluado Como Vendedor")
+        const ComoVendedor = data.filter(item => item.evaluador === 1)
+        console.log(ComoVendedor)
+        console.log(ComoVendedor.reduce((sum, item) => sum + item.calificacion, 0))
+        console.log(ComoVendedor.reduce((sum, item) => sum + item.calificacion, 0)/ComoVendedor.length)
+      });  */
   }
 
   iniciarTabla() {

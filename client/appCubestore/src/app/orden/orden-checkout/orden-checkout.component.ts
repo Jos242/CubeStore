@@ -26,6 +26,8 @@ export class OrdenCheckoutComponent implements OnInit {
   currentUser:any;
   tarjetasList: any;
   direccionesList: any;
+  evaluacionesList: any;
+  evaluaciones: any = [];
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   facturaForm: FormGroup;
@@ -44,6 +46,7 @@ export class OrdenCheckoutComponent implements OnInit {
     this.auth.currentUser.subscribe((x)=>(this.currentUser=x));
     this.listaTarjetas();
     this.listaDirecciones();
+    this.listaEvaluaciones();
     this.formularioReactive();
   }
 
@@ -58,7 +61,8 @@ export class OrdenCheckoutComponent implements OnInit {
     this.facturaForm.setValue({
       direccion: this.currentUser.user.direcciones[0].id,
       tarjeta: this.currentUser.user.tarjetas[0].id,
-    })
+    });
+    
    } 
    
    formularioReactive() {
@@ -68,8 +72,38 @@ export class OrdenCheckoutComponent implements OnInit {
       tarjeta: [null, Validators.required],
     })
   }
+  listaEvaluaciones() {
+    this.gService.list('evaluacion')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data:any)=>{
+        this.evaluacionesList = data;
+        this.evaluacion();
+      }); 
+  }
+
+  evaluacion() {
+    const setVendedores = new Set<any>(
+      this.datos.map(pro => pro.producto.idUsuario)
+    );
+    const vendedores = [];
+    Array.from(setVendedores).forEach(element => {
+      const productos = this.datos.filter((product) => product.producto.usuario.id === element);
+      vendedores.push(productos[0].producto.usuario);
+    });
+
+    vendedores.forEach(element => {
+      const ComoVendedor = (this.evaluacionesList.filter(item => item.idUsuarioEvaluado === element.id)).filter(item => item.evaluador === 1)
+
+      let detalle = {
+        ['vendedor']: element.nombre,
+        ['calificacion']: (ComoVendedor.reduce((sum, item) => sum + item.calificacion, 0)/ComoVendedor.length).toFixed(2),
+      }
+
+      this.evaluaciones.push(detalle);
+    });
+  }
   
-   listaTarjetas() {
+  listaTarjetas() {
     this.listaTarjetas = null;
     this.gService.list('tarjeta/usuario/'+this.currentUser.user.id)
       .pipe(takeUntil(this.destroy$))

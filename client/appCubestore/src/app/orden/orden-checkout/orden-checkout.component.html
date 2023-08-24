@@ -1,11 +1,24 @@
-  <mat-card class="box">
-    <mat-card-title><h3>Mi Carrito de Compras</h3></mat-card-title>
-    <mat-card-content *ngIf="currentUser as currentUser">
-      Fecha: {{fecha | date: 'dd/MM/yyyy'}}
-      <br>
-      Usuario: {{currentUser.user.nombre}}
-    </mat-card-content>
-  </mat-card>
+  <div class="row">
+    <mat-card class="caja">
+      <mat-card-title><h3>Mi Carrito de Compras</h3></mat-card-title>
+      <mat-card-content *ngIf="currentUser as currentUser">
+        Fecha: {{fecha | date: 'dd/MM/yyyy'}}
+        <br>
+        Usuario: {{currentUser.user.nombre}}
+      </mat-card-content>
+    </mat-card>
+  
+    <mat-card class="caja">
+      <mat-card-title><h3>Calificaciones de vendedores</h3></mat-card-title>
+      <mat-card-content *ngIf="currentUser as currentUser">
+        <div class="fila" *ngFor="let item of evaluaciones">
+          <div class="vendedor">{{item.vendedor}}:</div>
+          <div class="calificacion"><span>{{item.calificacion}}</span></div>
+          <div class="estrella">&#9733;</div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
 
   <mat-card class="box">
     <mat-card-title><h3>Direccion de Envio y Metodo de Pago</h3></mat-card-title>

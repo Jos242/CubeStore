@@ -1,18 +1,15 @@
 <mat-card class="full-width">
     <!-- Titulo del Card -->
-    <mat-card-title>
-      Pedidos
-    </mat-card-title>
 
     <button
     *ngIf="isVendedor && isCliente"
-    mat-mini-fab
+    mat-button
     matTooltip="Detalle Factura"
     aria-label="Detalle Factura"
     color="primary"
     (click)="!selected ? listaFacturasVendedor(idUsuario) : listaFacturasCliente(idUsuario)"
     >
-      <mat-icon class="mat-18">info</mat-icon>
+      <mat-icon class="mat-18">info</mat-icon> {{selected ? 'Vista Vendedor' : 'Vista Cliente'}}
     </button>
     
     <mat-card-content>
