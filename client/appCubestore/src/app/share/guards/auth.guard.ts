@@ -58,6 +58,16 @@ export class AuthGuard implements CanActivate {
           }
         }
       }
+
+      if(route.data['vefiryId']){
+        if(route.params['id'] != this.currentUser.user.id){
+          this.router.navigate(['/producto/'], {
+            //Parametro para mostrar mensaje en login
+            queryParams: { auth: 'no' }
+          });
+          return false;
+        }
+      }
       
       if(!route.data['tipoUsuarios'].some(element => tipos.includes(element))){
         this.router.navigate(['/producto/'], {

@@ -24,7 +24,6 @@ export class ProductoIndexComponent {
   idUsuario:any;
   n:any;
   images: Images[] = [];
-  finales: Images[] = [];
   past:any;
   isCliente:boolean;
   isVendedor:boolean;

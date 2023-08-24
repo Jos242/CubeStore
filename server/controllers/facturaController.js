@@ -34,6 +34,7 @@ module.exports.getByClienteId = async (request, response, next) => {
         select: {
           producto: {
             select: {
+              idUsuario: true,
               nombre: true,
               descripcion: true,
               precio: true,
@@ -42,6 +43,7 @@ module.exports.getByClienteId = async (request, response, next) => {
               usuario: true
             }
           },
+          idFactura: true,
           cantidad: true,
           estado: true
         }
@@ -63,6 +65,7 @@ module.exports.getById = async (request, response, next) => {
         select: {
           producto: {
             select: {
+              idUsuario: true,
               nombre: true,
               descripcion: true,
               precio: true,
@@ -71,6 +74,7 @@ module.exports.getById = async (request, response, next) => {
               usuario: true
             }
           },
+          idFactura: true,
           cantidad: true,
           estado: true
         }

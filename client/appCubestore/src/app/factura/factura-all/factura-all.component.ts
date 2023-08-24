@@ -1,21 +1,42 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GenericService } from 'src/app/share/generic.service';
+import { AuthenticationService } from 'src/app/share/authentication.service';
+import { MatDialog } from '@angular/material/dialog';
+import { EvaluacionComponent } from '../evaluacion/evaluacion.component'; 
+
+interface Section {
+  name: string;
+  updated: Date;
+}
 
 @Component({
   selector: 'app-factura-all',
   templateUrl: './factura-all.component.html',
-  styleUrls: ['./factura-all.component.css']
+  styleUrls: ['./factura-all.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
+
 export class FacturaAllComponent implements AfterViewInit {
-  datos:any;
+  datos:any = [];
   destroy$:Subject<boolean>=new Subject<boolean>();
 
-  idCliente:any;
+  currentUser:any;
+  idUsuario:any;
+  isCliente:boolean;
+  isVendedor:boolean;
+  selected:boolean = true;
+
+  evaluaciones:any = [];
+
+  estadoEnumValues = Object.values(estadosEnum);
+  enums = estadosEnum
+
+  facturaProductos:any;
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -27,37 +48,144 @@ export class FacturaAllComponent implements AfterViewInit {
 
   constructor(private router:Router,
     private route:ActivatedRoute,
-    private gService:GenericService) {
+    private gService:GenericService,
+    public dialog: MatDialog,
+    private auth:AuthenticationService) {
+
+    this.auth.currentUser.subscribe((x)=>(this.currentUser=x));
+     
+    this.auth.currentUser.subscribe((x)=>{
+      if(this.currentUser!=null){
+        this.isCliente = x.user.tiposUsuario.some(element => element.tipoUsuario === 'CLIENTE')
+        this.isVendedor = x.user.tiposUsuario.some(element => element.tipoUsuario === 'VENDEDOR')
+      }
+    });
       let idd=this.route.snapshot.paramMap.get('id');
       if(!isNaN(Number(idd))){
-        this.idCliente = Number(idd);
+        this.idUsuario = Number(idd);
       } else {
-        this.idCliente = 0;
+        this.idUsuario = 0;
       }
-    
+      this.listaEvaluaciones();
+  }
+  isDropdownOpen = false;
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
   }
 
   ngAfterViewInit(): void {
-    let id = this.idCliente;
+    let id = this.idUsuario;
     if (id != 0){
-      this.listaFacturas(Number(id));
+      if (this.isVendedor){
+        this.listaFacturasVendedor(Number(id));
+        this.selected = true;
+      } else {
+        if (this.isCliente){
+          this.listaFacturasCliente(Number(id));
+          this.selected = false;
+        }
+      }
     } else {
-      this.listaFacturas("");
+      this.listaFacturasCliente("");
     }
    
   }
-  listaFacturas(id:any){
+
+  isEvaluated(id:any){
+    console.log(id)
+    if(this.selected) {
+      return this.evaluaciones.some(element => element.idUsuarioEvaluador === this.currentUser.user.id && element.idUsuarioEvaluado === id && element.evaluador === 2);
+    } else {
+      return this.evaluaciones.some(element => element.idUsuarioEvaluador === this.currentUser.user.id && element.idUsuarioEvaluado === id && element.evaluador === 1);
+    }
+  }
+
+  openEvaluacion(dato:any) {
+    let dats: any;
+    if(this.selected) {
+      dats = {
+          ['idUsuarioEvaluador']:this.currentUser.user.id,
+          ['idUsuarioEvaluado']: dato.idUsuario,
+          ['idFactura']: dato.id,
+          ['evaluador']: 2,
+        }
+    } else {
+      dats = {
+          ['idUsuarioEvaluador']:this.currentUser.user.id,
+          ['idUsuarioEvaluado']: dato[0].producto.idUsuario,
+          ['idFactura']: dato[0].idFactura,
+          ['evaluador']: 1,
+        }
+    }
+    const dialogRef = this.dialog.open(EvaluacionComponent, {
+      width: '400px', // Adjust the width as needed
+      data: dats
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // Handle dialog close if needed
+    });
+  }
+
+  listaVendedoresFactura(factura:any) {
+    const setVendedores = new Set<any>(
+      factura.productos.map(pro => pro.producto.idUsuario)
+    );
+
+    const vendedores = [];
+    Array.from(setVendedores).forEach(element => {
+      const productos = factura.productos.filter((product) => product.producto.idUsuario === element);
+      vendedores.push(productos);
+    });
+
+    this.facturaProductos = vendedores
+  }
+
+  listaFacturasCliente(id:any){
     //localhost:3000/factura
     this.gService.get('factura/all',id)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data:any)=>{
-        console.log(data);
         this.datos=data;
         this.dataSource = new MatTableDataSource(this.datos);
         this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;        
+        this.dataSource.paginator = this.paginator;     
+        
+        this.selected = false;   
+
+        console.log(this.datos)
       });   
   }
+
+  listaFacturasVendedor(id:any){
+    //localhost:3000/factura
+    this.gService.list('factura')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data:any)=>{
+        this.datos = [];
+        data.forEach(element => {
+          if (element.productos.some(x => x.producto.idUsuario === id)){
+            this.datos.push(element);
+          }
+        });
+        this.dataSource = new MatTableDataSource(this.datos);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;    
+        
+        this.selected = true;    
+      });   
+  }
+
+  listaEvaluaciones() {
+    this.gService.list('evaluacion')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data:any)=>{
+        this.evaluaciones = data;
+        console.log(this.evaluaciones)
+      });   
+  }
+
   detalle(id:number){
     this.router.navigate(['/factura',id],
     {
@@ -70,4 +198,11 @@ export class FacturaAllComponent implements AfterViewInit {
     this.destroy$.unsubscribe();
   }
 
+}
+
+enum estadosEnum {
+  PENDIENTE= 'Pendiente',
+  EN_PROGRESO= 'En progreso',
+  ENTREGADO= 'Entregado',
+  FINALIZADO='Finalizado'
 }

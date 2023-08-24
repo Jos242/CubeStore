@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FacturaIndexComponent } from './factura-index/factura-index.component';
 import { FacturaAllComponent } from './factura-all/factura-all.component';
 import { FacturaDetailComponent } from './factura-detail/factura-detail.component';
+import { AuthGuard } from '../share/guards/auth.guard';
 
 const routes: Routes = [
   {path:'factura', component: FacturaIndexComponent},
@@ -11,8 +12,15 @@ const routes: Routes = [
 
   {path:'factura/all', component: FacturaAllComponent},
 
-
-  {path:'factura/all/:id', component: FacturaAllComponent}
+  {
+    path:'factura/all/:id',
+    component: FacturaAllComponent,
+    canActivate:[AuthGuard],
+    data:{
+      vefiryId: true,
+      tipoUsuarios: (["CLIENTE", "VENDEDOR"])
+    }
+  },
 ];
 
 @NgModule({

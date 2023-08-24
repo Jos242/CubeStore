@@ -7,6 +7,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GenericService } from 'src/app/share/generic.service';
 import { NotificacionService, TipoMessage } from 'src/app/share/notification.service';
 
+interface Images {
+  url: string;
+}
+
 @Component({
   selector: 'app-pedido-index',
   templateUrl: './pedido-index.component.html',
@@ -15,10 +19,11 @@ import { NotificacionService, TipoMessage } from 'src/app/share/notification.ser
 export class PedidoIndexComponent implements AfterViewInit {
   datos:any;
   destroy$:Subject<boolean>=new Subject<boolean>();
-
+  images: Images[] = [];
   idVendedor:any;
   estado:any;
   estadoEnumValues = Object.values(estadosEnum);
+  productoEnumValues = Object.values(productosEnum);
   enums = estadosEnum;
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -27,7 +32,7 @@ export class PedidoIndexComponent implements AfterViewInit {
   dataSource= new MatTableDataSource<any>();
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['factura', 'nombre', 'cantidad', 'estado', 'subtotal', 'acciones'];
+  displayedColumns = ['imagen', 'factura', 'nombre', 'cantidad', 'estado', 'acciones'];
 
   constructor(private router:Router,
     private noti: NotificacionService,
@@ -39,7 +44,7 @@ export class PedidoIndexComponent implements AfterViewInit {
       } else {
         this.idVendedor = 0;
       }
-      console.log(estadosEnum)
+      this.getImages();
 
   }
 
@@ -64,7 +69,7 @@ export class PedidoIndexComponent implements AfterViewInit {
         
         this.dataSource = new MatTableDataSource(this.datos);
         this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;        
+        this.dataSource.paginator = this.paginator;    
       });   
   }
   compareEnumValues(item1: any, item2: any): boolean {
@@ -75,49 +80,45 @@ export class PedidoIndexComponent implements AfterViewInit {
     row.estado = estado;
     this.gService.update('pedido',row)
     .pipe(takeUntil(this.destroy$)) .subscribe((data: any) => {
+
+      this.noti.mensaje('Estado',
+      'Estado cambiado a ' + event,
+      TipoMessage.success)
       
       this.gService
       .get('factura',row.idFactura)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data:any)=>{
         const facturas = data.productos;
-        let status = "PENDIENTE";
-        
-        const pendiente = facturas.some(product => product.estado === "PENDIENTE");
-        if(!pendiente){
-          const progreso = facturas.some(product => product.estado === "EN_PROGRESO");
-          if(progreso){
-            status = "EN_PROGRESO";
-          } else {
-            const entregado = facturas.some(product => product.estado === "ENTREGADO");
-            if(entregado){
-              status = "ENTREGADO";
-            } else{
-              const finalizado = facturas.some(product => product.estado === "FINALIZADO");
-              if (finalizado){
-                status = "FINALIZADO";
-              }
-            }
-          }
-        }
+
+        const status = facturas.some(product => product.estado === "ENTREGADO") ? (facturas.every(product => product.estado === "ENTREGADO") ? "FINALIZADO" : "EN_PROGRESO") : "PENDIENTE";
         
         data.estado = status;
         this.gService.update('factura',data)
         .pipe(takeUntil(this.destroy$)) .subscribe((data: any) => {
-          this.noti.mensaje('Estado',
-          'Estado cambiado a ' + this.enums[status],
-          TipoMessage.success)
+          
         });
       });
-  });
-    
-    
+    });
+  }
+
+  getImages(){
+    this.gService.list('images/all')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data:any)=>{
+        this.images=data;
+      });
   }
 
   ngOnDestroy(){
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
   }
+}
+
+enum productosEnum {
+  PENDIENTE= 'Pendiente',
+  ENTREGADO= 'Entregado'
 }
 
 enum estadosEnum {

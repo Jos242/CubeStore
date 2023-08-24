@@ -16,15 +16,18 @@ import {MatDialogModule} from "@angular/material/dialog";
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
+import {MatListModule} from '@angular/material/list';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FacturaAllComponent } from './factura-all/factura-all.component';
 import { FacturaDetailComponent } from './factura-detail/factura-detail.component';
+import { EvaluacionComponent } from './evaluacion/evaluacion.component';
 
 @NgModule({
   declarations: [
     FacturaIndexComponent,
     FacturaAllComponent,
-    FacturaDetailComponent
+    FacturaDetailComponent,
+    EvaluacionComponent
   ],
   imports: [
     CommonModule,
@@ -42,7 +45,11 @@ import { FacturaDetailComponent } from './factura-detail/factura-detail.componen
     MatInputModule,
     MatSelectModule,
     MatRadioModule,
+    MatListModule,
     ReactiveFormsModule
+  ],
+  exports: [
+    EvaluacionComponent
   ]
 })
 export class FacturaModule { }

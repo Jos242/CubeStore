@@ -1,21 +1,23 @@
 <div class="grid-container">
   <div><p class="title">Productos</p></div>
-  <div class="crear" *ngIf="isVendedor">
-    <button  mat-fab
-    matTooltip="Crear Nuevo Producto"
-    aria-label="Crear Nuevo Producto" 
-    color="primary"
-    (click)="create()"><mat-icon>add_cricle</mat-icon></button>
+  <div class="crear">
+    <div *ngIf="isVendedor">
+      <button  mat-fab
+      matTooltip="Crear Nuevo Producto"
+      aria-label="Crear Nuevo Producto" 
+      color="primary"
+      (click)="create()"><mat-icon>add_cricle</mat-icon></button>
+    </div>
+    <div *ngIf="isVendedor">
+      <button  mat-fab
+      matTooltip="Editar Productos"
+      aria-label="Editar Productos" 
+      color="primary"
+      (click)="update()"><mat-icon>menu</mat-icon></button>
+    </div>
   </div>
-  <div class="crear" *ngIf="isVendedor">
-    <button  mat-fab
-    matTooltip="Editar Productos"
-    aria-label="Editar Productos" 
-    color="primary"
-    (click)="update()"><mat-icon>edit</mat-icon></button>
-  </div>
+  
   <mat-card>
-    
     <mat-card-header><h1 class="mat-h1">Buscar</h1></mat-card-header>
     <mat-card-content>
       <div class="row">

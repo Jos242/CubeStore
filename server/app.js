@@ -27,6 +27,7 @@ const direccionRouter = require("./routes/direccionRoutes");
 const tarjetaRouter = require("./routes/tarjetaRoutes");
 const ordenRouter = require("./routes/ordenRoutes");
 const facturaProductoRouter = require("./routes/facturaProductoRoutes");
+const evaluacionRouter = require("./routes/evaluacionRoutes");
 
 
 
@@ -66,6 +67,7 @@ app.use("/direccion/", direccionRouter);
 app.use("/tarjeta/", tarjetaRouter);
 app.use("/orden/", ordenRouter);
 app.use("/pedido/", facturaProductoRouter);
+app.use("/evaluacion/", evaluacionRouter);
 
 // app.use("/genero/", generoRouter);
 // app.use("/rol/", rolRouter); 

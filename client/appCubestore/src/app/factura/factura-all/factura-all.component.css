@@ -1,3 +1,26 @@
 td {
-    max-width: 300px;
+    width: 300px;
+    height: 80px;
 }
+
+.hoverin:hover {
+    background-color: #ececec;
+}
+
+.disable {
+    background-color: #8c8c8c;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+}
+
+.botones {
+    margin: 5px;
+}
+
+.hola {
+    width: 4000px;
+}
+  
