@@ -11,6 +11,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {MatListModule} from '@angular/material/list';
 import { OrdenCheckoutComponent } from './orden-checkout/orden-checkout.component';
 
 
@@ -29,6 +30,7 @@ import { OrdenCheckoutComponent } from './orden-checkout/orden-checkout.componen
     MatIconModule,
     MatSelectModule,
     MatGridListModule,
+    MatListModule,
     FormsModule, ReactiveFormsModule,
   ]
 })

@@ -27,6 +27,7 @@ export class ProductoIndexComponent {
   past:any;
   isCliente:boolean;
   isVendedor:boolean;
+  isAdmin:boolean;
   currentUser:any;
   categoriasList: any;
 
@@ -59,6 +60,7 @@ export class ProductoIndexComponent {
       if(this.currentUser!=null){
         this.isCliente = x.user.tiposUsuario.some(element => element.tipoUsuario === 'CLIENTE')
         this.isVendedor = x.user.tiposUsuario.some(element => element.tipoUsuario === 'VENDEDOR')
+        this.isAdmin = x.user.tiposUsuario.some(element => element.tipoUsuario === 'ADMIN')
       }
     });
     //localhost:3000/videojuego

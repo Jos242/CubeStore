@@ -14,6 +14,8 @@ export class HeaderComponent {
 
   isAutenticated: boolean;
   isCliente:boolean;
+  isVendedor:boolean;
+  isAdmin:boolean;
   currentUser: any;
   qtyItems:Number = 0;
   constructor(private cartService: CartService,
@@ -31,17 +33,21 @@ export class HeaderComponent {
     this.authService.currentUser.subscribe((x)=>{
       if(this.currentUser!=null){
         this.isCliente = x.user.tiposUsuario.some(element => element.tipoUsuario === 'CLIENTE')
+        this.isVendedor = x.user.tiposUsuario.some(element => element.tipoUsuario === 'VENDEDOR')
+        this.isAdmin = x.user.tiposUsuario.some(element => element.tipoUsuario === 'ADMIN')
       }
     });
      this.cartService.countItems.subscribe((value)=>{
       this.qtyItems=value
      })
   }
+  pedido(){
+    this.router.navigate(['pedido/'+this.currentUser.user.id]);
+  }
+
   historial(){
     this.router.navigate(['factura/all/'+this.currentUser.user.id]);
   }
-
-
   login(){
     this.router.navigate(['usuario/login']);
   }
