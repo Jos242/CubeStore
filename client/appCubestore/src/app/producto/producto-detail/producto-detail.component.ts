@@ -26,7 +26,7 @@ export class ProductoDetailComponent {
   preguntaForm: FormGroup;
   respuestaForm: FormGroup;
   resp: any;
-  
+  id:any;
   uploadedImages: UploadedImage[] = [];
 
   isCliente: boolean;
@@ -40,10 +40,10 @@ export class ProductoDetailComponent {
     private auth:AuthenticationService,
     private httpClient:HttpClient
     ){
-      let id=this.route.snapshot.paramMap.get('id');
-      if(!isNaN(Number(id))){
-        this.obtenerProducto(Number(id));
-        this.fetchUploadedImages(Number(id));
+      this.id=this.route.snapshot.paramMap.get('id');
+      if(!isNaN(Number(this.id))){
+        this.obtenerProducto(Number(this.id));
+        this.fetchUploadedImages(Number(this.id));
       }
 
       this.formularioReactive();
@@ -124,6 +124,7 @@ enviarPregunta(): void {
     //Obtener respuesta
     this.resp=data;
   });
+  this.obtenerProducto(this.id);
   this.preguntaForm.reset();
   this.respuestaForm.reset();
 }
@@ -139,6 +140,7 @@ enviarRespuesta(idPregunta:Number): void {
     //Obtener respuesta
     this.resp=data;
   });
+  this.obtenerProducto(this.id);
   this.preguntaForm.reset();
   this.respuestaForm.reset();
 }
