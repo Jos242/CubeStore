@@ -14,7 +14,7 @@ export class UsuarioLoginComponent implements OnInit {
   formulario: FormGroup;
   makeSubmit: boolean = false;
   infoUsuario: any;
-
+  x: any;
   constructor(
     public fb: FormBuilder,
     private authService: AuthenticationService,
@@ -71,7 +71,20 @@ export class UsuarioLoginComponent implements OnInit {
     }
     const hola = this.authService.loginUser(this.formulario.value)
     .subscribe((respuesta:any)=>{
-     this.router.navigate(['/']);
+      const tipousuario=respuesta.data.user.tiposUsuario[0].tipoUsuario;
+      console.log(respuesta)
+      if(tipousuario=='VENDEDOR'){
+        this.router.navigate(['/dashboard/vendedor']);
+      } else if (tipousuario == 'ADMIN') {
+        this.router.navigate(['/dashboard/admin']);
+      } else {
+        // Handle other tipousuarios cases or provide a default route
+        this.router.navigate(['/']);
+      }
+      // if(respuesta.data..some(element => element.tipoUsuario === 'CLIENTE')){
+
+      // }
+
     })
   }
   /* Manejar errores de formulario en Angular */
