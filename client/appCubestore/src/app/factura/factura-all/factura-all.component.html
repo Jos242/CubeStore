@@ -5,8 +5,8 @@
     </mat-card-title>
 
     <button
+    *ngIf="isVendedor && isCliente"
     mat-mini-fab
-    color="accent"
     matTooltip="Detalle Factura"
     aria-label="Detalle Factura"
     color="primary"
@@ -55,7 +55,7 @@
                 <mat-icon class="mat-18">info</mat-icon>
               </button>
 
-              <button mat-mini-fab *ngIf="selected" color="primary" class="botones" [disabled]="isEvaluated(row.idUsuario)" (click)="openEvaluacion(row)">
+              <button mat-mini-fab *ngIf="selected" color="primary" class="botones" [disabled]="isEvaluated(row)" (click)="openEvaluacion(row)">
                 <mat-icon >star</mat-icon>
               </button>
 
@@ -68,13 +68,13 @@
           <mat-menu #menu="matMenu" class="hola" xPosition="before">
             <mat-list>
               <div mat-subheader>Vendedores</div>
-              <a *ngFor="let item of facturaProductos" (click)="isEvaluated(item[0].producto.idUsuario) ? '' : openEvaluacion(item)">
-                <div [ngClass]="isEvaluated(item[0].producto.idUsuario) ? 'disable' : 'hoverin'">
+              <a *ngFor="let item of facturaProductos" (click)="isEvaluated(item[0]) ? '' : openEvaluacion(item)">
+                <div [ngClass]="isEvaluated(item[0]) ? 'disable' : 'hoverin'">
                   <mat-list-item >
                     <mat-icon matListItemIcon class="star">star</mat-icon>
                     <div matListItemTitle>{{item[0].producto.usuario.nombre}}</div>
                     <div matListItemLine *ngFor="let product of item">
-                      {{ product.producto.nombre }}
+                      {{product.cantidad}}x {{ product.producto.nombre }}
                     </div>
                   </mat-list-item>
                 </div>

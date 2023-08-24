@@ -21,9 +21,9 @@
         <span>Login</span>
       </a>
       <div *ngIf="(isAutenticated)">
-        <a mat-menu-item *ngIf="(isCliente)" (click)="historial()">
+        <a mat-menu-item (click)="historial()">
           <mat-icon>shopping_bag</mat-icon>
-          <span>Historial de compras</span>
+          <span>Historial</span>
         </a>
         <a mat-menu-item [routerLink]="'/direccion'">
           <mat-icon>pin_drop</mat-icon>

@@ -54,11 +54,9 @@ export class EvaluacionComponent {
       ['evaluador']: this.datos.evaluador,
     }
 
-    console.log(evaluacion)
     this.gService.create('evaluacion',evaluacion)
     .pipe(takeUntil(this.destroy$)) .subscribe((data: any) => {
       //Obtener respuesta
-      console.log(data)
       this.dialogRef.close();
       this.router.navigate(['/factura/all/'+this.datos.idUsuarioEvaluador]);
     });

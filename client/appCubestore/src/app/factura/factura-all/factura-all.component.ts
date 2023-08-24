@@ -75,6 +75,10 @@ export class FacturaAllComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.iniciarTabla();
+  }
+
+  iniciarTabla() {
     let id = this.idUsuario;
     if (id != 0){
       if (this.isVendedor){
@@ -89,15 +93,13 @@ export class FacturaAllComponent implements AfterViewInit {
     } else {
       this.listaFacturasCliente("");
     }
-   
   }
 
-  isEvaluated(id:any){
-    console.log(id)
+  isEvaluated(item:any){  
     if(this.selected) {
-      return this.evaluaciones.some(element => element.idUsuarioEvaluador === this.currentUser.user.id && element.idUsuarioEvaluado === id && element.evaluador === 2);
+      return this.evaluaciones.some(element => element.idUsuarioEvaluador === this.currentUser.user.id && element.idUsuarioEvaluado === item.idUsuario && element.idFactura === item.id && element.evaluador === 2);
     } else {
-      return this.evaluaciones.some(element => element.idUsuarioEvaluador === this.currentUser.user.id && element.idUsuarioEvaluado === id && element.evaluador === 1);
+      return this.evaluaciones.some(element => element.idUsuarioEvaluador === this.currentUser.user.id && element.idUsuarioEvaluado === item.producto.idUsuario && element.idFactura === item.idFactura && element.evaluador === 1);
     }
   }
 
@@ -124,7 +126,7 @@ export class FacturaAllComponent implements AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // Handle dialog close if needed
+      this.listaEvaluaciones();
     });
   }
 
@@ -153,8 +155,6 @@ export class FacturaAllComponent implements AfterViewInit {
         this.dataSource.paginator = this.paginator;     
         
         this.selected = false;   
-
-        console.log(this.datos)
       });   
   }
 
