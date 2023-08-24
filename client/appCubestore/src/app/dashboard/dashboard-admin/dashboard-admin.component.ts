@@ -26,6 +26,14 @@ export class DashboardAdminComponent implements OnInit {
   chartData: number[] = [];
   chartLabels: string[] = [];
   public chart: any;
+  chartData2: number[] = [];
+  chartLabels2: string[] = [];
+  public chart2: any;
+  chartData3: number[] = [];
+  chartLabels3: string[] = [];
+  public chart3: any;
+  topCalificaciones: any[] = [];
+  worstCalificaciones: any[] = [];
 
 
 
@@ -44,6 +52,8 @@ constructor(
   ngOnInit(): void {
     this.comprasHoy();
     this.fetchTopSellingProducts();
+    this.topVendedores();
+    this.worstVendedores();
   }
 
   comprasHoy(){
@@ -72,6 +82,28 @@ constructor(
       });
   }
 
+  topVendedores() {
+    this.gService.list('evaluacion/top')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data:any)=>{
+        this.topCalificaciones = data;
+        this.chartData2 = this.topCalificaciones.map(usuario => usuario.averageRating);
+        this.chartLabels2 = this.topCalificaciones.map(usuario => usuario.nombre);
+        this.createChart2();
+      });
+  }
+
+  worstVendedores() {
+    this.gService.list('evaluacion/bot')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data:any)=>{
+        this.worstCalificaciones = data;
+        this.chartData3 = this.worstCalificaciones.map(usuario => usuario.averageRating);
+        this.chartLabels3 = this.worstCalificaciones.map(usuario => usuario.nombre);
+        this.createChart3();
+      });
+  }
+
   createChart(){
   
     this.chart = new Chart("MyChart", {
@@ -84,6 +116,38 @@ constructor(
           { label: "Vendidos este mes:", data: this.chartData,},
           ]
       },
+      options: { aspectRatio:2.5}
+    });
+  }
+
+  createChart2(){
+    this.chart = new Chart("MyChart2", {
+      type: 'bar',
+      // type: 'doughnut',
+
+      data: {
+        labels: this.chartLabels2, 
+	       datasets: [
+          { label: "Puntuacion Promedia", data: this.chartData2,backgroundColor: [
+            'rgba(100, 255, 100, 0.5)'],},
+          ]
+      },
+      options: { aspectRatio:2.5}
+    });
+  }
+  createChart3(){
+    this.chart = new Chart("MyChart3", {
+      type: 'bar',
+      // type: 'doughnut',
+
+      data: {
+        labels: this.chartLabels3, 
+	       datasets: [
+          { label: "Puntuacion Promedia", data: this.chartData3, backgroundColor: [
+            'rgba(255, 0, 0, 0.5)'],},
+          ]
+      },
+     
       options: { aspectRatio:2.5}
     });
   }

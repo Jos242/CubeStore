@@ -1,12 +1,49 @@
-<p>dashboard-admin works!</p>
-<p>Cantidad de compras de hoy: {{ cantCompras }}</p>
-<h2>Top Selling Products</h2>
-<ul>
-  <li *ngFor="let product of topSellingProducts">
-    {{ product.nombre }} - Quantity Sold: {{ product.salesCount}}
-  </li>
-</ul>
-<div class="chart-container">
-    <canvas  id="MyChart" >{{chart}}</canvas>
+<h1>Resumen Administrativo</h1>
+<div class="row">
+    <div class="col">
+        <mat-card class="compras">
+            <mat-card-header><h1 class="mat-h1">Compras</h1></mat-card-header>
+            <mat-card-content>
+                Cantidad de compras realizadas hoy: {{ cantCompras }}
+            </mat-card-content>
+        </mat-card>
+    </div>
+    
 </div>
+<div class="row">
+    <div class="col">
+        <mat-card>
+            <mat-card-header><h1 class="mat-h1">Mejores Vendedores</h1></mat-card-header>
+            <mat-card-content>
+                Vendedores con mejores calificaciones: 
+                <div class="chart-container">
+                    <canvas  id="MyChart2" >{{chart2}}</canvas>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="col">
+        <mat-card>
+            <mat-card-header><h1 class="mat-h1">Peores Vendedores</h1></mat-card-header>
+            <mat-card-content>
+                Vendedores con peores calificaciones: 
+                <div class="chart-container">
+                    <canvas  id="MyChart3" >{{chart3}}</canvas>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <mat-card>
+            <mat-card-header><h1 class="mat-h1">Productos mas vendidos del mes</h1></mat-card-header>
+            <mat-card-content>
+                <div class="chart-container">
+                    <canvas  id="MyChart" >{{chart}}</canvas>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
 
+</div>

@@ -20,8 +20,12 @@ export class DashboardVendedorComponent implements OnInit{
   destroy$:Subject<boolean>=new Subject<boolean>();
   currentUser:any;
   topSellingProduct: any[] = [];
+  calificaciones: any[] = [];
   topComprador: any;
   idUsuario:any;
+  chartData: number[] = [];
+  chartLabels: string[] = [];
+  public chart: any;
 
   constructor(
     private cartService: CartService,
@@ -38,6 +42,7 @@ export class DashboardVendedorComponent implements OnInit{
   ngOnInit(): void {
     this.fetchTopSellingProduct();
     this.getTopComprador();
+    this.getCalificaciones();
   }
 
   fetchTopSellingProduct() {
@@ -56,6 +61,34 @@ export class DashboardVendedorComponent implements OnInit{
         console.log(this.topComprador)
       });
   }
+
+  getCalificaciones() {
+    this.gService.get('evaluacion/bot',this.idUsuario)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data:any)=>{
+        this.calificaciones = data;
+        console.log(this.calificaciones)
+        this.chartData = this.calificaciones.map(calif => calif.count);
+        this.chartLabels = this.calificaciones.map(calif => calif.calificacion);
+        this.createChart();
+      });
+  }
+  createChart(){
+  
+    this.chart = new Chart("MyChart", {
+      type: 'bar',
+      // type: 'doughnut',
+
+      data: {
+        labels: this.chartLabels, 
+	       datasets: [
+          { label: "Calificaciones:", data: this.chartData,},
+          ]
+      },
+      options: { aspectRatio:3}
+    });
+  }
+
 
 
 
