@@ -1,0 +1,7 @@
+<p>dashboard-vendedor works!</p>
+    <p *ngFor="let product of topSellingProduct">
+      Top Producto Vendido: {{ product.nombre }} - Quantity Sold: {{ product.salesCount}}
+    </p>
+    <p>
+    Cliente con mas compras: {{ topComprador.nombre }} - Quantity Sold: {{ topComprador.totalProductCount}}
+    </p>
