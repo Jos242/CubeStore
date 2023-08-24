@@ -240,12 +240,14 @@ module.exports.getTopProds = async (request, response, next) => {
         }
       }
     });
-
-   // Calculate the total sales count for each product
-   const productsWithSalesCount = topSellingProducts.map(product => ({
-    ...product,
-    salesCount: product.facturas.length
-  }));
+  
+    // Calculate the total sales count for each product
+    const productsWithSalesCount = topSellingProducts.map(product => ({
+      ...product,
+      salesCount: product.facturas.reduce((total, factura) => {
+        return total + factura.cantidad;
+      }, 0)
+    }));
 
   // Sort products by sales count in descending order
   const sortedProducts = productsWithSalesCount.sort((a, b) => b.salesCount - a.salesCount);
@@ -269,12 +271,14 @@ module.exports.getTopProdById = async (request, response, next) => {
     }
   });
 
-  const productsWithSalesCountUser = topSoldProduct.map(product => ({
+  const productsWithSalesCount = topSoldProduct.map(product => ({
     ...product,
-    salesCount: product.facturas.length
+    salesCount: product.facturas.reduce((total, factura) => {
+      return total + factura.cantidad;
+    }, 0)
   }));
 
-  const sortedProductsUser = productsWithSalesCountUser.sort((a, b) => b.salesCount - a.salesCount);
+  const sortedProductsUser = productsWithSalesCount.sort((a, b) => b.salesCount - a.salesCount);
 
   const topSoldProductofUser = sortedProductsUser.slice(0, 1);
 
