@@ -68,14 +68,16 @@
           <mat-menu #menu="matMenu" class="hola" xPosition="before">
             <mat-list>
               <div mat-subheader>Vendedores</div>
-              <a *ngFor="let item of facturaProductos" [ngClass]="{'disabled-link': isEvaluated(item[0].producto.idUsuario)}" (click)="isEvaluated(item[0].producto.idUsuario) ? '' : openEvaluacion(item)">
-                <mat-list-item [ngClass]="isEvaluated(item[0].producto.idUsuario) ? 'disable' : 'hoverin'">
-                  <mat-icon matListItemIcon class="star">star</mat-icon>
-                  <div matListItemTitle>{{item[0].producto.usuario.nombre}}</div>
-                  <div matListItemLine *ngFor="let product of item">
-                    {{ product.producto.nombre }}
-                  </div>
-                </mat-list-item>
+              <a *ngFor="let item of facturaProductos" (click)="isEvaluated(item[0].producto.idUsuario) ? '' : openEvaluacion(item)">
+                <div [ngClass]="isEvaluated(item[0].producto.idUsuario) ? 'disable' : 'hoverin'">
+                  <mat-list-item >
+                    <mat-icon matListItemIcon class="star">star</mat-icon>
+                    <div matListItemTitle>{{item[0].producto.usuario.nombre}}</div>
+                    <div matListItemLine *ngFor="let product of item">
+                      {{ product.producto.nombre }}
+                    </div>
+                  </mat-list-item>
+                </div>
               </a>
             </mat-list>
           </mat-menu>

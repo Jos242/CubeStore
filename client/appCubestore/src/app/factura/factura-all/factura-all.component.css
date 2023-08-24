@@ -4,7 +4,7 @@ td {
 }
 
 .hoverin:hover {
-    background-color: #ececec;
+  background: linear-gradient(to bottom, #00c2ff, #007eff);
 }
 
 .disable {
