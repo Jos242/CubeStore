@@ -1,0 +1,12 @@
+<p>dashboard-admin works!</p>
+<p>Cantidad de compras de hoy: {{ cantCompras }}</p>
+<h2>Top Selling Products</h2>
+<ul>
+  <li *ngFor="let product of topSellingProducts">
+    {{ product.nombre }} - Quantity Sold: {{ product.salesCount}}
+  </li>
+</ul>
+<div class="chart-container">
+    <canvas  id="MyChart" >{{chart}}</canvas>
+</div>
+

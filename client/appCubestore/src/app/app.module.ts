@@ -16,6 +16,7 @@ import { UsuarioModule } from './usuario/usuario.module';
 import { OrdenModule } from './orden/orden.module';
 import { DireccionModule } from './direccion/direccion.module';
 import { TarjetaModule } from './tarjeta/tarjeta.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 
 @NgModule({
@@ -41,9 +42,11 @@ import { TarjetaModule } from './tarjeta/tarjeta.module';
     ProductoModule,
     UsuarioModule,
     OrdenModule,
+    DashboardModule,
 
     
     AppRoutingModule,
+            
             
       
 

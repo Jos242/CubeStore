@@ -220,3 +220,112 @@ module.exports.updateCantidad = async (request, response, next) => {
   });
   response.json(newProducto);
 };
+
+module.exports.getTopProds = async (request, response, next) => {
+  const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth();
+
+    const topSellingProducts = await prisma.producto.findMany({
+      include: {
+        facturas: {
+          where: {
+            factura: {
+              createdAt: {
+                gte: new Date(currentYear, currentMonth, 1),
+                lt: new Date(currentYear, currentMonth + 1, 1)
+              }
+            }
+          }
+        }
+      }
+    });
+
+   // Calculate the total sales count for each product
+   const productsWithSalesCount = topSellingProducts.map(product => ({
+    ...product,
+    salesCount: product.facturas.length
+  }));
+
+  // Sort products by sales count in descending order
+  const sortedProducts = productsWithSalesCount.sort((a, b) => b.salesCount - a.salesCount);
+
+  // Get the top 5 products
+  const top5SellingProducts = sortedProducts.slice(0, 5);
+
+
+  response.json(top5SellingProducts);
+};
+
+module.exports.getTopProdById = async (request, response, next) => {
+  let id = parseInt(request.params.id);
+
+  const topSoldProduct = await prisma.producto.findMany({
+    where: {
+      idUsuario: id 
+    },
+    include: {
+      facturas: true 
+    }
+  });
+
+  const productsWithSalesCountUser = topSoldProduct.map(product => ({
+    ...product,
+    salesCount: product.facturas.length
+  }));
+
+  const sortedProductsUser = productsWithSalesCountUser.sort((a, b) => b.salesCount - a.salesCount);
+
+  const topSoldProductofUser = sortedProductsUser.slice(0, 1);
+
+  response.json(topSoldProductofUser);
+};
+
+module.exports.getTopCompradorByVend = async (request, response, next) => {
+  let id = parseInt(request.params.id);
+  
+  const usersWithProductCount = await prisma.usuario.findMany({
+    include: {
+      facturas: {
+        select: {
+          id: true,
+          productos: {
+            select: {
+              idProducto: true,
+              cantidad: true,
+              producto: {
+                select: {
+                  idUsuario: true // Select the idUsuario of the related Producto
+                }
+              }
+            },
+            where: {
+              producto: {
+                idUsuario: id // Filter by idUsuario of the related Producto
+              }
+            }
+          }
+        }
+      }
+    }
+  });
+
+  // Calculate the total quantity of products bought for each user
+  const usersWithTotalProductCount = usersWithProductCount.map(user => ({
+    ...user,
+    totalProductCount: user.facturas.reduce((total, factura) => {
+      return total + factura.productos.reduce((subtotal, producto) => subtotal + producto.cantidad, 0);
+    }, 0)
+  }));
+
+  // Find the user with the highest total product count
+  const userWithMostProducts = usersWithTotalProductCount.reduce((maxUser, currentUser) =>
+    currentUser.totalProductCount > maxUser.totalProductCount ? currentUser : maxUser
+  );
+
+  response.json(userWithMostProducts);
+
+};
+
+
+
